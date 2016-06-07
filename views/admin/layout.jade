@@ -2,14 +2,14 @@ doctype html
 html(lang="en")
 head
   title= title
-  
+
   meta(name="viewport", content="width=device-width, initial-scale=1")
   link(rel="stylesheet", href="/libs/angular-material/angular-material.min.css")
   link(rel="stylesheet", href="/stylesheets/iconfont/material-icons.css")
   link(rel="stylesheet", href="/libs/angular-material-data-table/dist/md-data-table.min.css")
   link(rel="stylesheet", href="/stylesheets/style.css")
 
-  
+
   script(src="/libs/angular/angular.js")
   script(src="/libs/angular-animate/angular-animate.min.js")
   script(src="/libs/angular-aria/angular-aria.min.js")
@@ -17,22 +17,22 @@ head
   script(src="/libs/angular-material/angular-material.min.js")
   script(src="/libs/angular-ui-router/release/angular-ui-router.min.js")
   script(src="/libs/angular-material-data-table/dist/md-data-table.min.js")
-  
+
   script(src="/javascripts/admin/app.js")
   script(src="/javascripts/admin/controllers/toolbar.js")
   script(src="/javascripts/admin/controllers/sidenav.js")
-    
+
   block scripts
-    
-    
-body(ng-app="app", ng-cloak)
 
-  div(layout="column", style="height:100%;")
 
-    section(layout="row", flex)
+body(ng-app="app")
+
+  div(layout="column",  style="height: 100%")
+
+    section(layout="row", flex, style="height: 100%")
       div(ng-controller="SideNavCtrl")
-        md-sidenav.md-sidenav-left.md-whiteframe-z2(md-component-id="left", 
-         md-is-locked-open="$mdMedia('gt-md')", md-disable-backdrop="", md-whiteframe="4")
+        md-sidenav.md-sidenav-left(md-component-id="left",
+         md-is-locked-open="$mdMedia('gt-sm')", md-disable-backdrop="")
 
           md-toolbar.md-hue-2.md-whiteframe-z2
             div.md-toolbar-tools
@@ -40,7 +40,6 @@ body(ng-app="app", ng-cloak)
                 md-ico.material-icons group
               h2
                 span iHRM
-
           md-content
             md-menu-content
               md-menu-item
@@ -58,7 +57,7 @@ body(ng-app="app", ng-cloak)
                   md-icon(md-menu-align-target)
                     i.material-icons print
                   | ระบบรายงาน
-                  
+
             md-divider
             md-subheader Settings
             md-menu-content
@@ -77,50 +76,44 @@ body(ng-app="app", ng-cloak)
                   md-icon(md-menu-align-target)
                     i.material-icons device_hub
                   | หน่วยงานย่อย
-      md-content(layout="column", 
-      layout-fill, 
-      layout-align="top center", 
-      style="background-color: #e9ebee;")
+      md-content(layout="column", layout-fill, layout-align="top center", style="background-color: #e9ebee;")
         div(layout="column", layout-fill, ng-controller="ToolbarCtrl")
           md-toolbar.md-whiteframe-z2.md-hue-2(ng-show="!showSearch")
             div.md-toolbar-tools
-              md-button.md-icon-button(aria-label="Settings", ng-click="toggleLeft()", hide-gt-md)
-                md-ico.material-icons menu
-         
-              h2
-                span HR Management System
-     
+              md-button.md-icon-button(aria-label="Toggle", ng-click="toggleLeft()", hide-gt-sm)
+                md-icon.material-icons menu
+
+              h2 HR Management System
               span(flex)
-              
-              md-button(aria-label="Search", ng-click="showSearch = !showSearch")
-                md-icon.material-icons search
-                
+
               md-menu
-                md-button.md-icon-button(aria-label="More", ng-click="openMenu($mdOpenMenu, $event)")
-                  md-icon.material-icons more_vert    
-              
+                md-button(aria-label="More", ng-click="openMenu($mdOpenMenu, $event)")
+                  md-icon.material-icons more_vert
+
                 md-menu-content(width="4")
                   md-menu-item
                     md-button
                       md-icon(md-menu-align-target).material-icons account_circle
                       | Profile
-                  md-menu-divider  
+
+                  md-menu-divider
                   md-menu-item
                     md-button
                       md-icon(md-menu-align-target).material-icons power_settings_new
                       | Logout
+
+
           md-toolbar(ng-show="showSearch").md-hue-2
             div.md-toolbar-tools
               md-button(ng-click="showSearch = !showSearch" aria-label="Back")
                 md-icon.material-icons keyboard_backspace
               h3(flex="10") Back
-     
+
               md-input-container(md-theme="input", flex="", class="md-input-theme", style="padding-top: 32px;")
                 label &nbsp;
                 input(ng-model="search.who", placeholder="enter search", style="color: #fff;")
 
               md-button(aria-label="Search", ng-click="showSearch = !showSearch")
                 md-icon.material-icons search
-          div     
-            block content 
-           
+          div
+            block content

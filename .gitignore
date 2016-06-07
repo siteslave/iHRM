@@ -2,3 +2,4 @@ node_modules
 public/libs
 public/javascripts
 public/stylesheets/style.css
+.DS_Store
