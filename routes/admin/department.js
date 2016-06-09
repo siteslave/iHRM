@@ -3,25 +3,25 @@
 let express = require('express');
 let router = express.Router();
 
-let Money = require('../../models/money');
+let Department = require('../../models/department');
 
 /**
  * METHOD: GET
- * URL: /admin/money/list
+ * URL: /admin/departments/list
  */
 router.get('/list', (req, res, next) => {
-  Money.list(req.db)
+  Department.list(req.db)
     .then(rows => res.send({ ok: true, rows: rows }),
     err => res.send({ ok: false, msg: err }))
 });
 /**
  * METHOD: POST
- * URL: /admin/money/save
+ * URL: /admin/department/save
  */
 router.post('/save', (req, res, next) => {
   let name = req.body.name;
   if (name) {
-    Money.save(req.db, name)
+    Department.save(req.db, name)
       .then(() => res.send({ ok: true }),
       err => res.send({ ok: false, msg: err }))
   } else {
@@ -30,19 +30,19 @@ router.post('/save', (req, res, next) => {
 });
 /**
  * METHOD: PUT
- * URL: /admin/money/save
+ * URL: /admin/department/save
  */
 router.put('/save', (req, res, next) => {
   let name = req.body.name;
   let id = req.body.id;
 
   if (name && id) {
-    Money.duplicated(req.db, id, name)
+    Department.duplicated(req.db, id, name)
       .then(total => {
         if (total) {
           res.send({ok: false, msg: 'Name duplicated!'})
         } else {
-          Money.update(req.db, id, name)
+          Department.update(req.db, id, name)
             .then(() => res.send({ ok: true }),
             err => res.send({ ok: false, msg: err }))
         }
@@ -54,12 +54,12 @@ router.put('/save', (req, res, next) => {
 
 /**
  * METHOD: DELETE
- * URL: /admin/money/remove
+ * URL: /admin/department/remove
  */
 router.delete('/remove/:id', (req, res, next) => {
   let id = req.params.id;
   if (id) {
-    Money.remove(req.db, id)
+    Department.remove(req.db, id)
       .then(() => res.send({ ok: true }),
       err => res.send({ ok: false, msg: err }))
   } else {

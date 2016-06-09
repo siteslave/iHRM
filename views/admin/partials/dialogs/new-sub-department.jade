@@ -1,0 +1,29 @@
+md-dialog(aria-label="New Sub Department", ng-cloak, flex="40")
+  form(name="frmNewSubDepartment")
+    md-toolbar
+      div.md-toolbar-tools
+        h2 เพิ่ม/แก้ไข หน่วยงานย่อยใหม่
+        span(flex)
+        md-button.md-icon-button(ng-click="cancel()")
+          md-icon(aria-label="Close dialog").material-icons clear
+
+    md-dialog-content
+      div.md-dialog-content
+        div(layout="column")
+          div(flex)
+            md-input-container.md-block(flex-gt-sm)
+              label ชื่อหน่วยงานย่อย
+              input(ng-model="depName", ng-required="true")
+
+            md-input-container.md-block(flex-gt-sm)
+              label หน่วยงานหลัก
+              md-select(ng-model="mainDepId", ng-required="true")
+                md-option(ng-repeat="dep in mainDeps", value="{{dep.id}}")
+                  {{dep.name}}
+
+    md-dialog-actions(layout="row")
+      span(flex)
+      md-button(ng-click="save()", ng-disabled="frmNewSubDepartment.$invalid").md-raised.md-primary
+        | ตกลง
+      md-button(ng-click="cancel()")
+        | ยกเลิก

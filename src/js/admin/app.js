@@ -4,10 +4,20 @@ angular.module('app', [
   'ui.router',
   'ngMaterial',
   'md.data.table',
+  'app.Configure',
   'app.controllers.SideNav',
-  'app.controllers.Toolbar'
+  'app.controllers.Toolbar',
+  'app.admin.controllers.Money',
+  'app.admin.controllers.Department',
+  'app.admin.controllers.SubDepartment',
+  'app.admin.controllers.Employee'
 ])
   .config(($mdThemingProvider, $stateProvider, $urlRouterProvider) => {
+
+    $mdThemingProvider.theme('docs-dark', 'default')
+      .primaryPalette('yellow')
+      .dark();
+
     $mdThemingProvider.definePalette('amazingPaletteName', {
       '50': 'ffebee',
       '100': 'ffcdd2',
@@ -29,7 +39,7 @@ angular.module('app', [
         '200', '300', '400', 'A100'],
       'contrastLightColors': undefined    // could also specify this if default was 'dark'
     });
-    
+
     $mdThemingProvider.theme('default')
       .primaryPalette('amazingPaletteName');
 
@@ -42,19 +52,28 @@ angular.module('app', [
         url: '/',
         templateUrl: '/partials/admin/main'
       })
+      .state('employee', {
+        url: '/employee',
+        templateUrl: '/partials/admin/employee',
+        controller: 'EmployeeCtrl'
+      })
       .state('money', {
         url: '/money',
-        abstract: true,
-        templateUrl: '/partials/admin/money'
+        templateUrl: '/partials/admin/money',
+        controller: 'MoneyCtrl'
       })
-      .state('money.main', {
-        url: '',
-        templateUrl: '/partials/admin/money/main'
+      .state('department', {
+        url: '/department',
+        templateUrl: '/partials/admin/department',
+        controller: 'DepartmentCtrl'
       })
-      .state('money.new', {
-        url: '/new',
-        templateUrl: '/partials/admin/money/new'
+      .state('sub-department', {
+        url: '/sub-department',
+        templateUrl: '/partials/admin/sub-department',
+        controller: 'SubDepartmentCtrl'
       });
-    
+
   });
-  
+  // .run(($rootScope) => {
+  //   $rootScope.url = 'http://localhost:3000';
+  // });

@@ -10,9 +10,15 @@ let bodyParser = require('body-parser');
 let routes = require('./routes/index');
 let admin = require('./routes/admin/index');
 let money = require('./routes/admin/money');
+let department = require('./routes/admin/department');
+let subDepartment = require('./routes/admin/sub-department');
+let employee = require('./routes/admin/employee');
 
 let partials = require('./routes/partials');
+let basic = require('./routes/basic');
+
 let users = require('./routes/users');
+let userMeetings = require('./routes/users/meetings');
 
 let app = express();
 
@@ -47,11 +53,16 @@ app.use((req, res, next) => {
 });
 
 app.use('/', routes);
+app.use('/basic', basic);
 app.use('/partials', partials);
 app.use('/admin', admin);
+app.use('/admin/employee', employee);
 app.use('/admin/money', money);
+app.use('/admin/department', department);
+app.use('/admin/sub-department', subDepartment);
 
 app.use('/users', users);
+app.use('/users/meetings', userMeetings);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

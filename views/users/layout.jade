@@ -17,28 +17,15 @@ head
   script(src="/libs/angular-material/angular-material.min.js")
   script(src="/libs/angular-ui-router/release/angular-ui-router.min.js")
   script(src="/libs/angular-material-data-table/dist/md-data-table.min.js")
-
+  script(src="/libs/moment/min/moment-with-locales.min.js")
 
   script(src="/javascripts/configure.js")
-  script(src="/javascripts/admin/app.js")
-  script(src="/javascripts/admin/controllers/toolbar.js")
-  script(src="/javascripts/admin/controllers/sidenav.js")
-  script(src="/javascripts/admin/controllers/money.js")
-  script(src="/javascripts/admin/services/money.js")
-  script(src="/javascripts/admin/controllers/department.js")
-  script(src="/javascripts/admin/services/department.js")
-
-  script(src="/javascripts/admin/controllers/sub-department.js")
-  script(src="/javascripts/admin/services/sub-department.js")
-
-  script(src="/javascripts/admin/controllers/employee.js")
-  script(src="/javascripts/admin/services/employee.js")
-  script(src="/javascripts/admin/controllers/dialogs/employee-new.js")
-  script(src="/javascripts/admin/controllers/dialogs/employee-update.js")
-
-  script(src="/javascripts/admin/controllers/dialogs/sub-department.js")
-  script(src="/javascripts/admin/controllers/dialogs/sub-department-update.js")
-  script(src="/javascripts/admin/controllers/dialogs/sub-department-update.js")
+  script(src="/javascripts/users/app.js")
+  script(src="/javascripts/users/controllers/sidenav.js")
+  script(src="/javascripts/users/controllers/toolbar.js")
+  script(src="/javascripts/users/controllers/meetings.js")
+  script(src="/javascripts/users/controllers/dialogs/new-meetings.js")
+  script(src="/javascripts/users/services/meetings.js")
 
   block scripts
 
@@ -66,15 +53,10 @@ body(ng-app="app")
                     i.material-icons dashboard
                   | Dashboard
               md-menu-item
-                md-button(ui-sref="employee")
+                md-button(ui-sref="meetings")
                   md-icon(md-menu-align-target)
-                    i.material-icons group
-                  | รายชื่อเจ้าหน้าที่
-              //- md-menu-item
-              //-   md-button(ng-click="go('main')")
-              //-     md-icon(md-menu-align-target)
-              //-       i.material-icons business_center
-              //-     | ข้อมูลการประชุม/ฝึกอบรม
+                    i.material-icons business_center
+                  | ประชุม/ฝึกอบรม
               md-menu-item
                 md-button(ng-click="go('main')")
                   md-icon(md-menu-align-target)
@@ -88,17 +70,8 @@ body(ng-app="app")
                 md-button(ui-sref="money")
                   md-icon(md-menu-align-target)
                     i.material-icons monetization_on
-                  | งบประมาณที่ใช้
-              md-menu-item
-                md-button(ui-sref="department")
-                  md-icon(md-menu-align-target)
-                    i.material-icons folder_shared
-                  | หน่วยงานหลัก
-              md-menu-item
-                md-button(ui-sref="sub-department")
-                  md-icon(md-menu-align-target)
-                    i.material-icons device_hub
-                  | หน่วยงานย่อย
+                  | ข้อมูลส่วนตัว
+
       md-content(layout="column", layout-fill, layout-align="top center", style="background-color: #e9ebee;")
         div(layout="column", layout-fill, ng-controller="ToolbarCtrl")
           md-toolbar.md-whiteframe-z2.md-hue-2(ng-show="!showSearch")

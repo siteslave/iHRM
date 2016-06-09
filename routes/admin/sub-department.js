@@ -3,25 +3,35 @@
 let express = require('express');
 let router = express.Router();
 
-let Money = require('../../models/money');
+let SubDepartment = require('../../models/sub-department');
 
 /**
  * METHOD: GET
- * URL: /admin/money/list
+ * URL: /admin/departments/list
  */
 router.get('/list', (req, res, next) => {
-  Money.list(req.db)
+  SubDepartment.list(req.db)
+    .then(rows => res.send({ ok: true, rows: rows }),
+    err => res.send({ ok: false, msg: err }))
+});
+
+router.get('/list/:id', (req, res, next) => {
+  let id = req.params.id;
+
+  SubDepartment.listByMain(req.db, id)
     .then(rows => res.send({ ok: true, rows: rows }),
     err => res.send({ ok: false, msg: err }))
 });
 /**
  * METHOD: POST
- * URL: /admin/money/save
+ * URL: /admin/department/save
  */
 router.post('/save', (req, res, next) => {
   let name = req.body.name;
-  if (name) {
-    Money.save(req.db, name)
+  let id = req.body.id;
+
+  if (name && id) {
+    SubDepartment.save(req.db, id, name)
       .then(() => res.send({ ok: true }),
       err => res.send({ ok: false, msg: err }))
   } else {
@@ -30,19 +40,20 @@ router.post('/save', (req, res, next) => {
 });
 /**
  * METHOD: PUT
- * URL: /admin/money/save
+ * URL: /admin/department/save
  */
 router.put('/save', (req, res, next) => {
   let name = req.body.name;
-  let id = req.body.id;
+  let mainId = req.body.mainId;
+  let subId = req.body.subId;
 
-  if (name && id) {
-    Money.duplicated(req.db, id, name)
+  if (name && mainId && subId) {
+    SubDepartment.duplicated(req.db, subId, name)
       .then(total => {
         if (total) {
           res.send({ok: false, msg: 'Name duplicated!'})
         } else {
-          Money.update(req.db, id, name)
+          SubDepartment.update(req.db, mainId, subId, name)
             .then(() => res.send({ ok: true }),
             err => res.send({ ok: false, msg: err }))
         }
@@ -54,12 +65,12 @@ router.put('/save', (req, res, next) => {
 
 /**
  * METHOD: DELETE
- * URL: /admin/money/remove
+ * URL: /admin/department/remove
  */
 router.delete('/remove/:id', (req, res, next) => {
   let id = req.params.id;
   if (id) {
-    Money.remove(req.db, id)
+    Department.remove(req.db, id)
       .then(() => res.send({ ok: true }),
       err => res.send({ ok: false, msg: err }))
   } else {
