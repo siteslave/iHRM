@@ -4,6 +4,7 @@ angular.module('app.admin.controllers.dialogs.EmployeeUpdate', [])
   .controller('EmployeeUpdateCtrl', ($scope, $rootScope, $mdDialog, $mdToast, EmployeeService) => {
 
     $scope.employee = {};
+    $scope.isUpdate = true;
 
     let employee = $rootScope.currentEmployee;
 

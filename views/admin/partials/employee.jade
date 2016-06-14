@@ -19,17 +19,17 @@ md-card
         thead(md-head)
           tr(md-row)
             th(md-column, md-numeric) #
-            th(md-column) ชื่อผู้ใช้งาน
+            //- th(md-column) ชื่อผู้ใช้งาน
             th(md-column) ชื่อ-สกุล
             th(md-column) ตำแหน่ง
             th(md-column) สังกัด
             th(md-column)
         tbody(md-body)
           tr(md-row, ng-if="!employees.length")
-            td(md-cell, colspan="6") ไม่พบรายการ
+            td(md-cell, colspan="5") ไม่พบรายการ
           tr(md-row, ng-repeat="e in employees", ng-if="employees.length")
             td(md-cell) {{ $index + 1 }}
-            td(md-cell) {{ e.username }}
+            //- td(md-cell) {{ e.username }}
             td(md-cell) {{ e.title_name }}{{ e.fullname }}
             td(md-cell) {{ e.position_name }}
             td(md-cell) {{ e.sub_name }}
@@ -52,6 +52,12 @@ md-card
                     md-button(ng-click="changePassword($event, e)")
                       md-icon.material-icons vpn_key
                       | &nbsp; เปลี่ยนรหัสผ่าน
+
+                  md-menu-divider
+                  md-menu-item
+                    md-button(ng-click="history(e)")
+                      md-icon.material-icons print
+                      | &nbsp; ประวัติการอบรม/ประชุม
 
       md-table-pagination(md-limit="query.limit", md-page="query.page", md-total="{{ total }}",
       md-on-paginate="onPaginate",

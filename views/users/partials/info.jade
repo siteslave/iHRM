@@ -1,0 +1,39 @@
+md-card
+  md-card-title
+    h2 ข้อมูลประจำตัว
+
+  md-card-content
+
+    div(layout-pading)
+
+      div(layout="row")
+        div(flex)
+          md-input-container.md-block
+            label ชื่อผู้ใช้งาน
+            input(ng-model="info.username", ng-disabled="true")
+
+      div(layout="row")
+        div(flex="20")
+          md-input-container.md-block
+            label คำนำ
+            input(ng-model="info.title_name", ng-disabled="true")
+        div(flex)
+          md-input-container.md-block(flex-gt-sm)
+            label ชื่อ-สกุล
+            input(ng-model="info.fullname", ng-disabled="true")
+        div(flex)
+          md-input-container.md-block
+            label ตำแหน่ง
+            input(ng-model="info.position_name", ng-disabled="true")
+      div(layout="row")
+        div(flex)
+          md-input-container.md-block
+            label หน่วยงานหลัก
+            input(ng-model="info.main_name", ng-disabled="true")
+        div(flex)
+          md-input-container.md-block
+            label หน่วยงานย่อย
+            input(ng-model="info.sub_name", ng-disabled="true")
+
+  md-card-actions(layout="row", layout-align="end center")
+    md-button(ng-click="changePassword($event)").md-warn.md-raised เปลี่ยนรหัสผ่าน

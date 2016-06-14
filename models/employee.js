@@ -1,11 +1,12 @@
 'use strict';
 
 module.exports = {
+  
   total(db) {
     return db('employees')
       .count('* as total');
   },
-
+  
   list(db, limit, offset) {
 
     return db('employees as e')
@@ -69,5 +70,18 @@ module.exports = {
       .count('* as total')
       .whereNot('id', id)
       .where('fullname', fullname);
+  },
+
+  getInfo(db, id) {
+
+    return db('employees as e')
+      .select('e.fullname', 'e.id', 'e.username', 't.name as title_name',
+        'p.name as position_name', 's.name as sub_name', 'd.name as main_name')
+      .leftJoin('l_titles as t', 't.id', 'e.title_id')
+      .leftJoin('l_positions as p', 'p.id', 'e.position_id')
+      .leftJoin('l_sub_departments as s', 's.id', 'e.sub_department_id')
+      .leftJoin('l_departments as d', 'd.id', 's.department_id')
+      .where('e.id', id);
+
   }
-}
+};

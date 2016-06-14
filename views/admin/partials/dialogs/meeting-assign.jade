@@ -1,0 +1,23 @@
+md-dialog(aria-label="New Employee", ng-cloak, flex="40")
+  form(name="frmNew")
+    md-toolbar
+      div.md-toolbar-tools
+        h2.md-headline
+          i.material-icons person_add
+          | &nbsp; กำหนดหน่วยงานที่จะเข้าร่วมกิจกรรม
+        span(flex)
+        md-button.md-icon-button(ng-click="cancel()")
+          md-icon(aria-label="Close dialog").material-icons clear
+
+    md-dialog-content
+      div.md-dialog-content
+        div(flex="100", ng-repeat="d in departments")
+          md-checkbox(ng-checked="exist(d.id)", ng-click="toggle(d.id)")
+            | {{ d.name }}
+
+    md-dialog-actions(layout="row")
+      span(flex)
+      md-button(ng-click="save()").md-raised.md-primary
+        | ตกลง
+      md-button(ng-click="cancel()")
+        | ยกเลิก

@@ -1,14 +1,13 @@
 doctype html
 html(lang="en")
 head
-  title= title
+  title Smart HRM System V1.0.0
 
   meta(name="viewport", content="width=device-width, initial-scale=1")
   link(rel="stylesheet", href="/libs/angular-material/angular-material.min.css")
   link(rel="stylesheet", href="/stylesheets/iconfont/material-icons.css")
   link(rel="stylesheet", href="/libs/angular-material-data-table/dist/md-data-table.min.css")
   link(rel="stylesheet", href="/stylesheets/style.css")
-
 
   script(src="/libs/angular/angular.js")
   script(src="/libs/angular-animate/angular-animate.min.js")
@@ -17,7 +16,8 @@ head
   script(src="/libs/angular-material/angular-material.min.js")
   script(src="/libs/angular-ui-router/release/angular-ui-router.min.js")
   script(src="/libs/angular-material-data-table/dist/md-data-table.min.js")
-
+  script(src="/libs/moment/min/moment-with-locales.min.js")
+  script(src="/libs/lodash/dist/lodash.min.js")
 
   script(src="/javascripts/configure.js")
   script(src="/javascripts/admin/app.js")
@@ -40,8 +40,16 @@ head
   script(src="/javascripts/admin/controllers/dialogs/sub-department-update.js")
   script(src="/javascripts/admin/controllers/dialogs/sub-department-update.js")
 
-  block scripts
+  script(src="/javascripts/admin/controllers/meeting-history.js")
+  script(src="/javascripts/admin/services/meeting-history.js")
 
+  script(src="/javascripts/admin/controllers/meetings.js")
+  script(src="/javascripts/admin/controllers/dialogs/meeting-new.js")
+  script(src="/javascripts/admin/controllers/dialogs/meeting-update.js")
+  script(src="/javascripts/admin/controllers/dialogs/meeting-assign.js")
+  script(src="/javascripts/admin/services/meetings.js")
+
+  block scripts
 
 body(ng-app="app")
 
@@ -57,29 +65,29 @@ body(ng-app="app")
               md-button.md-icon-button(aria-label="Settings", ng-click="toggleLeft()")
                 md-ico.material-icons group
               h2
-                span iHRM
+                span Smart HRM
           md-content
             md-menu-content
               md-menu-item
-                md-button(ng-click="go('main')")
+                md-button(ng-click="go('meetings')")
                   md-icon(md-menu-align-target)
-                    i.material-icons dashboard
-                  | Dashboard
+                    i.material-icons note_add
+                  | บันทึกหัวข้อประชุม/อบรม
               md-menu-item
                 md-button(ui-sref="employee")
                   md-icon(md-menu-align-target)
                     i.material-icons group
-                  | รายชื่อเจ้าหน้าที่
+                  | ข้อมูลบุคลากร
               //- md-menu-item
               //-   md-button(ng-click="go('main')")
               //-     md-icon(md-menu-align-target)
               //-       i.material-icons business_center
               //-     | ข้อมูลการประชุม/ฝึกอบรม
-              md-menu-item
-                md-button(ng-click="go('main')")
-                  md-icon(md-menu-align-target)
-                    i.material-icons print
-                  | ระบบรายงาน
+              //- md-menu-item
+              //-   md-button(ng-click="go('main')")
+              //-     md-icon(md-menu-align-target)
+              //-       i.material-icons print
+              //-     | ระบบรายงาน
 
             md-divider
             md-subheader Settings
@@ -121,7 +129,7 @@ body(ng-app="app")
 
                   md-menu-divider
                   md-menu-item
-                    md-button
+                    md-button(href="/logout")
                       md-icon(md-menu-align-target).material-icons power_settings_new
                       | Logout
 

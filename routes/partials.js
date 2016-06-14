@@ -32,6 +32,22 @@ router.get('/admin/employee/dialog/new', (req, res, next) => {
   res.render('admin/partials/dialogs/new-employee');
 });
 
+router.get('/admin/meeting-history', (req, res, next) => {
+  res.render('admin/partials/meeting-history');
+});
+
+router.get('/admin/meetings', (req, res, next) => {
+  res.render('admin/partials/meetings');
+});
+
+router.get('/admin/meetings/dialog/new', (req, res, next) => {
+  res.render('admin/partials/dialogs/new-meetings');
+});
+
+router.get('/admin/meetings/dialog/assign', (req, res, next) => {
+  res.render('admin/partials/dialogs/meeting-assign');
+});
+
 // Users
 router.get('/users/main', (req, res, next) => {
   res.render('users/partials/main');
@@ -43,6 +59,18 @@ router.get('/users/meetings', (req, res, next) => {
 
 router.get('/users/dialogs/new-meetings', (req, res, next) => {
   res.render('users/partials/dialogs/new-meetings');
+});
+
+router.get('/users/reports', (req, res, next) => {
+  res.render('users/partials/reports');
+});
+
+router.get('/users/dialogs/detail-meetings', (req, res, next) => {
+  res.render('users/partials/dialogs/detail-meetings');
+});
+
+router.get('/users/info', (req, res, next) => {
+  res.render('users/partials/info');
 });
 
 module.exports = router;

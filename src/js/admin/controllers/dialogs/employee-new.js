@@ -5,6 +5,7 @@ angular.module('app.admin.controllers.dialogs.EmployeeNew', [])
     console.log('initial new ctrl');
 
     $scope.employee = {};
+    $scope.isUpdate = false;
 
     $scope.getSubDepartment = () => {
       let mainId = $scope.employee.mainDepId;

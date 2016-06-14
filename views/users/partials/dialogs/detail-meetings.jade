@@ -3,7 +3,7 @@ md-dialog(aria-label="New Employee", ng-cloak, flex="80")
     md-toolbar
       div.md-toolbar-tools
         h2.md-headline
-          | เพิ่ม/แก้ไข รายละเอียดการประชุม/อบรม
+          | รายละเอียดการประชุม/อบรม
         span(flex)
         md-button.md-icon-button(ng-click="cancel()")
           md-icon(aria-label="Close dialog").material-icons clear
@@ -61,18 +61,7 @@ md-dialog(aria-label="New Employee", ng-cloak, flex="80")
               md-icon.material-icons forward_30
               input(type="number", ng-model="meetings.score")
 
-        div(layout="row")
-          div(flex)
-            md-input-container.md-block.md-icon-float(flex-gt-sm)
-                  label ประเภท
-                  md-icon.material-icons directions_walk
-                  md-select(ng-model="meetings.type_meetings_id", ng-required="true")
-                    md-option(ng-repeat="t in typeMeetings", value="{{t.id}}")
-                      | {{t.name}}
-
     md-dialog-actions(layout="row")
       span(flex)
-      md-button(ng-click="save()", ng-disabled="frmNew.$invalid").md-raised.md-primary
+      md-button(ng-click="cancel()").md-raised.md-primary
         | ตกลง
-      md-button(ng-click="cancel()")
-        | ยกเลิก

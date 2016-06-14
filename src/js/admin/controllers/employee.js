@@ -5,7 +5,7 @@ angular.module('app.admin.controllers.Employee', [
   'app.admin.controllers.dialogs.EmployeeNew',
   'app.admin.services.Employee'
 ])
-  .controller('EmployeeCtrl', ($scope, $rootScope, $mdDialog, $mdToast, EmployeeService) => {
+  .controller('EmployeeCtrl', ($scope, $state, $rootScope, $mdDialog, $mdToast, EmployeeService) => {
 
     $scope.showLoading = false;
     $scope.showPaging = true;
@@ -14,6 +14,11 @@ angular.module('app.admin.controllers.Employee', [
       $mdOpenMenu(ev);
     };
 
+    $scope.history = (e) => {
+      console.log(e);
+      $state.go('meeting-history', { id: e.id });
+    };
+    
     $scope.query = {
       limit: 20,
       page: 1

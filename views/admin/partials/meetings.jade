@@ -1,8 +1,13 @@
+md-toolbar.md-hue-2.md-whiteframe-z2
+  div.md-toolbar-tools
+    //- md-button.md-icon-button(aria-label="Settings", href="#/")
+    //-   md-ico.material-icons keyboard_backspace
+    h2
+      span จัดการข้อมูลการประชุม/อบรม
+
 md-progress-linear(md-mode="indeterminate", ng-show="showLoading")
 md-card
   md-card-content
-    span.md-headline การเข้าร่วมประชุม/อบรม
-
     md-button.md-fab.md-fab-bottom-right(aria-label="Add", ng-click="addNew($event)")
       md-icon.material.icons person_add
 
@@ -17,22 +22,20 @@ md-card
         thead(md-head)
           tr(md-row)
             th(md-column, md-numeric) #
-            th(md-column) วันที่
+            //- th(md-column) วันที่
+            th(md-column) เลขที่หนังสือ
+            th(md-column) ระหว่างวันที่
             th(md-column) หัวข้ออบรม/กิจกรรม
             th(md-column) หน่วยงานที่จัด
-            //- th(md-column) สถานที่
-            th(md-column) ประเภท
-            th(md-column) คะแนน
             th(md-column)
         tbody(md-body)
           tr(md-row, ng-repeat="m in meetings")
             td(md-cell) {{ $index + 1 }}
-            td(md-cell) {{ m.start_date }}
-            td(md-cell) {{ m.meeting_title }}
-            td(md-cell) {{ m.meeting_owner }}
-            //- td(md-cell) {{ m.meeting_place }}
-            td(md-cell) {{ m.type_meetings_name}}
-            td(md-cell) {{ m.score | number:2 }}
+            //- td(md-cell) {{ m.book_date }}
+            td(md-cell) {{ m.book_no }}
+            td(md-cell) {{ m.start_date }} - {{ m.end_date }}
+            td(md-cell) {{ m.title }}
+            td(md-cell) {{ m.owner }}
             td(md-cell)
 
               md-menu
@@ -48,6 +51,11 @@ md-card
                     md-button(ng-click="edit($event, m)")
                       md-icon.material-icons create
                       | &nbsp; แก้ไข/ดูข้อมูล
+                  md-divider
+                  md-menu-item
+                    md-button(ng-click="assignDepartment($event, m)")
+                      md-icon.material-icons person_pin
+                      | &nbsp; กำหนดหน่วยงานเข้าร่วมประชุม
 
       md-table-pagination(md-limit="query.limit", md-page="query.page", md-total="{{ total }}",
         md-on-paginate="onPaginate",

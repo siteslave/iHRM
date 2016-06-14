@@ -8,6 +8,13 @@ let Position = require('../models/position');
 let Department = require('../models/department');
 let SubDepartment = require('../models/sub-department');
 let Money = require('../models/money');
+let TypeMeetings = require('../models/type-meetings');
+
+router.get('/type-meetings', (req, res, next) => {
+  TypeMeetings.list(req.db)
+    .then(rows => res.send({ ok: true, rows: rows }))
+    .catch(err => res.send({ ok: false, msg: err }));
+});
 
 router.get('/title', (req, res, next) => {
   Title.list(req.db)

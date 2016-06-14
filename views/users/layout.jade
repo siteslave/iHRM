@@ -1,7 +1,7 @@
 doctype html
 html(lang="en")
 head
-  title= title
+  title Smart HRM System V1.0.0
 
   meta(name="viewport", content="width=device-width, initial-scale=1")
   link(rel="stylesheet", href="/libs/angular-material/angular-material.min.css")
@@ -25,7 +25,13 @@ head
   script(src="/javascripts/users/controllers/toolbar.js")
   script(src="/javascripts/users/controllers/meetings.js")
   script(src="/javascripts/users/controllers/dialogs/new-meetings.js")
+  script(src="/javascripts/users/controllers/dialogs/update-meetings.js")
   script(src="/javascripts/users/services/meetings.js")
+  script(src="/javascripts/users/controllers/reports.js")
+  script(src="/javascripts/users/services/reports.js")
+  script(src="/javascripts/users/controllers/dialogs/detail-meetings.js")
+  script(src="/javascripts/users/controllers/info.js")
+  script(src="/javascripts/users/services/info.js")
 
   block scripts
 
@@ -44,33 +50,47 @@ body(ng-app="app")
               md-button.md-icon-button(aria-label="Settings", ng-click="toggleLeft()")
                 md-ico.material-icons group
               h2
-                span iHRM
+                span Smart HRM
           md-content
-            md-menu-content
-              md-menu-item
-                md-button(ng-click="go('main')")
-                  md-icon(md-menu-align-target)
-                    i.material-icons dashboard
-                  | Dashboard
-              md-menu-item
-                md-button(ui-sref="meetings")
-                  md-icon(md-menu-align-target)
-                    i.material-icons business_center
-                  | ประชุม/ฝึกอบรม
-              md-menu-item
-                md-button(ng-click="go('main')")
-                  md-icon(md-menu-align-target)
-                    i.material-icons print
-                  | ระบบรายงาน
+            md-subheader Main Menu
+              md-menu-content
+                md-menu-item
+                  md-button(ui-sref="meetings")
+                    md-icon(md-menu-align-target)
+                      i.material-icons business_center
+                    | ประชุม/ฝึกอบรม
+                md-menu-item
+                  md-button(ui-sref="meetings")
+                    md-icon(md-menu-align-target)
+                      i.material-icons business_center
+                    | สลิปเงินเดือน
+                md-menu-item
+                  md-button(ui-sref="meetings")
+                    md-icon(md-menu-align-target)
+                      i.material-icons business_center
+                    | ลงทะเบียนลา
 
             md-divider
+            md-subheader Reports
+              md-menu-content
+                md-menu-item
+                  md-button(ui-sref="reports")
+                    md-icon(md-menu-align-target)
+                      i.material-icons print
+                    | ประวัติฝึกอบรม/ประชุม
+                md-menu-item
+                  md-button(ui-sref="meetings")
+                    md-icon(md-menu-align-target)
+                      i.material-icons business_center
+                    | ประวัติลงเวลา
+            md-divider
             md-subheader Settings
-            md-menu-content
-              md-menu-item
-                md-button(ui-sref="money")
-                  md-icon(md-menu-align-target)
-                    i.material-icons monetization_on
-                  | ข้อมูลส่วนตัว
+              md-menu-content
+                md-menu-item
+                  md-button(ui-sref="info")
+                    md-icon(md-menu-align-target)
+                      i.material-icons account_circle
+                    | ข้อมูลส่วนตัว
 
       md-content(layout="column", layout-fill, layout-align="top center", style="background-color: #e9ebee;")
         div(layout="column", layout-fill, ng-controller="ToolbarCtrl")
@@ -88,16 +108,15 @@ body(ng-app="app")
 
                 md-menu-content(width="4")
                   md-menu-item
-                    md-button
+                    md-button(ui-sref="info")
                       md-icon(md-menu-align-target).material-icons account_circle
                       | Profile
 
                   md-menu-divider
                   md-menu-item
-                    md-button
+                    md-button(href="/logout")
                       md-icon(md-menu-align-target).material-icons power_settings_new
                       | Logout
-
 
           md-toolbar(ng-show="showSearch").md-hue-2
             div.md-toolbar-tools
