@@ -1,9 +1,8 @@
 md-toolbar.md-hue-2.md-whiteframe-z2
   div.md-toolbar-tools
-    //- md-button.md-icon-button(aria-label="Settings", href="#/")
-    //-   md-ico.material-icons keyboard_backspace
     h2
-      span จัดการข้อมูลการประชุม/อบรม
+      i.material-icons question_answer
+      | &nbsp; จัดการข้อมูลการประชุม/อบรม
 
 md-progress-linear(md-mode="indeterminate", ng-show="showLoading")
 md-card
@@ -27,6 +26,7 @@ md-card
             th(md-column) ระหว่างวันที่
             th(md-column) หัวข้ออบรม/กิจกรรม
             th(md-column) หน่วยงานที่จัด
+            th(md-column) Assign
             th(md-column)
         tbody(md-body)
           tr(md-row, ng-repeat="m in meetings")
@@ -36,6 +36,7 @@ md-card
             td(md-cell) {{ m.start_date }} - {{ m.end_date }}
             td(md-cell) {{ m.title }}
             td(md-cell) {{ m.owner }}
+            td(md-cell) {{ m.total | number }}
             td(md-cell)
 
               md-menu
@@ -48,7 +49,7 @@ md-card
                       md-icon.material-icons delete_sweep
                       | &nbsp; ลบรายการ
                   md-menu-item
-                    md-button(ng-click="edit($event, m)")
+                    md-button(ng-click="update($event, m)")
                       md-icon.material-icons create
                       | &nbsp; แก้ไข/ดูข้อมูล
                   md-divider

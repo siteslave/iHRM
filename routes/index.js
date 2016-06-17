@@ -33,6 +33,7 @@ router.post('/user-login', (req, res, next)  => {
           req.session.userType = 0;
           req.session.userId = rows[0].id;
           req.session.fullname = rows[0].fullname;
+          req.session.department_id = rows[0].department_id;
           req.session.department_name = rows[0].department_name;
           req.session.sub_department_name = rows[0].sub_department_name;
           res.redirect('/users')

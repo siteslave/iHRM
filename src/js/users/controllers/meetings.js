@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('app.users.controllers.Meetings', [
-  'app.users.controllers.dialog.NewMeetings',
+  'app.users.controllers.dialog.MeetingRegister',
   'app.users.services.Meetings',
-  'app.users.controllers.dialog.UpdateMeetings'
+  'app.users.controllers.dialog.MeetingUpdate'
 ])
   .controller('MeetingsCtrl', ($scope, $rootScope, $mdDialog, $mdToast, MeetingsService) => {
 
@@ -16,8 +16,14 @@ angular.module('app.users.controllers.Meetings', [
     $scope.showPaging = true;
     $scope.meetings = [];
     $scope.total = 0;
+    $scope.registerTotal = 0;
 
     $scope.query = {
+      limit: 20,
+      page: 1
+    };
+
+    $scope.queryRegister = {
       limit: 20,
       page: 1
     };
@@ -25,6 +31,11 @@ angular.module('app.users.controllers.Meetings', [
     $scope.onPaginate = (page, limit) => {
       let offset = (page - 1) * limit;
       $scope.getList(limit, offset);
+    };
+
+    $scope.onPaginateRegister = (page, limit) => {
+      let offset = (page - 1) * limit;
+      $scope.getRegisterList(limit, offset);
     };
 
     $scope.getTotal = () => {
@@ -37,12 +48,36 @@ angular.module('app.users.controllers.Meetings', [
         });
     };
 
+    $scope.getRegisterTotal = () => {
+      MeetingsService.registerTotal()
+        .then(res => {
+          let data = res.data;
+          $scope.registerTotal = data.total;
+        }, err => {
+          // connection error
+        });
+    };
+
     $scope.initialData = () => {
 
       let limit = $scope.query.limit;
       let offset = ($scope.query.page - 1) * $scope.query.limit;
 
+      $scope.getTotal();
       $scope.getList(limit, offset);
+    };
+
+    $scope.initialRegisterData = () => {
+
+      let limit = $scope.queryRegister.limit;
+      let offset = ($scope.queryRegister.page - 1) * $scope.queryRegister.limit;
+
+      $scope.getRegisterTotal();
+      $scope.getRegisterList(limit, offset);
+    };
+
+    $scope.refreshRegister = () => {
+      $scope.initialRegisterData();
     };
 
     $scope.refresh = () => {
@@ -62,17 +97,17 @@ angular.module('app.users.controllers.Meetings', [
 
             data.rows.forEach(v => {
               let obj = {};
+              obj.book_no = v.book_no;
+              obj.book_date = moment(v.book_date).format('DD/MM/YYYY');
               obj.start_date = moment(v.start_date).format('DD/MM/YYYY');
               obj.end_date = moment(v.end_date).format('DD/MM/YYYY');
-              obj.meeting_title = v.meeting_title;
-              obj.meeting_owner = v.meeting_owner;
-              obj.meeting_place = v.meeting_place;
+              obj.title = v.title;
+              obj.owner = v.owner;
+              obj.place = v.place;
               obj.type_meetings_name = v.type_meetings_name;
               obj.type_meetings_id = v.type_meetings_id;
               obj.score = v.score;
-              obj.price = v.price;
               obj.id = v.id;
-              obj.money_id = v.money_id;
 
               $scope.meetings.push(obj);
 
@@ -85,48 +120,12 @@ angular.module('app.users.controllers.Meetings', [
         });
     };
 
-
-    $scope.addNew = (ev) => {
-
-      $mdDialog.show({
-        controller: 'NewMeetingsCtrl',
-        templateUrl: '/partials/users/dialogs/new-meetings',
-        parent: angular.element(document.body),
-        targetEvent: ev,
-        clickOutsideToClose: false
-      })
-        .then(() => {
-          $scope.getTotal();
-          $scope.initialData();
-        }, () => {
-
-        });
-    };
-    
-    $scope.edit = (ev, meeting) => {
-      $rootScope.currentMeeting = meeting;
-      
-      $mdDialog.show({
-        controller: 'UpdateMeetingsCtrl',
-        templateUrl: '/partials/users/dialogs/new-meetings',
-        parent: angular.element(document.body),
-        targetEvent: ev,
-        clickOutsideToClose: false
-      })
-        .then(() => {
-          $scope.getTotal();
-          $scope.initialData();
-        }, () => {
-
-        });
-    };
-
-    $scope.search = (query) => {
+    $scope.getRegisterList = (limit, offset) => {
       $scope.showLoading = true;
-      $scope.showPaging = false;
-      $scope.meetings = [];
+      $scope.showPaging = true;
+      $scope.registers = [];
 
-      MeetingsService.search(query)
+      MeetingsService.registerList(limit, offset)
         .then(res => {
           let data = res.data;
           if (data.ok) {
@@ -134,18 +133,23 @@ angular.module('app.users.controllers.Meetings', [
 
             data.rows.forEach(v => {
               let obj = {};
+              obj.book_no = v.book_no;
+              obj.book_date = moment(v.book_date).format('DD/MM/YYYY');
               obj.start_date = moment(v.start_date).format('DD/MM/YYYY');
               obj.end_date = moment(v.end_date).format('DD/MM/YYYY');
-              obj.meeting_title = v.meeting_title;
-              obj.meeting_owner = v.meeting_owner;
-              obj.meeting_place = v.meeting_place;
+              obj.title = v.title;
+              obj.owner = v.owner;
+              obj.place = v.place;
               obj.type_meetings_name = v.type_meetings_name;
+              obj.type_meetings_id = v.type_meetings_id;
               obj.score = v.score;
-              obj.price = v.price;
+              obj.approve_status = v.approve_status;
               obj.id = v.id;
               obj.money_id = v.money_id;
+              obj.transport_id = v.transport_id;
+              obj.price = v.price;
 
-              $scope.meetings.push(obj);
+              $scope.registers.push(obj);
 
             });
 
@@ -156,6 +160,85 @@ angular.module('app.users.controllers.Meetings', [
         });
     };
 
+    $scope.register = (ev, meeting) => {
+      $rootScope.currentMeeting = meeting;
+
+      $mdDialog.show({
+        controller: 'MeetingRegisterCtrl',
+        templateUrl: '/partials/users/dialogs/meeting-register',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        clickOutsideToClose: false
+      })
+        .then(() => {
+          $scope.initialData();
+        }, () => {
+          // cancel
+        });
+    };
+
+    $scope.edit = (ev, meeting) => {
+      $rootScope.currentMeeting = meeting;
+
+      $mdDialog.show({
+        controller: 'MeetingUpdateCtrl',
+        templateUrl: '/partials/users/dialogs/meeting-register',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        clickOutsideToClose: false
+      })
+        .then(() => {
+          $scope.initialRegisterData();
+        }, () => {
+          // cancel
+        });
+    };
+
+    $scope.cancelRegister = (ev, meeting) => {
+      // console.log(meeting);
+
+      let confirm = $mdDialog.confirm()
+        .title('Are you sure?')
+        .textContent('คุณต้องการยกเลิกการลงทะเบียนในหัวข้อ "' + meeting.title + '" ใช่หรือไม่?')
+        .ariaLabel('Register confirmation')
+        .targetEvent(ev)
+        .ok('ใช่, ยกเลิก')
+        .cancel('ปิด');
+
+      $mdDialog.show(confirm).then(() => {
+        MeetingsService.cancelRegister(meeting.id)
+          .then(res => {
+            let data = res.data;
+            if (data.ok) {
+              $mdToast.show(
+                $mdToast.simple()
+                  .textContent('ยกเลิกการลงทะเบียนเสร็จเรียบร้อย!')
+                  .position('right top')
+                  .hideDelay(3000)
+              );
+              // refresh list
+              $scope.initialRegisterData();
+
+            } else {
+              $mdToast.show(
+                $mdToast.simple()
+                  .textContent('Error: ' + JSON.stringify(data.msg))
+                  .position('right top')
+                  .hideDelay(3000)
+              );
+            }
+          }, () => {
+            $mdToast.show(
+              $mdToast.simple()
+                .textContent('Connection error, please try again.')
+                .position('right top')
+                .hideDelay(3000)
+            );
+          });
+      }, () => {
+        // no action
+      });
+    };
 
     $scope.doSearch = (e) => {
       if (e.charCode == 13) {
@@ -167,54 +250,6 @@ angular.module('app.users.controllers.Meetings', [
       }
     };
 
-    $scope.remove = (ev, meeting) => {
-      let id = meeting.id;
-
-      let confirm = $mdDialog.confirm()
-        .title('Are you sure?')
-        .textContent('คุณต้องการลบ "'+ meeting.meeting_title +'" หรือไม่?')
-        .ariaLabel('Remove confirmation')
-        .targetEvent(ev)
-        .ok('ลบรายการ')
-        .cancel('ยกเลิก');
-
-      $mdDialog.show(confirm).then(() => {
-        MeetingsService.remove(id)
-          .then(res => {
-            let data = res.data;
-            if (data.ok) {
-              $mdToast.show(
-                $mdToast.simple()
-                  .textContent('Deleted!')
-                  .position('right top')
-                  .hideDelay(3000)
-              );
-
-              $scope.refresh();
-
-            } else {
-              $mdToast.show(
-                $mdToast.simple()
-                  .textContent('ERROR: ' + JSON.stringify(data.msg))
-                  .position('right top')
-                  .hideDelay(3000)
-              );
-            }
-          }, () => {
-            $mdToast.show(
-              $mdToast.simple()
-                .textContent('ERROR: Connection error!')
-                .position('right top')
-                .hideDelay(3000)
-            );
-          });
-      }, () => {
-        // no action
-      });
-
-    };
-
-    $scope.getList();
-    $scope.getTotal();
+    $scope.initialData();
 
   });

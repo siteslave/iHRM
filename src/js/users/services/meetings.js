@@ -7,6 +7,11 @@ angular.module('app.users.services.Meetings', [])
 
     return {
 
+      getTransport() {
+        let _url = `${url}/basic/transport`;
+        return $http.get(_url);
+      },
+
       getMoney() {
         let _url = `${url}/basic/money`;
         return $http.get(_url);
@@ -17,60 +22,50 @@ angular.module('app.users.services.Meetings', [])
 
         return $http.get(_url);
       },
-      
-      save(meeting) {
-        let _url = `${url}/users/meetings/save`;
 
-        let data = {};
-        data.end = moment(meeting.end).format('YYYY-MM-DD');
-        data.money_id = meeting.money_id;
-        data.owner = meeting.owner;
-        data.place = meeting.place;
-        data.price = meeting.price;
-        data.score = meeting.score;
-        data.start = moment(meeting.start).format('YYYY-MM-DD');
-        data.title = meeting.title;
-        data.type_meetings_id = meeting.type_meetings_id;
-
-        return $http.post(_url, data);
-      },
-
-      update(meeting) {
-        let _url = `${url}/users/meetings/save`;
-
-        let data = {};
-        data.end = moment(meeting.end).format('YYYY-MM-DD');
-        data.money_id = meeting.money_id;
-        data.owner = meeting.owner;
-        data.place = meeting.place;
-        data.price = meeting.price;
-        data.score = meeting.score;
-        data.start = moment(meeting.start).format('YYYY-MM-DD');
-        data.title = meeting.title;
-        data.id = meeting.id;
-        data.type_meetings_id = meeting.type_meetings_id;
-
-        return $http.put(_url, data);
+      register(meetingId) {
+        let _url = `${url}/users/meetings/register`;
+        return $http.post(_url, {meetingId: meetingId});
       },
 
       list(limit, offset) {
-        let _url = `${url}/users/meetings/list`;
+        let _url = `${url}/users/meetings/assign/list`;
         return $http.post(_url, { limit: limit, offset: offset });
+      },
+
+      total() {
+        let _url = `${url}/users/meetings/assign/total`;
+        return $http.post(_url);
+      },
+
+      registerList(limit, offset) {
+        let _url = `${url}/users/meetings/register/list`;
+        return $http.post(_url, { limit: limit, offset: offset });
+      },
+
+      registerTotal() {
+        let _url = `${url}/users/meetings/register/total`;
+        return $http.post(_url);
+      },
+
+      cancelRegister(meetingId) {
+        let _url = `${url}/users/meetings/register/cancel/${meetingId}`;
+        return $http.delete(_url);
+      },
+
+      saveRegister(meeting) {
+        let _url = `${url}/users/meetings/register`;
+        return $http.post(_url, meeting);
+      },
+
+      updateRegister(meeting) {
+        let _url = `${url}/users/meetings/register`;
+        return $http.put(_url, meeting);
       },
 
       search(query) {
         let _url = `${url}/users/meetings/search`;
         return $http.post(_url, { query: query });
-      },
-
-      remove(id) {
-        let _url = `${url}/users/meetings/delete/${id}`;
-        return $http.delete(_url);
-      },
-
-      total() {
-        let _url = `${url}/users/meetings/total`;
-        return $http.post(_url);
       }
     }
 

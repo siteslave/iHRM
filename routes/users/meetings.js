@@ -25,65 +25,126 @@ router.post('/changepass', (req, res, next) => {
 
   Employee.changePassword(req.db, id, _encryptPassword)
     .then(() => res.send({ ok: true }))
-      .catch(err => res.send({ ok: false, msg: err }));  
+      .catch(err => res.send({ ok: false, msg: err }));
 });
 
-router.post('/save', (req, res, next) => {
-  let meeting = {};
+router.post('/register', (req, res, next) => {
+  let register = {};
+  register.meeting_id = req.body.id;
+  register.money_id = req.body.money_id;
+  register.transport_id = req.body.transport_id;
+  register.price = req.body.price;
+  register.employee_id = req.session.userId;
+  register.register_date = moment().format('YYYY-MM-DD');
+  register.approve_status = 'N';
 
-  meeting.employee_id = req.session.userId;
-  meeting.meeting_title = req.body.title;
-  meeting.meeting_owner = req.body.owner;
-  meeting.meeting_place = req.body.place;
-  meeting.start_date = req.body.start;
-  meeting.end_date = req.body.end;
-  meeting.score = req.body.score;
-  meeting.money_id = req.body.money_id;
-  meeting.price = req.body.price;
-  meeting.type_meetings_id = req.body.type_meetings_id;
+  // console.log(register);
 
-  Meetings.save(req.db, meeting)
-    .then(() => res.send({ ok: true }))
+  //check duplicated
+  Meetings.isRegisterDuplicated(req.db, register.meeting_id, register.employee_id)
+    .then(rows => {
+      if (rows[0].total) {
+        res.send({ok: false, msg: 'รายการนี้คุณได้ทำการลงทะเบียนไว้แล้ว'})
+      } else {
+        Meetings.doRegister(req.db, register)
+          .then(() => res.send({ ok: true }))
+          .catch(err => res.send({ ok: false, msg: err }));
+      }
+    })
     .catch(err => res.send({ ok: false, msg: err }));
 });
 
-router.put('/save', (req, res, next) => {
-  let meeting = {};
+router.put('/register', (req, res, next) => {
+  let register = {};
+  register.meeting_id = req.body.id;
+  register.money_id = req.body.money_id;
+  register.transport_id = req.body.transport_id;
+  register.price = req.body.price;
+  register.employee_id = req.session.userId;
+  register.updated_at = moment().format('YYYY-MM-DD HH:mm:ss');
+  register.approve_status = 'N';
 
-  console.log(req.body);
-  
-  meeting.meeting_title = req.body.title;
-  meeting.meeting_owner = req.body.owner;
-  meeting.meeting_place = req.body.place;
-  meeting.start_date = req.body.start;
-  meeting.end_date = req.body.end;
-  meeting.score = req.body.score;
-  meeting.money_id = req.body.money_id;
-  meeting.price = req.body.price;
-  meeting.id = req.body.id;
-  meeting.type_meetings_id = req.body.type_meetings_id;
-  
-  Meetings.update(req.db, meeting)
-    .then(() => res.send({ ok: true }))
+  console.log(register);
+
+  if (register.meeting_id && register.employee_id && register.transport_id) {
+    Meetings.updateRegister(req.db, register)
+      .then(() => res.send({ ok: true }))
+      .catch(err => res.send({ ok: false, msg: err }));
+  } else {
+    res.send({ ok: false, msg: 'ข้อมูลไม่สมบูรณ์' });
+  }
+
+});
+
+router.post('/assign/total', (req, res, next) => {
+  let department_id = req.session.department_id;
+  Meetings.getAssignTotal(req.db, department_id)
+    .then(rows => {
+      console.log(rows[0]);
+      res.send({ ok: true, total: rows[0].total });
+    })
     .catch(err => res.send({ ok: false, msg: err }));
 });
 
-router.post('/total', (req, res, next) => {
-  let employee_id = req.session.userId;
-  Meetings.total(req.db, employee_id)
-    .then(rows => res.send({ ok: true, total: rows[0].total }))
-    .catch(err => res.send({ ok: false, msg: err }));
-});
-
-router.post('/list', (req, res, next) => {
+router.post('/assign/list', (req, res, next) => {
   let limit = req.body.limit;
   let offset = req.body.offset;
-  let employee_id = req.session.userId;
+  let department_id = req.session.department_id;
 
-  Meetings.list(req.db, employee_id, limit, offset)
+  Meetings.getAssignList(req.db, department_id, limit, offset)
     .then(rows => res.send({ ok: true, rows: rows }))
     .catch(err => res.send({ ok: false, msg: err }));
 });
+
+router.post('/register/total', (req, res, next) => {
+  let employeeId = req.session.userId;
+  Meetings.getRegisteredTotal(req.db, employeeId)
+    .then(rows => {
+      // console.log(rows[0]);
+      res.send({ ok: true, total: rows[0].total });
+    })
+    .catch(err => res.send({ ok: false, msg: err }));
+});
+
+router.post('/register/list', (req, res, next) => {
+  let limit = req.body.limit;
+  let offset = req.body.offset;
+  let employeeId = req.session.userId;
+
+  Meetings.getRegisteredList(req.db, employeeId, limit, offset)
+    .then(rows => res.send({ ok: true, rows: rows }))
+    .catch(err => res.send({ ok: false, msg: err }));
+});
+
+router.delete('/register/cancel/:meetingId', (req, res, next) => {
+  let employeeId = req.session.userId;
+  let meetingId = req.params.meetingId;
+  if (employeeId && meetingId) {
+    Meetings.doUnRegister(req.db, meetingId, employeeId)
+      .then(() => res.send({ ok: true }))
+      .catch((err) => res.send({ ok: false, msg: err }));
+  } else {
+    res.send({ok: false, msg: 'ข้อมูลไม่สมบูรณ์'})
+  }
+});
+
+
+// router.post('/total', (req, res, next) => {
+//   let employee_id = req.session.userId;
+//   Meetings.total(req.db, employee_id)
+//     .then(rows => res.send({ ok: true, total: rows[0].total }))
+//     .catch(err => res.send({ ok: false, msg: err }));
+// });
+
+// router.post('/list', (req, res, next) => {
+//   let limit = req.body.limit;
+//   let offset = req.body.offset;
+//   let employee_id = req.session.userId;
+
+//   Meetings.list(req.db, employee_id, limit, offset)
+//     .then(rows => res.send({ ok: true, rows: rows }))
+//     .catch(err => res.send({ ok: false, msg: err }));
+// });
 /***********************************************************
  * Report
  ***********************************************************/
@@ -91,7 +152,7 @@ router.post('/reports/total', (req, res, next) => {
   let employee_id = req.session.userId;
   let startDate = req.body.start;
   let endDate = req.body.end;
-  
+
   Meetings.reportTotal(req.db, employee_id, startDate, endDate)
     .then(rows => res.send({ ok: true, total: rows[0].total }))
     .catch(err => res.send({ ok: false, msg: err }));
@@ -129,7 +190,7 @@ router.delete('/delete/:id', (req, res, next) => {
 router.post('/info', (req, res, next) => {
 
   let employee_id = req.session.userId;
-  
+
   Employee.getInfo(req.db, employee_id)
     .then(rows => {
       console.log(rows);
@@ -139,10 +200,10 @@ router.post('/info', (req, res, next) => {
       console.log(err);
       res.send({ok: false, msg: err})
     });
-  
+
 });
 
-router.get('/pdf/:start/:end', (req, res, next) => {
+router.get('/print/history/:start/:end', (req, res, next) => {
   let json = {};
   json.startDate = moment(req.params.start).format('DD/MM') + '/' + (moment(req.params.start).get('year')+543);
   json.endDate = moment(req.params.end).format('DD/MM') + '/' + (moment(req.params.end).get('year') + 543);
@@ -173,7 +234,7 @@ router.get('/pdf/:start/:end', (req, res, next) => {
         obj.type_meetings_name = v.type_meetings_name;
         obj.money_name = v.money_name;
         meetings.push(obj);
-      }); 
+      });
 
       json.meetings = meetings;
           // Create pdf
@@ -212,9 +273,63 @@ router.get('/pdf/:start/:end', (req, res, next) => {
     });
     // Convert html to pdf
     gulp.start('pdf');
-    
+
     })
     .catch(err => res.send({ ok: false, msg: err }));
 });
+
+router.get('/print/register/:id', (req, res, next) => {
+  let json = {};
+  // json.startDate = moment(req.params.start).format('DD/MM') + '/' + (moment(req.params.start).get('year')+543);
+  // json.endDate = moment(req.params.end).format('DD/MM') + '/' + (moment(req.params.end).get('year') + 543);
+  // json.fullname = req.session.fullname;
+  // json.departmentName = req.session.department_name;
+  // json.subDepartmentName =  req.session.sub_department_name
+
+  fse.ensureDirSync('./templates/html');
+  fse.ensureDirSync('./templates/pdf');
+
+  var destPath = './templates/html/register/' + moment().format('x');
+  fse.ensureDirSync(destPath);
+
+      gulp.task('html', (cb) => {
+        return gulp.src('./templates/meeting-register.jade')
+          .pipe(data(function () {
+            return json;
+          }))
+          .pipe(jade())
+          .pipe(gulp.dest(destPath));
+      });
+
+    gulp.task('pdf', ['html'], function () {
+      var html = fs.readFileSync(destPath + '/meeting-register.html', 'utf8')
+      var options = {
+        format: 'A4',
+        // orientation: "landscape",
+        footer: {
+          height: "15mm",
+          contents: '<span style="color: #444;"><small>Printed: '+ new Date() +'</small></span>'
+        }
+      };
+
+      var pdfName = `./templates/pdf/register-${moment().format('x')}.pdf`;
+
+      pdf.create(html, options).toFile(pdfName, function(err, resp) {
+        if (err) {
+          res.send({ok: false, msg: err});
+        } else {
+          res.download(pdfName, function () {
+            rimraf.sync(destPath);
+            fse.removeSync(pdfName);
+          });
+        }
+      });
+    });
+    // Convert html to pdf
+    gulp.start('pdf');
+
+});
+
+
 
 module.exports = router;

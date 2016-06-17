@@ -35,7 +35,12 @@ angular.module('app.admin.controllers.dialogs.MeetingAssign', [])
         });
 
       }, err => {
-        console.log(err);
+        $mdToast.show(
+            $mdToast.simple()
+              .textContent('Error: Connection error')
+              .position('right top')
+              .hideDelay(3000)
+          );
       });
 
     $scope.toggle = (id) => {
@@ -65,7 +70,7 @@ angular.module('app.admin.controllers.dialogs.MeetingAssign', [])
         }, err => {
           $mdToast.show(
             $mdToast.simple()
-              .textContent('Error: ' + JSON.stringify(err))
+              .textContent('Error: Connection error!')
               .position('right top')
               .hideDelay(3000)
           );

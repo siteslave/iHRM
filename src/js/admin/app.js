@@ -52,7 +52,7 @@ angular.module('app', [
 
 
     // Routing Setting
-    $urlRouterProvider.otherwise('/employee');
+    $urlRouterProvider.otherwise('/meetings');
 
     $stateProvider
       .state('main', {

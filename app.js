@@ -103,7 +103,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/', routes);
+
 app.use('/basic', basic);
 app.use('/partials', userAuth, partials);
 app.use('/admin', userAuth, isAdmin, admin);
@@ -115,6 +115,8 @@ app.use('/admin/sub-department', userAuth, isAdmin, subDepartment);
 
 app.use('/users', userAuth, isUser, users);
 app.use('/users/meetings', userAuth, isUser, userMeetings);
+
+app.use('/', routes);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

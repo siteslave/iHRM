@@ -11,6 +11,11 @@ angular.module('app.admin.services.Meeting', [])
 
         return $http.get(_url);
       },
+      update(meetings) {
+        let _url = `${url}/admin/meetings/save`;
+
+        return $http.put(_url, meetings);
+      },
       save(meetings) {
         let _url = `${url}/admin/meetings/save`;
 

@@ -41,7 +41,7 @@ router.get('/admin/meetings', (req, res, next) => {
 });
 
 router.get('/admin/meetings/dialog/new', (req, res, next) => {
-  res.render('admin/partials/dialogs/new-meetings');
+  res.render('admin/partials/dialogs/meeting-new');
 });
 
 router.get('/admin/meetings/dialog/assign', (req, res, next) => {
@@ -57,8 +57,8 @@ router.get('/users/meetings', (req, res, next) => {
   res.render('users/partials/meetings');
 });
 
-router.get('/users/dialogs/new-meetings', (req, res, next) => {
-  res.render('users/partials/dialogs/new-meetings');
+router.get('/users/dialogs/meeting-register', (req, res, next) => {
+  res.render('users/partials/dialogs/meeting-register');
 });
 
 router.get('/users/reports', (req, res, next) => {

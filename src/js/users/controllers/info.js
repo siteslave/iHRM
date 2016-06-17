@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('app.users.controllers.Info', ['app.users.services.Info'])
-.controller('InfoCtrl', ($scope, InfoService, $mdDialog) => {
+.controller('InfoCtrl', ($scope, InfoService, $mdDialog, $mdToast) => {
     $scope.info = {};
     $scope.getInfo = () => {
       InfoService.getInfo()
@@ -26,14 +26,19 @@ angular.module('app.users.controllers.Info', ['app.users.services.Info'])
         .targetEvent(ev)
         .ok('เปลี่ยนรหัสผ่าน!')
         .cancel('ยกเลิก');
-      
+
       $mdDialog.show(confirm).then(function (password) {
         if (password.length > 4) {
           InfoService.changePassword(password)
             .then(res => {
               let data = res.data;
               if (data.ok) {
-                // success
+                $mdToast.show(
+                  $mdToast.simple()
+                    .textContent('เปลี่ยนรหัสผ่านเสร็จเรียบร้อยแล้ว!')
+                    .position('right top')
+                    .hideDelay(3000)
+                );
               } else {
                 alert('ERROR: ' + JSON.stringify(data.msg))
               }
@@ -45,7 +50,7 @@ angular.module('app.users.controllers.Info', ['app.users.services.Info'])
         //
       });
     };
-  
+
   $scope.getInfo();
 
 });

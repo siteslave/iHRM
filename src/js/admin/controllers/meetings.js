@@ -2,21 +2,39 @@
 
 angular.module('app.admin.controllers.Meetings', [
   'app.admin.services.Meeting',
-  'app.admin.controllers.dialogs.NewMeetings',
-  'app.admin.controllers.dialogs.UpdateMeetings',
+  'app.admin.controllers.dialogs.MeetingNew',
+  'app.admin.controllers.dialogs.MeetingUpdate',
   'app.admin.controllers.dialogs.MeetingAssign',
   'app.admin.services.Department'
 ])
-  .controller('MeetingsCtrl', ($scope, $rootScope, $mdDialog, MeetingService) => {
+  .controller('MeetingsCtrl', ($scope, $rootScope, $mdToast, $mdDialog, MeetingService) => {
 
     $scope.openMenu = ($mdOpenMenu, ev) => {
       $mdOpenMenu(ev);
     };
-    
+
     $scope.addNew = (ev) => {
 
       $mdDialog.show({
-        controller: 'NewMeetingsCtrl',
+        controller: 'MeetingNewCtrl',
+        templateUrl: '/partials/admin/meetings/dialog/new',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        clickOutsideToClose: false
+      })
+        .then(() => {
+          $scope.initialData();
+        }, () => {
+
+        });
+    };
+
+    $scope.update = (ev, meeting) => {
+
+      $rootScope.currentMeeting = meeting;
+
+      $mdDialog.show({
+        controller: 'MeetingUpdateCtrl',
         templateUrl: '/partials/admin/meetings/dialog/new',
         parent: angular.element(document.body),
         targetEvent: ev,
@@ -32,7 +50,7 @@ angular.module('app.admin.controllers.Meetings', [
     $scope.assignDepartment = (ev, meeting) => {
 
       $rootScope.currentMeeting = meeting;
-      
+
       $mdDialog.show({
         controller: 'MeetingAssignCtrl',
         templateUrl: '/partials/admin/meetings/dialog/assign',
@@ -81,10 +99,6 @@ angular.module('app.admin.controllers.Meetings', [
       $scope.getList(limit, offset);
     };
 
-    $scope.refresh = () => {
-      $scope.initialData();
-    };
-
     $scope.getList = (limit, offset) => {
       $scope.showLoading = true;
       $scope.showPaging = true;
@@ -98,6 +112,10 @@ angular.module('app.admin.controllers.Meetings', [
 
             data.rows.forEach(v => {
               let obj = {};
+              obj.start_date1 = v.start_date;
+              obj.end_date1 = v.end_date;
+              obj.book_date1 = v.book_date;
+
               obj.start_date = moment(v.start_date).format('DD/MM') + '/' + (moment(v.start_date).get('year')+543);
               obj.end_date = moment(v.end_date).format('DD/MM') + '/' + (moment(v.end_date).get('year')+543);
               obj.title = v.title;
@@ -107,7 +125,7 @@ angular.module('app.admin.controllers.Meetings', [
               obj.type_meetings_id = v.type_meetings_id;
               obj.book_no = v.book_no;
               obj.book_date = moment(v.book_date).format('DD/MM') + '/' + (moment(v.book_date).get('year')+543);
-
+              obj.total = v.total;
               obj.id = v.id;
 
               $scope.meetings.push(obj);
@@ -119,6 +137,53 @@ angular.module('app.admin.controllers.Meetings', [
             console.log(data.msg);
           }
         });
+    };
+
+    $scope.remove = (ev, meeting) => {
+      let id = meeting.id;
+
+      let confirm = $mdDialog.confirm()
+        .title('Are you sure?')
+        .textContent('คุณต้องการลบ "'+ meeting.title +'" หรือไม่?')
+        .ariaLabel('Remove confirmation')
+        .targetEvent(ev)
+        .ok('ลบรายการ')
+        .cancel('ยกเลิก');
+
+      $mdDialog.show(confirm).then(() => {
+        MeetingService.remove(id)
+          .then(res => {
+            let data = res.data;
+            if (data.ok) {
+              $mdToast.show(
+                $mdToast.simple()
+                  .textContent('Deleted!')
+                  .position('right top')
+                  .hideDelay(3000)
+              );
+
+              $scope.initialData();
+
+            } else {
+              $mdToast.show(
+                $mdToast.simple()
+                  .textContent('ERROR: ' + JSON.stringify(data.msg))
+                  .position('right top')
+                  .hideDelay(3000)
+              );
+            }
+          }, () => {
+            $mdToast.show(
+              $mdToast.simple()
+                .textContent('ERROR: Connection error!')
+                .position('right top')
+                .hideDelay(3000)
+            );
+          });
+      }, () => {
+        // no action
+      });
+
     };
 
     $scope.getTotal();

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('app.users.controllers.Reports', [
-  'app.users.services.Reports', 
-  'app.users.controllers.dialog.DetailMeetings'
+  'app.users.services.Reports',
+  // 'app.users.controllers.dialog.DetailMeetings'
 ])
   .controller('ReportsCtrl', ($scope, $rootScope, $mdDialog, $mdToast, ReportsService) => {
 
@@ -42,7 +42,7 @@ angular.module('app.users.controllers.Reports', [
       let limit = $scope.query.limit;
       let offset = ($scope.query.page - 1) * $scope.query.limit;
 
-      $scope.getTotal();     
+      $scope.getTotal();
       $scope.getList(limit, offset);
     };
 
@@ -133,12 +133,12 @@ angular.module('app.users.controllers.Reports', [
         clickOutsideToClose: false
       });
     };
-    
+
     //print
     $scope.pdfExport = () => {
       let startDate = moment($scope.startDate).format('YYYY-MM-DD');
       let endDate = moment($scope.endDate).format('YYYY-MM-DD');
-      
+
       window.location.href = `/users/meetings/pdf/${startDate}/${endDate}`;
     }
     //

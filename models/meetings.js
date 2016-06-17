@@ -20,7 +20,7 @@ module.exports = {
       .count('* as total');
   },
 
-  update(db, meeting) {
+  updateAdmin(db, meeting) {
     return db('meetings')
       .update({
         book_no: meeting.book_no,
@@ -44,17 +44,108 @@ module.exports = {
   listAdmin(db, limit, offset) {
 
     return db('meetings as m')
-      .select('m.*', 't.name as type_meetings_name')
+      .select('m.*', 't.name as type_meetings_name', db.raw('(select count(*) from meeting_assign where meeting_id=m.id) as total'))
       .leftJoin('l_type_meetings as t', 't.id', 'm.type_meetings_id')
+      .groupBy('m.id')
       .limit(limit)
       .offset(offset)
       .orderBy('m.start_date')
   },
 
-  total(db, employee_id) {
-    return db('meetings')
+  clearAssign(db, meetingId) {
+    return db('meeting_assign')
+      .where('meeting_id', meetingId)
+      .del();
+  },
+
+  saveAssign(db, assigns) {
+    return db('meeting_assign')
+      .insert(assigns);
+  },
+
+  getAssign(db, id) {
+    return db('meeting_assign')
+      .select('department_id')
+      .where('meeting_id', id);
+  },
+
+  getAssignList(db, departmentId, limit, offset) {
+    return db('meetings as m')
+      .select('m.id', 'm.book_no', 'm.book_date', 'm.title', 'm.owner', 'm.place',
+      'm.start_date', 'm.end_date', 'm.score', 'm.type_meetings_id', 'mr.employee_id')
+      .innerJoin('meeting_assign as ms', 'ms.meeting_id', 'm.id')
+      .leftJoin('meeting_register as mr', 'mr.meeting_id', 'm.id')
+      .where('ms.department_id', departmentId)
+      .whereNull('mr.employee_id')
+      .orderBy('m.start_date')
+      .groupBy('m.id')
+      .limit(limit)
+      .offset(offset);
+  },
+
+  getAssignTotal(db, departmentId) {
+    return db('meetings as m')
       .count('* as total')
-      .where('employee_id', employee_id);
+      .innerJoin('meeting_assign as ms', 'ms.meeting_id', 'm.id')
+      .leftJoin('meeting_register as mr', 'mr.meeting_id', 'm.id')
+      .where('ms.department_id', departmentId)
+      .whereNull('mr.employee_id');
+  },
+
+  doRegister(db, register) {
+    return db('meeting_register')
+      .insert(register);
+  },
+
+  updateRegister(db, register) {
+    return db('meeting_register')
+      .where('meeting_id', register.meeting_id)
+      .where('employee_id', register.employee_id)
+      .update({
+        money_id: register.money_id,
+        transport_id: register.transport_id,
+        price: register.price,
+        updated_at: register.updated_at
+      });
+  },
+
+  doUnRegister(db, meetingId, employeeId) {
+    return db('meeting_register')
+      .where({
+        meeting_id: meetingId,
+        employee_id: employeeId
+      })
+      .del();
+  },
+
+  isRegisterDuplicated(db, meetingId, employeeId) {
+    return db('meeting_register')
+      .where({
+        meeting_id: meetingId,
+        employee_id: employeeId
+      })
+      .count('* as total');
+  },
+
+  getRegisteredList(db, employeeId, limit, offset) {
+    return db('meetings as m')
+      .select('m.id', 'm.book_no', 'm.book_date', 'm.title', 'm.owner', 'm.place',
+      'm.start_date', 'm.end_date', 'm.score', 'm.type_meetings_id',
+      'mr.employee_id', 'mr.approve_status', 'mr.money_id', 'mr.transport_id', 'mr.price')
+      .innerJoin('meeting_assign as ms', 'ms.meeting_id', 'm.id')
+      .leftJoin('meeting_register as mr', 'mr.meeting_id', 'm.id')
+      .where('mr.employee_id', employeeId)
+      .orderBy('m.start_date')
+      .groupBy('m.id')
+      .limit(limit)
+      .offset(offset);
+  },
+
+  getRegisteredTotal(db, employeeId) {
+    return db('meetings as m')
+      .count('* as total')
+      .leftJoin('meeting_register as mr', 'mr.meeting_id', 'm.id')
+      .where('mr.employee_id', employeeId);
   },
 
   list(db, employee_id, limit, offset) {
@@ -113,23 +204,6 @@ module.exports = {
       .where('m.employee_id', employee_id)
       .whereBetween('m.start_date', [startDate, endDate])
       .orderBy('m.start_date')
-  },
-
-  clearAssign(db, meetingId) {
-    return db('meeting_assign')
-      .where('meeting_id', meetingId)
-      .del();
-  },
-
-  saveAssign(db, assigns) {
-    return db('meeting_assign')
-      .insert(assigns);
-  },
-
-  getAssign(db, id) {
-    return db('meeting_assign')
-      .select('department_id')
-      .where('meeting_id', id);
   }
 
 };

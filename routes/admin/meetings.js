@@ -13,8 +13,8 @@ router.post('/save', (req, res, next) => {
   meeting.title = req.body.title;
   meeting.owner = req.body.owner;
   meeting.place = req.body.place;
-  meeting.start_date = req.body.start;
-  meeting.end_date = req.body.end;
+  meeting.start_date = req.body.start_date;
+  meeting.end_date = req.body.end_date;
   meeting.type_meetings_id = req.body.type_meetings_id;
   meeting.created_at = moment().format('YYYY-MM-DD HH:mm:ss');
 
@@ -53,14 +53,16 @@ router.put('/save', (req, res, next) => {
   meeting.title = req.body.title;
   meeting.owner = req.body.owner;
   meeting.place = req.body.place;
-  meeting.start_date = req.body.start;
-  meeting.end_date = req.body.end;
+  meeting.start_date = req.body.start_date;
+  meeting.end_date = req.body.end_date;
   meeting.id = req.body.id;
   meeting.type_meetings_id = req.body.type_meetings_id;
   meeting.book_no = req.body.book_no;
   meeting.book_date = req.body.book_date;
   meeting.updated_at = moment().format('YYYY-MM-DD HH:mm:ss');
 
+  // console.log(meeting);
+  
   if (!meeting.book_no || !meeting.book_date || !meeting.title || !meeting.owner || !meeting.start_date) {
     res.send({
       ok: false,
@@ -75,7 +77,7 @@ router.put('/save', (req, res, next) => {
             msg: 'รายการซำ้!'
           })
         } else {
-          Meetings.update(req.db, meeting)
+          Meetings.updateAdmin(req.db, meeting)
             .then(() => res.send({
               ok: true
             }))
@@ -146,6 +148,19 @@ router.post('/assign/department', (req, res, next) => {
     .catch(err => res.send({ ok: false, msg: err }));
   
 });
+
+// remove 
+router.delete('/delete/:id', (req, res, next) => {
+  let id = req.params.id;
+
+  if (id) {
+    Meetings.remove(req.db, id)
+      .then(() => res.send({ ok: true }))
+      .catch(err => res.send({ ok: false, msg: err }));
+  } else {
+    res.send({ok: false, msg: 'ID not found!'})
+  }
+})
 
 
 module.exports = router;

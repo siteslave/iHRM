@@ -1,9 +1,12 @@
 'use strict';
 
-angular.module('app.users.controllers.dialog.NewMeetings', [])
-  .controller('NewMeetingsCtrl', ($scope, $mdDialog, $mdToast, MeetingsService) => {
+angular.module('app.users.controllers.dialog.MeetingRegister', [])
+  .controller('MeetingRegisterCtrl', ($scope, $rootScope, $mdDialog, $mdToast, MeetingsService) => {
 
-    $scope.meetings = {};
+    $scope.meetings = $rootScope.currentMeeting;
+
+    $scope.transports = [];
+    $scope.money = [];
 
     MeetingsService.getMoney()
       .then(res => {
@@ -13,19 +16,24 @@ angular.module('app.users.controllers.dialog.NewMeetings', [])
         }
       });
 
-
-    // Get type meetings    
-    MeetingsService.getTypeMeetings()
+    MeetingsService.getTransport()
       .then(res => {
         let data = res.data;
-        $scope.typeMeetings = data.rows;
-      })
-      .catch(err => console.log(err));
+        if (data.ok) $scope.transports = data.rows;
+      });
+
+    // Get type meetings
+    // MeetingsService.getTypeMeetings()
+    //   .then(res => {
+    //     let data = res.data;
+    //     $scope.typeMeetings = data.rows;
+    //   })
+    //   .catch(err => console.log(err));
 
 
     $scope.save = () => {
       // console.log($scope.meetings);
-      MeetingsService.save($scope.meetings)
+      MeetingsService.saveRegister($scope.meetings)
         .then(res => {
           let data = res.data;
           if (data.ok) {

@@ -9,6 +9,7 @@ let Department = require('../models/department');
 let SubDepartment = require('../models/sub-department');
 let Money = require('../models/money');
 let TypeMeetings = require('../models/type-meetings');
+let Transport = require('../models/transport');
 
 router.get('/type-meetings', (req, res, next) => {
   TypeMeetings.list(req.db)
@@ -44,6 +45,12 @@ router.get('/sub-department/:id', (req, res, next) => {
   let mainId = req.params.id;
 
   SubDepartment.listByMain(req.db, mainId)
+    .then(rows => res.send({ ok: true, rows: rows }))
+    .catch(err => res.send({ ok: false, msg: err }));
+});
+
+router.get('/transport', (req, res, next) => {
+  Transport.list(req.db)
     .then(rows => res.send({ ok: true, rows: rows }))
     .catch(err => res.send({ ok: false, msg: err }));
 });
