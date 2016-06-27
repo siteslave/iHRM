@@ -1,0 +1,74 @@
+md-toolbar.md-hue-2.md-whiteframe-z2
+  div.md-toolbar-tools
+    h2
+      i.material-icons question_answer
+      | &nbsp; จัดการข้อมูลการประชุม/อบรม
+
+md-progress-linear(md-mode="indeterminate", ng-show="showLoading")
+md-card
+  md-card-content
+    md-button.md-fab.md-fab-bottom-right(aria-label="Add", ng-click="addNew($event)")
+      md-icon.material.icons person_add
+
+    div(layout="row", layout-fill)
+      div(flex)
+        md-input-container.md-block
+          md-icon.material-icons search
+          input(ng-model="searchQuery", placeholder="พิมพ์ หัวข้ออบรม/ประชุม แล้วกด ENTER...", ng-keypress="doSearch($event)")
+
+    md-table-container
+      table(md-table)
+        thead(md-head)
+          tr(md-row)
+            th(md-column, md-numeric) #
+            //- th(md-column) วันที่
+            th(md-column) เลขที่หนังสือ
+            th(md-column) ระหว่างวันที่
+            th(md-column) หัวข้ออบรม/กิจกรรม
+            //- th(md-column) หน่วยงานที่จัด
+            th(md-column, style="width: 10%;") Assign
+            th(md-column, style="width: 10%;") Register
+            th(md-column)
+        tbody(md-body)
+          tr(md-row, ng-if="!meetings.length")
+            td(md-cell, colspan="7") ไม่พบรายการ
+
+          tr(md-row, ng-repeat="m in meetings", ng-if="meetings.length")
+            td(md-cell) {{ $index + 1 }}
+            //- td(md-cell) {{ m.book_date }}
+            td(md-cell) {{ m.book_no }}
+            td(md-cell) {{ m.start_date }} - {{ m.end_date }}
+            td(md-cell) {{ m.title }}
+            //- td(md-cell) {{ m.owner }}
+            td(md-cell, style="width: 10%;") {{ m.total | number }}
+            td(md-cell, style="width: 10%;") {{ m.total_registered | number }}
+            td(md-cell)
+
+              md-menu
+                md-button(aria-label="More", ng-click="openMenu($mdOpenMenu, $event)").md-icon-button
+                  md-icon.material-icons more_vert
+
+                md-menu-content(width="4")
+                  md-menu-item
+                    md-button(ng-click="remove($event, m)")
+                      md-icon.material-icons delete_sweep
+                      | &nbsp; ลบรายการ
+                  md-menu-item
+                    md-button(ng-click="update($event, m)")
+                      md-icon.material-icons create
+                      | &nbsp; แก้ไข/ดูข้อมูล
+                  md-divider
+                  md-menu-item
+                    md-button(ng-click="showRegistered($event, m)")
+                      md-icon.material-icons group_add
+                      | &nbsp; รายชื่อผู้ลงทะเบียน/อนุมัติ
+                  md-menu-item
+                    md-button(ng-click="assignDepartment($event, m)")
+                      md-icon.material-icons person_pin
+                      | &nbsp; กำหนดหน่วยงานเข้าร่วมประชุม
+
+      md-table-pagination(md-limit="query.limit", md-page="query.page", md-total="{{ total }}",
+        md-on-paginate="onPaginate",
+        md-options="[5, 20, 30, 50]",
+        md-label="{page: 'หน้า', rowsPerPage: 'เรคอร์ดต่อหน้า', of: 'จาก'}"
+        md-page-select="", ng-if="showPaging")

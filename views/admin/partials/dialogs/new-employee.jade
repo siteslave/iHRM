@@ -1,0 +1,60 @@
+md-dialog(aria-label="New Employee", ng-cloak, flex="80")
+  form(name="frmNew")
+    md-toolbar
+      div.md-toolbar-tools
+        h2.md-headline
+          i.material-icons person_add
+          | &nbsp; เพิ่ม/แก้ไข ข้อมูลเจ้าหน้าที่
+        span(flex)
+        md-button.md-icon-button(ng-click="cancel()")
+          md-icon(aria-label="Close dialog").material-icons clear
+
+    md-dialog-content
+      div.md-dialog-content
+        div(layout="row", ng-hide="isUpdate")
+          div(flex)
+            md-input-container.md-block
+              label ชื่อผู้ใช้งาน
+              input(ng-model="employee.username")
+          div(flex)
+            md-input-container.md-block
+              label รหัสผ่าน
+              input(type="password", ng-model="employee.password")
+
+        div(layout="row")
+          div(flex="20")
+              md-input-container.md-block(flex-gt-sm)
+                label คำนำหน้า
+                md-select(ng-model="employee.title", ng-required="true")
+                  md-option(ng-repeat="t in titles", value="{{t.id}}")
+                    | {{t.name}}
+          div(flex)
+            md-input-container.md-block(flex-gt-sm)
+              label ชื่อ-สกุล
+              input(ng-model="employee.name", ng-required="true")
+          div(flex)
+            md-input-container.md-block(flex-gt-sm)
+                label ตำแหน่ง
+                md-select(ng-model="employee.position", ng-required="true")
+                  md-option(ng-repeat="p in positions", value="{{p.id}}")
+                    | {{p.name}}
+        div(layout="row")
+          div(flex)
+            md-input-container.md-block(flex-gt-sm)
+              label หน่วยงานหลัก
+              md-select(ng-model="employee.mainDepId", ng-required="true", ng-change="getSubDepartment()")
+                md-option(ng-repeat="dep in departments", value="{{dep.id}}")
+                  | {{dep.name}}
+          div(flex)
+            md-input-container.md-block(flex-gt-sm)
+              label หน่วยงานย่อย
+              md-select(ng-model="employee.subDepId", ng-required="true")
+                md-option(ng-repeat="dep in subDepartments", value="{{dep.sub_id}}")
+                  | {{dep.sub_name}}
+
+    md-dialog-actions(layout="row")
+      span(flex)
+      md-button(ng-click="save()", ng-disabled="frmNew.$invalid").md-raised.md-primary
+        | ตกลง
+      md-button(ng-click="cancel()")
+        | ยกเลิก

@@ -1,0 +1,43 @@
+md-dialog(aria-label="New Employee", ng-cloak, flex="80")
+  form(name="frmNew")
+    md-toolbar
+      div.md-toolbar-tools
+        h2.md-headline
+          i.material-icons person_add
+          | &nbsp; กำหนดหน่วยงานที่จะเข้าร่วมกิจกรรม
+        span(flex)
+        md-button.md-icon-button(ng-click="cancel()")
+          md-icon(aria-label="Close dialog").material-icons clear
+
+    md-dialog-content
+      div.md-dialog-content
+        md-table-container
+          table(md-table)
+            thead(md-head)
+              tr(md-row)
+                th(md-column, md-numeric) #
+                th(md-column) ชื่อ-สกุล
+                th(md-column) ตำแหน่ง
+                th(md-column) หน่วยงาน
+                th(md-column) เดินทางโดย
+                th(md-column) วันที่ลงทะเบียน
+                th(md-column) อนุมัติ
+            tbody(md-body)
+              tr(md-row, ng-if="!members.length")
+                td(md-cell, colspan="7") ไม่พบรายการ
+              tr(md-row, ng-repeat="m in members", ng-if="members.length")
+                td(md-cell) {{ $index + 1 }}
+                td(md-cell) {{m.titleName}} {{ m.fullname }}
+                td(md-cell) {{ m.positionName }}
+                td(md-cell) {{ m.subName }}
+                td(md-cell) {{ m.transportName }}
+                td(md-cell) {{ m.registerDate }}
+                td(md-cell)
+                  md-checkbox(ng-checked="exist(m.employeeId)", ng-click="toggle(m.employeeId)", aria-label="toggle selected")
+
+    md-dialog-actions(layout="row")
+      span(flex)
+      md-button(ng-click="save()", ng-disabled="!members.length").md-raised.md-primary
+        | ตกลง
+      md-button(ng-click="cancel()")
+        | ยกเลิก

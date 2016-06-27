@@ -1,0 +1,68 @@
+md-dialog(aria-label="New Meeting", ng-cloak, flex="80")
+  form(name="frmNew")
+    md-toolbar
+      div.md-toolbar-tools
+        h2.md-headline
+          | เพิ่ม/แก้ไข รายละเอียดการประชุม/อบรม
+        span(flex)
+        md-button.md-icon-button(ng-click="cancel()")
+          md-icon(aria-label="Close dialog").material-icons clear
+
+    md-dialog-content
+      div.md-dialog-content
+        div(layout="row")
+          div(flex="40")
+              md-input-container.md-block.md-icon-float
+                label เลขที่หนังสือ
+                md-icon.material-icons description
+                input(ng-model="meetings.book_no", ng-required="true")
+            div(flex="20", flex-gt-sm).md-block
+                br
+                md-datepicker(ng-model="meetings.book_date", md-placeholder="ลงวันที่")
+    
+        div(layout="row")
+          div(flex="20")
+            h4 วันที่จัดอบรม/ประชุม ตั้งแต่
+          div(flex="20", flex-gt-sm).md-block
+            br
+            md-datepicker(ng-model="meetings.start", md-placeholder="ตั้งแต่วันที่")
+          div(flex="10", style="text-align: center;")
+            h4 ถึง
+          div(flex="20", flex-gt-sm).md-block
+            br
+            md-datepicker(ng-model="meetings.end", md-placeholder="ถึงวันที่")
+
+        div(layout="row")
+          div(flex)
+            md-input-container.md-block.md-icon-float
+              label หัวข้อประชุม/อบรม
+              md-icon.material-icons description
+              input(ng-model="meetings.title", ng-required="true")
+
+        div(layout="row")
+          div(flex)
+            md-input-container.md-block.md-icon-float
+              label สถานที่ประชุม/อบรม
+              md-icon.material-icons home
+              input(ng-model="meetings.place", ng-required="true")
+          div(flex)
+            md-input-container.md-block.md-icon-float
+              label หน่วยงานที่จัด
+              md-icon.material-icons contact_mail
+              input(ng-model="meetings.owner", ng-required="true")
+
+        div(layout="row")
+          div(flex)
+            md-input-container.md-block.md-icon-float(flex-gt-sm)
+                  label ประเภท
+                  md-icon.material-icons directions_walk
+                  md-select(ng-model="meetings.type_meetings_id", ng-required="true")
+                    md-option(ng-repeat="t in typeMeetings", value="{{t.id}}")
+                      | {{t.name}}
+
+    md-dialog-actions(layout="row")
+      span(flex)
+      md-button(ng-click="save()", ng-disabled="frmNew.$invalid").md-raised.md-primary
+        | ตกลง
+      md-button(ng-click="cancel()")
+        | ยกเลิก
