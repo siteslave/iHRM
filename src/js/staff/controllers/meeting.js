@@ -1,9 +1,11 @@
 'use strict';
 
-angular.module('app.admin.controllers.MeetingHistory', ['app.admin.services.MeetingHistory'])
-  .controller('MeetingHistoryCtrl', ($scope, $stateParams, $rootScope, $mdDialog, $mdToast, MeetingHistoryervice) => {
+angular.module('app.staff.controllers.Meeting', ['app.staff.services.Meeting'])
+  .controller('MeetingCtrl', ($scope, $stateParams, $rootScope, $mdDialog, $mdToast, MeetingService) => {
 
-    $scope.userId = $stateParams.id;
+    $scope.employeeId = $stateParams.employeeId;
+
+    console.log($stateParams);
 
     $scope.startDate = new Date(moment().startOf('month').format());
     $scope.endDate = new Date(moment().endOf('month').format());
@@ -27,9 +29,10 @@ angular.module('app.admin.controllers.MeetingHistory', ['app.admin.services.Meet
       let startDate = moment($scope.startDate).format('YYYY-MM-DD');
       let endDate = moment($scope.endDate).format('YYYY-MM-DD');
 
-      MeetingHistoryervice.total($scope.userId, startDate, endDate)
+      MeetingService.total($scope.employeeId, startDate, endDate)
         .then(res => {
           let data = res.data;
+          console.log(data);
           $scope.total = data.total;
         }, err => {
           // connection error
@@ -58,7 +61,7 @@ angular.module('app.admin.controllers.MeetingHistory', ['app.admin.services.Meet
       $scope.showPaging = true;
       $scope.meetings = [];
 
-      MeetingHistoryervice.list($scope.userId, startDate, endDate, limit, offset)
+      MeetingService.list($scope.employeeId, startDate, endDate, limit, offset)
         .then(res => {
           let data = res.data;
           if (data.ok) {
@@ -93,10 +96,9 @@ angular.module('app.admin.controllers.MeetingHistory', ['app.admin.services.Meet
       let startDate = moment($scope.startDate).format('YYYY-MM-DD');
       let endDate = moment($scope.endDate).format('YYYY-MM-DD');
 
-      window.location.href = `/admin/employee/pdf/${$scope.userId}/${startDate}/${endDate}`;
+      window.location.href = `/staff/meeting/print/${$scope.employeeId}/${startDate}/${endDate}`;
     }
     //
-    $scope.getList();
-    $scope.getTotal();
+    $scope.initialData();
 
   });

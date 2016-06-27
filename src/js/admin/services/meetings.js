@@ -52,6 +52,21 @@ angular.module('app.admin.services.Meeting', [])
       total() {
         let _url = `${url}/admin/meetings/total`;
         return $http.post(_url);
+      },
+
+      getRegisteredList(meetingId) {
+        let _url = `${url}/admin/meetings/registered/list`;
+        return $http.post(_url, {meetingId: meetingId});
+      },
+
+      approveRegistered(meetingId, employees) {
+        let _url = `${url}/admin/meetings/registered/approve`;
+        return $http.put(_url, { meetingId: meetingId, employees: employees });
+      },
+
+      getEmployeeApproved(meetingId) {
+        let _url = `${url}/admin/meetings/registered/employee`;
+        return $http.post(_url, { meetingId: meetingId });
       }
 
     }

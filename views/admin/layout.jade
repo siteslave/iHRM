@@ -47,7 +47,13 @@ head
   script(src="/javascripts/admin/controllers/dialogs/meeting-new.js")
   script(src="/javascripts/admin/controllers/dialogs/meeting-update.js")
   script(src="/javascripts/admin/controllers/dialogs/meeting-assign.js")
+  script(src="/javascripts/admin/controllers/dialogs/meeting-registered.js")
   script(src="/javascripts/admin/services/meetings.js")
+
+  script(src="/javascripts/admin/controllers/staff.js")
+  script(src="/javascripts/admin/controllers/dialogs/staff-new.js")
+  script(src="/javascripts/admin/controllers/dialogs/staff-update.js")
+  script(src="/javascripts/admin/services/staff.js")
 
   block scripts
 
@@ -77,12 +83,12 @@ body(ng-app="app")
                 md-button(ui-sref="employee")
                   md-icon(md-menu-align-target)
                     i.material-icons group
-                  | ข้อมูลบุคลากร
-              //- md-menu-item
-              //-   md-button(ng-click="go('main')")
-              //-     md-icon(md-menu-align-target)
-              //-       i.material-icons business_center
-              //-     | ข้อมูลการประชุม/ฝึกอบรม
+                  | ข้อมูลเจ้าหน้าที่
+              md-menu-item
+                md-button(ng-click="go('staff')")
+                  md-icon(md-menu-align-target)
+                    i.material-icons folder_shared
+                  | ข้อมูลหัวหน้าหน่วยงาน
               //- md-menu-item
               //-   md-button(ng-click="go('main')")
               //-     md-icon(md-menu-align-target)

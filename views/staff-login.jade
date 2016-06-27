@@ -1,11 +1,11 @@
 extends layout-login
 
 block content
-  form(name="frmLogin", method="post", action="/admin-login", layout-padding)
-    input(type="hidden", name="t", value="1")
+  form(name="frmLogin", method="post", action="/staff-login", layout-padding)
+    input(type="hidden", name="t", value="0")
     md-card(style="width: 460px;")
       md-card-title
-        h2.md-subhead ล๊อกอินเข้าสู่โปรแกรม: ผู้ดูแลระบบ
+        h2.md-subhead  ล๊อกอินเข้าสู่โปรแกรม : หัวหน้าหน่วยงาน
 
       md-card-content
         if err
@@ -21,4 +21,4 @@ block content
           md-button.md-raised.md-primary(type="submit", ng-disabled="frmLogin.$invalid")
             | เข้าสู่โปรแกรม
           md-button(md-no-ink, href="/login?t=2").md-primary ผู้ใช้งานทั่วไป
-          md-button(md-no-ink, href="/login?t=0").md-primary หัวหน้าหน่วยงาน
+          md-button(md-no-ink, href="/login?t=1").md-primary ผู้ดูแลระบบ

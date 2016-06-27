@@ -5,12 +5,11 @@ angular.module('app', [
   'ngMaterial',
   'md.data.table',
   'app.Configure',
-  'app.controllers.SideNav',
-  'app.controllers.Toolbar',
-  'app.users.controllers.Meetings',
-  'app.users.controllers.Reports',
-  'app.users.controllers.Info',
-  'app.users.controllers.dialog.MeetingDetail'
+  'app.staff.controllers.SideNav',
+  'app.staff.controllers.Toolbar',
+  'app.staff.controllers.Employee',
+  'app.staff.controllers.Meeting',
+  'app.staff.controller.Info'
 ])
   .config(($mdThemingProvider, $stateProvider, $urlRouterProvider, $mdDateLocaleProvider) => {
 
@@ -38,28 +37,24 @@ angular.module('app', [
     .primaryPalette('indigo')
     .accentPalette('pink');
 
-    $urlRouterProvider.otherwise('/meetings');
+    $urlRouterProvider.otherwise('/');
 
     $stateProvider
       .state('main', {
         url: '/',
-        templateUrl: '/partials/users/main'
+        templateUrl: '/partials/staff/main',
+        controller: 'EmployeeCtrl'
       })
-      .state('meetings', {
-        url: '/meetings',
-        templateUrl: '/partials/users/meetings',
-        controller: 'MeetingsCtrl'
-      })
-      .state('reports', {
-        url: '/reports',
-        templateUrl: '/partials/users/reports',
-        controller: 'ReportsCtrl'
+      .state('meeting-detail', {
+        url: '/meeting/:employeeId',
+        templateUrl: '/partials/staff/meeting',
+        controller: 'MeetingCtrl'
       })
       .state('info', {
         url: '/info',
-        templateUrl: '/partials/users/info',
+        templateUrl: '/partials/staff/info',
         controller: 'InfoCtrl'
-      });
+      })
 
   });
   // .run(($rootScope) => {

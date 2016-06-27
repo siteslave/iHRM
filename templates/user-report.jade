@@ -138,14 +138,14 @@ html
       }
   body
     div(style="text-align: center;")
-              
+
     table.table.table-condensed(style="width: 100%;")
       thead
         tr
-          th(colspan="9", style="text-align: center;") 
+          th(colspan="9", style="text-align: center;")
             | ประวัติการเข้าประชุม/อบรม ของ #{fullname} กลุ่มงาน #{departmentName} แผนก #{subDepartmentName}
         tr
-          th(colspan="9", style="text-align: center;") 
+          th(colspan="9", style="text-align: center;")
             | ระหว่างวันที่ #{startDate} ถึง #{endDate}
       tbody
         thead
@@ -167,17 +167,17 @@ html
             tr
               td(style="width: 10px;").small-space-line #{y}
               td(style="text-align: center").small-space-line #{m.start_date} - #{m.end_date}
-              td.small-space-line #{m.meeting_title}
+              td.small-space-line #{m.title}
               td(style="text-align: center").small-space-line #{m.score}
-              td.small-space-line #{m.meeting_owner}
-              td.small-space-line #{m.meeting_place}
+              td.small-space-line #{m.owner}
+              td.small-space-line #{m.place}
               td.small-space-line #{m.type_meetings_name}
               td.small-space-line #{m.price}
               td.small-space-line #{m.money_name}
-    
+
     //- div(style="text-align: center; padding: 10px;")
     //-   | ขอรับรองว่ารายการข้างต้นเป็นจริงทุกประการ
     //-   br
     //-   strong ( นางมลฤดี สีสิม )
     //-   br
-    //-   | เจ้าพนักงานการเงินและบัญชีชำนาญงาน 
+    //-   | เจ้าพนักงานการเงินและบัญชีชำนาญงาน

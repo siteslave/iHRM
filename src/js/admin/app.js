@@ -12,7 +12,9 @@ angular.module('app', [
   'app.admin.controllers.SubDepartment',
   'app.admin.controllers.Employee',
   'app.admin.controllers.MeetingHistory',
-  'app.admin.controllers.Meetings'
+  'app.admin.controllers.Meetings',
+  'app.admin.controllers.Staff'
+
 ])
   .config(($mdThemingProvider, $stateProvider, $urlRouterProvider, $mdDateLocaleProvider) => {
 
@@ -68,6 +70,11 @@ angular.module('app', [
         url: '/meetings',
         templateUrl: '/partials/admin/meetings',
         controller: 'MeetingsCtrl'
+      })
+      .state('staff', {
+        url: '/staff',
+        templateUrl: '/partials/admin/staff',
+        controller: 'StaffCtrl'
       })
       .state('money', {
         url: '/money',

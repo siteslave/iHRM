@@ -1,14 +1,14 @@
 md-toolbar.md-hue-2.md-whiteframe-z2
   div.md-toolbar-tools
-    md-button.md-icon-button(aria-label="Settings", href="#/employee")
-      md-ico.material-icons keyboard_backspace
-    h2
-      span ประวัติการประชุม/อบรม
+    md-button.md-icon-button(aria-label="Settings", href="#/")
+      i.material-icons keyboard_backspace
+    | &nbsp; ประวัติอบรม/ประชุม/สัมนา
 
 md-progress-linear(md-mode="indeterminate", ng-show="showLoading")
 md-card
   md-card-content
-    div(layout="row")
+    div(layout="row", layout-fill)
+      div(flex)
       div(flex="20")
         md-datepicker(ng-model="startDate", md-placeholder="Enter date")
       div(flex="20")
@@ -26,9 +26,9 @@ md-card
             th(md-column) วันที่
             th(md-column) หัวข้ออบรม/กิจกรรม
             th(md-column) หน่วยงาน
-            //- th(md-column) สถานที่
-            th(md-column) คะแนน
-            //- th(md-column)
+            th(md-column) สถานที่
+            //- th(md-column) คะแนน
+            th(md-column)
         tbody(md-body)
           tr(md-row, ng-if="!meetings.length")
             td(md-cell, colspan="5") ไม่พบรายการ
@@ -37,8 +37,8 @@ md-card
             td(md-cell) {{ m.start_date }}
             td(md-cell) {{ m.title }}
             td(md-cell) {{ m.owner }}
-            //- td(md-cell) {{ m.place }}
-            td(md-cell) {{ m.score | number:2 }}
+            td(md-cell) {{ m.place }}
+            //- td(md-cell) {{ m.score | number:2 }}
             //- td(md-cell)
 
             //-   md-menu

@@ -2,7 +2,7 @@ extends layout-login
 
 block content
   form(name="frmLogin", method="post", action="/user-login", layout-padding)
-    input(type="hidden", name="t", value="0")
+    input(type="hidden", name="t", value="2")
     md-card(style="width: 460px;")
       md-card-title
         h2.md-subhead  ล๊อกอินเข้าสู่โปรแกรม : ผู้ใช้งานทั่วไป
@@ -20,4 +20,5 @@ block content
         section(layout="row", layout-sm="column", layout-align="center center")
           md-button.md-raised.md-primary(type="submit", ng-disabled="frmLogin.$invalid")
             | เข้าสู่โปรแกรม
+          md-button(md-no-ink, href="/login?t=0").md-primary หัวหน้าหน่วยงาน
           md-button(md-no-ink, href="/login?t=1").md-primary ผู้ดูแลระบบ

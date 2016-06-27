@@ -16,6 +16,7 @@ let express = require('express');
 let router = express.Router();
 let Employee = require('../../models/employee');
 let Meetings = require('../../models/meetings');
+let Utils = require('../../helpers/utils');
 
 router.post('/changepass', (req, res, next) => {
   let password = req.body.password;
@@ -153,7 +154,7 @@ router.post('/reports/total', (req, res, next) => {
   let startDate = req.body.start;
   let endDate = req.body.end;
 
-  Meetings.reportTotal(req.db, employee_id, startDate, endDate)
+  Meetings.userReportTotal(req.db, employee_id, startDate, endDate)
     .then(rows => res.send({ ok: true, total: rows[0].total }))
     .catch(err => res.send({ ok: false, msg: err }));
 });
@@ -165,7 +166,7 @@ router.post('/reports/list', (req, res, next) => {
   let startDate = req.body.start;
   let endDate = req.body.end;
 
-  Meetings.reportList(req.db, employee_id, startDate, endDate, limit, offset)
+  Meetings.userReportList(req.db, employee_id, startDate, endDate, limit, offset)
     .then(rows => res.send({ ok: true, rows: rows }))
     .catch(err => res.send({ ok: false, msg: err }));
 });
@@ -174,18 +175,18 @@ router.post('/search', (req, res, next) => {
   let query = req.body.query;
   let employee_id = req.session.userId;
 
-  Meetings.search(req.db, employee_id, query)
+  Meetings.userSearch(req.db, employee_id, query)
     .then(rows => res.send({ ok: true, rows: rows }))
     .catch(err => res.send({ ok: false, msg: err }));
 });
 
-router.delete('/delete/:id', (req, res, next) => {
-  let id = req.params.id;
+// router.delete('/delete/:id', (req, res, next) => {
+//   let id = req.params.id;
 
-  Meetings.remove(req.db, id)
-    .then(rows => res.send({ ok: true }))
-    .catch(err => res.send({ ok: false, msg: err }));
-});
+//   Meetings.remove(req.db, id)
+//     .then(rows => res.send({ ok: true }))
+//     .catch(err => res.send({ ok: false, msg: err }));
+// });
 
 router.post('/info', (req, res, next) => {
 
@@ -224,9 +225,9 @@ router.get('/print/history/:start/:end', (req, res, next) => {
 
       rows.forEach(v => {
         let obj = {};
-        obj.meeting_title = v.meeting_title;
-        obj.meeting_owner = v.meeting_owner;
-        obj.meeting_place = v.meeting_place;
+        obj.title = v.title;
+        obj.owner = v.owner;
+        obj.place = v.place;
         obj.start_date = moment(v.start_date).format('DD/MM') + '/' + (moment(v.start_date).get('year')+543);
         obj.end_date = moment(v.end_date).format('DD/MM') + '/' + (moment(v.end_date).get('year')+543);
         obj.score = numeral(v.score).format('0,0.00');
@@ -280,17 +281,33 @@ router.get('/print/history/:start/:end', (req, res, next) => {
 
 router.get('/print/register/:id', (req, res, next) => {
   let json = {};
+  let meetingId = req.params.id;
+  let employeeId = req.session.userId;
+
   // json.startDate = moment(req.params.start).format('DD/MM') + '/' + (moment(req.params.start).get('year')+543);
   // json.endDate = moment(req.params.end).format('DD/MM') + '/' + (moment(req.params.end).get('year') + 543);
   // json.fullname = req.session.fullname;
   // json.departmentName = req.session.department_name;
   // json.subDepartmentName =  req.session.sub_department_name
+  Meetings.getMeetingRegisteredDetail(req.db, meetingId, employeeId)
+    .then(rows => {
+      json.meetings = rows[0][0];
+      let mStartDate = Utils.getMonthName(moment(json.meetings.start_date).format('MM'));
+      let mEndDate = Utils.getMonthName(moment(json.meetings.end_date).format('MM'));
+      let mBookDate = Utils.getMonthName(moment(json.meetings.book_date).format('MM'));
+      let mCurrentDate = Utils.getMonthName(moment().format('MM'));
 
-  fse.ensureDirSync('./templates/html');
-  fse.ensureDirSync('./templates/pdf');
+      json.meetings.book_date = `${moment(json.meetings.book_date).get('date')} ${mBookDate} ${moment(json.meetings.book_date).get('year') + 543}`;
+      json.meetings.startDate = `${moment(json.meetings.start_date).get('date')} ${mStartDate} ${moment(json.meetings.start_date).get('year') + 543}`;
+      json.meetings.endDate = `${moment(json.meetings.end_date).get('date')} ${mEndDate} ${moment(json.meetings.end_date).get('year') + 543}`;
+      json.meetings.currentDate = `${moment().get('date')} ${mCurrentDate} ${moment().get('year') + 543}`;
+      // console.log(json);
 
-  var destPath = './templates/html/register/' + moment().format('x');
-  fse.ensureDirSync(destPath);
+      fse.ensureDirSync('./templates/html');
+      fse.ensureDirSync('./templates/pdf');
+
+      var destPath = './templates/html/register/' + moment().format('x');
+      fse.ensureDirSync(destPath);
 
       gulp.task('html', (cb) => {
         return gulp.src('./templates/meeting-register.jade')
@@ -301,32 +318,37 @@ router.get('/print/register/:id', (req, res, next) => {
           .pipe(gulp.dest(destPath));
       });
 
-    gulp.task('pdf', ['html'], function () {
-      var html = fs.readFileSync(destPath + '/meeting-register.html', 'utf8')
-      var options = {
-        format: 'A4',
-        // orientation: "landscape",
-        footer: {
-          height: "15mm",
-          contents: '<span style="color: #444;"><small>Printed: '+ new Date() +'</small></span>'
-        }
-      };
+      gulp.task('pdf', ['html'], function () {
+        var html = fs.readFileSync(destPath + '/meeting-register.html', 'utf8')
+        var options = {
+          format: 'A4',
+          // orientation: "landscape",
+          footer: {
+            height: "15mm",
+            contents: '<span style="color: #444;"><small>Printed: ' + new Date() + '</small></span>'
+          }
+        };
 
-      var pdfName = `./templates/pdf/register-${moment().format('x')}.pdf`;
+        var pdfName = `./templates/pdf/register-${moment().format('x')}.pdf`;
 
-      pdf.create(html, options).toFile(pdfName, function(err, resp) {
-        if (err) {
-          res.send({ok: false, msg: err});
-        } else {
-          res.download(pdfName, function () {
-            rimraf.sync(destPath);
-            fse.removeSync(pdfName);
-          });
-        }
+        pdf.create(html, options).toFile(pdfName, function (err, resp) {
+          if (err) {
+            res.send({ ok: false, msg: err });
+          } else {
+            res.download(pdfName, function () {
+              rimraf.sync(destPath);
+              fse.removeSync(pdfName);
+            });
+          }
+        });
       });
+      // Convert html to pdf
+      gulp.start('pdf');
+
+    })
+    .catch(err => {
+      res.send({ ok: false, msg: err });
     });
-    // Convert html to pdf
-    gulp.start('pdf');
 
 });
 

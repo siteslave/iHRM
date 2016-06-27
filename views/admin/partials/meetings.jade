@@ -25,18 +25,23 @@ md-card
             th(md-column) เลขที่หนังสือ
             th(md-column) ระหว่างวันที่
             th(md-column) หัวข้ออบรม/กิจกรรม
-            th(md-column) หน่วยงานที่จัด
-            th(md-column) Assign
+            //- th(md-column) หน่วยงานที่จัด
+            th(md-column, style="width: 10%;") Assign
+            th(md-column, style="width: 10%;") Register
             th(md-column)
         tbody(md-body)
-          tr(md-row, ng-repeat="m in meetings")
+          tr(md-row, ng-if="!meetings.length")
+            td(md-cell, colspan="7") ไม่พบรายการ
+
+          tr(md-row, ng-repeat="m in meetings", ng-if="meetings.length")
             td(md-cell) {{ $index + 1 }}
             //- td(md-cell) {{ m.book_date }}
             td(md-cell) {{ m.book_no }}
             td(md-cell) {{ m.start_date }} - {{ m.end_date }}
             td(md-cell) {{ m.title }}
-            td(md-cell) {{ m.owner }}
-            td(md-cell) {{ m.total | number }}
+            //- td(md-cell) {{ m.owner }}
+            td(md-cell, style="width: 10%;") {{ m.total | number }}
+            td(md-cell, style="width: 10%;") {{ m.total_registered | number }}
             td(md-cell)
 
               md-menu
@@ -53,6 +58,10 @@ md-card
                       md-icon.material-icons create
                       | &nbsp; แก้ไข/ดูข้อมูล
                   md-divider
+                  md-menu-item
+                    md-button(ng-click="showRegistered($event, m)")
+                      md-icon.material-icons group_add
+                      | &nbsp; รายชื่อผู้ลงทะเบียน/อนุมัติ
                   md-menu-item
                     md-button(ng-click="assignDepartment($event, m)")
                       md-icon.material-icons person_pin

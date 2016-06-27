@@ -20,18 +20,16 @@ head
   script(src="/libs/moment/min/moment-with-locales.min.js")
 
   script(src="/javascripts/configure.js")
-  script(src="/javascripts/users/app.js")
-  script(src="/javascripts/users/controllers/sidenav.js")
-  script(src="/javascripts/users/controllers/toolbar.js")
-  script(src="/javascripts/users/controllers/meetings.js")
-  script(src="/javascripts/users/controllers/dialogs/meeting-register.js")
-  script(src="/javascripts/users/controllers/dialogs/meeting-update.js")
-  script(src="/javascripts/users/controllers/dialogs/meeting-detail.js")
-  script(src="/javascripts/users/services/meetings.js")
-  script(src="/javascripts/users/controllers/reports.js")
-  script(src="/javascripts/users/services/reports.js")
-  script(src="/javascripts/users/controllers/info.js")
-  script(src="/javascripts/users/services/info.js")
+  script(src="/javascripts/staff/app.js")
+  script(src="/javascripts/staff/controllers/sidenav.js")
+  script(src="/javascripts/staff/controllers/toolbar.js")
+  script(src="/javascripts/staff/controllers/employee.js")
+  script(src="/javascripts/staff/controllers/meeting.js")
+  script(src="/javascripts/staff/controllers/info.js")
+  script(src="/javascripts/staff/services/employee.js")
+  script(src="/javascripts/staff/services/meeting.js")
+  script(src="/javascripts/staff/services/info.js")
+
 
   block scripts
 
@@ -55,34 +53,15 @@ body(ng-app="app")
             md-subheader Main Menu
               md-menu-content
                 md-menu-item
-                  md-button(ui-sref="meetings")
+                  md-button(ui-sref="main")
                     md-icon(md-menu-align-target)
-                      i.material-icons business_center
-                    | ประชุม/ฝึกอบรม
-                md-menu-item
-                  md-button(ui-sref="meetings", ng-disabled="true")
-                    md-icon(md-menu-align-target)
-                      i.material-icons monetization_on
-                    | สลิปเงินเดือน
-                md-menu-item
-                  md-button(ui-sref="meetings", ng-disabled="true")
-                    md-icon(md-menu-align-target)
-                      i.material-icons date_range
-                    | ลงทะเบียนลา
-
-            md-divider
-            md-subheader Reports
-              md-menu-content
-                md-menu-item
-                  md-button(ui-sref="reports")
-                    md-icon(md-menu-align-target)
-                      i.material-icons print
-                    | ประวัติฝึกอบรม/ประชุม
-                md-menu-item
-                  md-button(ui-sref="meetings", ng-disabled="true")
-                    md-icon(md-menu-align-target)
-                      i.material-icons print
-                    | ประวัติลงเวลา
+                      i.material-icons group
+                    | เจ้าหน้าที่ในหน่วยงาน
+                //- md-menu-item
+                //-   md-button(ui-sref="meetings")
+                //-     md-icon(md-menu-align-target)
+                //-       i.material-icons print
+                //-     | ประวัติลงเวลา
             md-divider
             md-subheader Settings
               md-menu-content

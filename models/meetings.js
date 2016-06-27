@@ -44,7 +44,9 @@ module.exports = {
   listAdmin(db, limit, offset) {
 
     return db('meetings as m')
-      .select('m.*', 't.name as type_meetings_name', db.raw('(select count(*) from meeting_assign where meeting_id=m.id) as total'))
+      .select('m.*', 't.name as type_meetings_name',
+      db.raw('(select count(*) from meeting_assign where meeting_id=m.id) as total'),
+      db.raw('(select count(*) from meeting_register where meeting_id=m.id) as total_registered'))
       .leftJoin('l_type_meetings as t', 't.id', 'm.type_meetings_id')
       .groupBy('m.id')
       .limit(limit)
@@ -159,22 +161,30 @@ module.exports = {
       .orderBy('m.start_date')
   },
 
-  reportTotal(db, employee_id, startDate, endDate) {
-    return db('meetings')
+  userReportTotal(db, employee_id, startDate, endDate) {
+    return db('meeting_register as mr')
       .count('* as total')
-      .whereBetween('start_date', [startDate, endDate])
-      .where('employee_id', employee_id);
+      .innerJoin('meetings as m', 'm.id', 'mr.meeting_id')
+      .whereBetween('m.start_date', [startDate, endDate])
+      .where('mr.employee_id', employee_id)
+      .where('mr.approve_status', 'Y');
   },
 
-  reportList(db, employee_id, startDate, endDate, limit, offset) {
+  userReportList(db, employee_id, startDate, endDate, limit, offset) {
 
-    return db('meetings')
-      .select()
-      .whereBetween('start_date', [startDate, endDate])
-      .where('employee_id', employee_id)
+    return db('meeting_register as mr')
+      .select('mr.meeting_id', 'mr.money_id', 'mr.register_date', 'mr.approve_status',
+      'mr.transport_id', 'mr.price', 'm.title', 'm.owner', 'm.place', 'm.end_date', 'm.start_date', 'm.book_date', 'm.type_meetings_id',
+      'm.book_no', 'lm.name as money_name', 'lt.name as transport_name')
+      .innerJoin('meetings as m', 'm.id', 'mr.meeting_id')
+      .leftJoin('l_money as lm', 'lm.id', 'mr.money_id')
+      .leftJoin('l_transports as lt', 'lt.id', 'mr.transport_id')
+      .whereBetween('m.start_date', [startDate, endDate])
+      .where('mr.employee_id', employee_id)
+      .where('mr.approve_status', 'Y')
       .limit(limit)
       .offset(offset)
-      .orderBy('start_date');
+      .orderBy('m.start_date');
   },
 
   remove(db, id) {
@@ -184,26 +194,86 @@ module.exports = {
       .del();
   },
 
-  search(db, employee_id, query) {
+  userSearch(db, employee_id, query) {
 
     let _query = `%${query}%`;
-    return db('meetings as m')
-      .select('m.*', 't.name as type_meetings_name')
-      .leftJoin('l_type_meetings as t', 't.id', 'm.type_meetings_id')
-      .where('m.employee_id', employee_id)
-      .where('m.meeting_title', 'like', _query)
+    return db('meeting_register as mr')
+      .select('mr.meeting_id', 'mr.money_id', 'mr.register_date', 'mr.approve_status',
+      'mr.transport_id', 'mr.price', 'm.title', 'm.owner', 'm.place', 'm.end_date', 'm.start_date', 'm.book_date', 'm.type_meetings_id',
+      'm.book_no', 'lm.name as money_name', 'lt.name as transport_name')
+      .innerJoin('meetings as m', 'm.id', 'mr.meeting_id')
+      .leftJoin('l_money as lm', 'lm.id', 'mr.money_id')
+      .leftJoin('l_transports as lt', 'lt.id', 'mr.transport_id')
+      .whereBetween('m.start_date', [startDate, endDate])
+      .where('mr.employee_id', employee_id)
+      .where('mr.approve_status', 'Y')
+      .where('m.title', 'like', _query)
       .orderBy('m.start_date');
   },
 
-  getExportData(db, employee_id, startDate, endDate) {
+  getExportData(db, employeeId, startDate, endDate) {
 
     return db('meetings as m')
       .select('m.*', 't.name as type_meetings_name', 'lm.name as money_name')
+      .innerJoin('meeting_register as mr', 'mr.meeting_id', 'm.id')
       .leftJoin('l_type_meetings as t', 't.id', 'm.type_meetings_id')
-      .leftJoin('l_money as lm', 'lm.id', 'm.money_id')
-      .where('m.employee_id', employee_id)
+      .leftJoin('l_money as lm', 'lm.id', 'mr.money_id')
+      .where('mr.employee_id', employeeId)
+      .where('mr.approve_status', 'Y')
       .whereBetween('m.start_date', [startDate, endDate])
-      .orderBy('m.start_date')
+      .orderBy('m.start_date');
+  },
+
+  getMeetingRegisteredDetail(db, meetingId, employeeId) {
+    let sql = `select lt.name as title_name, e.fullname, ls.name as sub_name, ld.name as main_name, lp.name as position_name,
+      m.book_no, m.book_date, m.title, m.owner, m.place, m.start_date, m.end_date,
+      timestampdiff(day, m.start_date, m.end_date) + 1 as total_days, ltt.name as transport_name
+      from employees as e
+      inner join meeting_register as mr on mr.employee_id=e.id
+      left join meetings as m on m.id=mr.meeting_id
+      left join l_sub_departments as ls on ls.id=e.sub_department_id
+      left join l_departments as ld on ld.id=ls.department_id
+      left join l_positions as lp on lp.id=e.position_id
+      left join l_titles as lt on lt.id=e.title_id
+      left join l_transports as ltt on ltt.id=mr.transport_id
+      where e.id=? and mr.meeting_id=?`;
+
+    return db.raw(sql, [employeeId, meetingId]);
+  },
+
+  getEmployeeRegistered(db, meetingId) {
+    let sql = `select mr.meeting_id, mr.employee_id, mr.register_date, mr.transport_id, mr.price, mr.approve_status,
+      t.name as title_name,e.fullname, ls.name as sub_name, lp.name as position_name, lt.name as transport_name
+      from meeting_register as mr
+      left join employees as e on e.id=mr.employee_id
+      left join l_sub_departments as ls on ls.id=e.sub_department_id
+      left join l_positions as lp on lp.id=e.position_id
+      left join l_transports as lt on lt.id=mr.transport_id
+      left join l_titles as t on t.id=e.title_id
+      where mr.meeting_id=?
+      `;
+
+    return db.raw(sql, [meetingId]);
+  },
+
+  getEmployeeRegisteredApproved(db, meetingId) {
+    return db('meeting_register')
+      .select('employee_id')
+      .where('approve_status', 'Y')
+      .where('meeting_id', meetingId);
+  },
+
+  approveRegister(db, meetingId, employees) {
+    return db('meeting_register')
+      .where('meeting_id', meetingId)
+      .whereIn('employee_id', employees)
+      .update('approve_status', 'Y');
+  },
+
+  clearApproveRegister(db, meetingId) {
+    return db('meeting_register')
+      .where('meeting_id', meetingId)
+      .update('approve_status', 'N');
   }
 
 };

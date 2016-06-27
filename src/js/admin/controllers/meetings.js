@@ -5,6 +5,7 @@ angular.module('app.admin.controllers.Meetings', [
   'app.admin.controllers.dialogs.MeetingNew',
   'app.admin.controllers.dialogs.MeetingUpdate',
   'app.admin.controllers.dialogs.MeetingAssign',
+  'app.admin.controllers.dialogs.MeetingRegistered',
   'app.admin.services.Department'
 ])
   .controller('MeetingsCtrl', ($scope, $rootScope, $mdToast, $mdDialog, MeetingService) => {
@@ -42,6 +43,24 @@ angular.module('app.admin.controllers.Meetings', [
       })
         .then(() => {
           $scope.initialData();
+        }, () => {
+
+        });
+    };
+
+    $scope.showRegistered = (ev, meeting) => {
+
+      $rootScope.currentMeeting = meeting;
+
+      $mdDialog.show({
+        controller: 'MeetingRegisteredCtrl',
+        templateUrl: '/partials/admin/meetings/dialog/registered-list',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        clickOutsideToClose: false
+      })
+        .then(() => {
+          // $scope.initialData();
         }, () => {
 
         });
@@ -126,6 +145,7 @@ angular.module('app.admin.controllers.Meetings', [
               obj.book_no = v.book_no;
               obj.book_date = moment(v.book_date).format('DD/MM') + '/' + (moment(v.book_date).get('year')+543);
               obj.total = v.total;
+              obj.total_registered = v.total_registered;
               obj.id = v.id;
 
               $scope.meetings.push(obj);

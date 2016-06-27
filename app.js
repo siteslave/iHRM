@@ -15,12 +15,15 @@ let money = require('./routes/admin/money');
 let department = require('./routes/admin/department');
 let subDepartment = require('./routes/admin/sub-department');
 let employee = require('./routes/admin/employee');
+let adminStaff = require('./routes/admin/staff');
 
 let partials = require('./routes/partials');
 let basic = require('./routes/basic');
 
 let users = require('./routes/users');
 let userMeetings = require('./routes/users/meetings');
+
+let staff = require('./routes/staff');
 
 let app = express();
 
@@ -69,11 +72,11 @@ let userAuth = (req, res, next) => {
 };
 
 let isAdmin = (req, res, next) => {
-  if (req.session.userType != 1) {
+  if (req.session.type != 1) {
     if (req.xhr) {
       res.send({ok: false, msg: 'Please login as administrator'})
     } else {
-      res.redirect('/login')
+      res.redirect('/login?t=1')
     }
   } else {
     next();
@@ -81,11 +84,23 @@ let isAdmin = (req, res, next) => {
 };
 
 let isUser = (req, res, next) => {
-  if (req.session.userType != 0) {
+  if (req.session.type != 2) {
     if (req.xhr) {
-      res.send({ok: false, msg: 'Please login as administrator'})
+      res.send({ok: false, msg: 'Please login as user'})
     } else {
-      res.redirect('/login')
+      res.redirect('/login?t=2')
+    }
+  } else {
+    next();
+  }
+};
+
+let isStaff = (req, res, next) => {
+  if (req.session.type != 0) {
+    if (req.xhr) {
+      res.send({ok: false, msg: 'Please login as staff'})
+    } else {
+      res.redirect('/login?t=0')
     }
   } else {
     next();
@@ -107,6 +122,7 @@ app.use((req, res, next) => {
 app.use('/basic', basic);
 app.use('/partials', userAuth, partials);
 app.use('/admin', userAuth, isAdmin, admin);
+app.use('/admin/staff', userAuth, isAdmin, adminStaff);
 app.use('/admin/employee', userAuth, isAdmin, employee);
 app.use('/admin/meetings', userAuth, isAdmin, adminMeetings);
 app.use('/admin/money', userAuth, isAdmin, money);
@@ -115,6 +131,8 @@ app.use('/admin/sub-department', userAuth, isAdmin, subDepartment);
 
 app.use('/users', userAuth, isUser, users);
 app.use('/users/meetings', userAuth, isUser, userMeetings);
+
+app.use('/staff', userAuth, isStaff, staff);
 
 app.use('/', routes);
 

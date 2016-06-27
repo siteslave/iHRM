@@ -1,0 +1,61 @@
+md-dialog(aria-label="New Staff", ng-cloak, flex="70")
+  form(name="frmNew")
+    md-toolbar
+      div.md-toolbar-tools
+        h2.md-headline
+          i.material-icons person_add
+          | &nbsp; เพิ่มข้อมูลหัวหน้าหน่วยงาน
+        span(flex)
+        md-button.md-icon-button(ng-click="cancel()")
+          md-icon(aria-label="Close dialog").material-icons clear
+
+    md-dialog-content
+      div.md-dialog-content
+        div(layout="row")
+          div(flex)
+            md-input-container.md-block
+              label ชื่อผู้ใช้งาน
+              input(ng-model="staff.username", ng-required="true")
+          div(flex)
+            md-input-container.md-block
+              label รหัสผ่าน
+              input(type="password", ng-model="staff.password", ng-required="true")
+
+        div(layout="row")
+          div(flex="20")
+              md-input-container.md-block(flex-gt-sm)
+                label คำนำหน้า
+                md-select(ng-model="staff.titleId", ng-required="true")
+                  md-option(ng-repeat="t in titles", value="{{t.id}}")
+                    | {{t.name}}
+          div(flex)
+            md-input-container.md-block(flex-gt-sm)
+              label ชื่อ
+              input(ng-model="staff.firstName", ng-required="true")
+          div(flex)
+            md-input-container.md-block(flex-gt-sm)
+              label สกุล
+              input(ng-model="staff.lastName", ng-required="true")
+          div(flex)
+            md-input-container.md-block(flex-gt-sm)
+                label ตำแหน่ง
+                md-select(ng-model="staff.positionId", ng-required="true")
+                  md-option(ng-repeat="p in positions", value="{{p.id}}")
+                    | {{p.name}}
+        div(layout="row")
+          div(flex="50")
+            md-input-container.md-block(flex-gt-sm)
+              label หน่วยงานที่รับผิดชอบ
+              md-select(ng-model="staff.departmentId", ng-required="true")
+                md-option(ng-repeat="dep in departments", value="{{dep.id}}")
+                  | {{dep.name}}
+          div(flex)
+          div(flex="20")
+            md-switch(ng-model="staff.active")
+              | อนุญาตใช้งาน
+    md-dialog-actions(layout="row")
+      span(flex)
+      md-button(ng-click="save()", ng-disabled="frmNew.$invalid").md-raised.md-primary
+        | ตกลง
+      md-button(ng-click="cancel()")
+        | ยกเลิก

@@ -66,7 +66,6 @@ md-dialog(aria-label="New Employee", ng-cloak, flex="80")
                 md-select(ng-model="meetings.transport_id", ng-required="true")
                   md-option(ng-repeat="t in transports", value="{{t.id}}")
                     | {{t.name}}
-
     md-dialog-actions(layout="row")
       span(flex)
       md-button(ng-click="save()", ng-disabled="frmNew.$invalid").md-raised.md-primary

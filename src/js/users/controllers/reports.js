@@ -69,13 +69,19 @@ angular.module('app.users.controllers.Reports', [
               let obj = {};
               obj.start_date = moment(v.start_date).format('DD/MM/YYYY');
               obj.end_date = moment(v.end_date).format('DD/MM/YYYY');
-              obj.meeting_title = v.meeting_title;
-              obj.meeting_owner = v.meeting_owner;
-              obj.meeting_place = v.meeting_place;
+              obj.start_date1 = v.start_date;
+              obj.end_date1 = v.end_date;
+              obj.title = v.title;
+              obj.owner = v.owner;
+              obj.book_no = v.book_no;
+              obj.book_date = v.book_date;
+              obj.place = v.place;
               obj.score = v.score;
-              obj.price = v.price;
-              obj.id = v.id;
               obj.money_id = v.money_id;
+              obj.transport_id = v.transport_id;
+              obj.type_meetings_id = v.type_meetings_id;
+              obj.id = v.id;
+              obj.money_name = v.money_name;
 
               $scope.meetings.push(obj);
 
@@ -124,10 +130,12 @@ angular.module('app.users.controllers.Reports', [
     };
 
     $scope.detail = (ev, meeting) => {
+      console.log(meeting);
+
       $rootScope.currentMeeting = meeting;
       $mdDialog.show({
-        controller: 'DetailMeetingsCtrl',
-        templateUrl: '/partials/users/dialogs/detail-meetings',
+        controller: 'MeetingDetailCtrl',
+        templateUrl: '/partials/users/dialogs/meeting-detail',
         parent: angular.element(document.body),
         targetEvent: ev,
         clickOutsideToClose: false
@@ -139,7 +147,7 @@ angular.module('app.users.controllers.Reports', [
       let startDate = moment($scope.startDate).format('YYYY-MM-DD');
       let endDate = moment($scope.endDate).format('YYYY-MM-DD');
 
-      window.location.href = `/users/meetings/pdf/${startDate}/${endDate}`;
+      window.location.href = `/users/meetings/print/history/${startDate}/${endDate}`;
     }
     //
     $scope.getList();

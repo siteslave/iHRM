@@ -125,8 +125,8 @@ router.post('/history/total', (req, res, next) => {
   let startDate = req.body.start;
   let endDate = req.body.end;
   let id = req.body.id;
-  
-  Meetings.reportTotal(req.db, id, startDate, endDate)
+
+  Meetings.userReportTotal(req.db, id, startDate, endDate)
     .then(rows => res.send({ ok: true, total: rows[0].total }))
     .catch(err => res.send({ ok: false, msg: err }));
 });
@@ -139,7 +139,7 @@ router.post('/history/list', (req, res, next) => {
   let endDate = req.body.end;
   let id = req.body.id;
 
-  Meetings.reportList(req.db, id, startDate, endDate, limit, offset)
+  Meetings.userReportList(req.db, id, startDate, endDate, limit, offset)
     .then(rows => res.send({ ok: true, rows: rows }))
     .catch(err => res.send({ ok: false, msg: err }));
 });
@@ -188,7 +188,7 @@ router.get('/pdf/:id/:start/:end', (req, res, next) => {
       }
     });
   });
-  
+
     // get user info
   Employee.getInfo(req.db, req.params.id)
     .then(rows => {
@@ -197,7 +197,7 @@ router.get('/pdf/:id/:start/:end', (req, res, next) => {
       json.fullname = user.fullname;
       json.departmentName = user.main_name;
       json.subDepartmentName = user.sub_name;
-      
+
       return Meetings.getExportData(req.db, req.params.id, req.params.start, req.params.end);
     })
     .then(rows => {
@@ -207,9 +207,9 @@ router.get('/pdf/:id/:start/:end', (req, res, next) => {
 
       rows.forEach(v => {
         let obj = {};
-        obj.meeting_title = v.meeting_title;
-        obj.meeting_owner = v.meeting_owner;
-        obj.meeting_place = v.meeting_place;
+        obj.title = v.title;
+        obj.owner = v.owner;
+        obj.place = v.place;
         obj.start_date = moment(v.start_date).format('DD/MM') + '/' + (moment(v.start_date).get('year') + 543);
         obj.end_date = moment(v.end_date).format('DD/MM') + '/' + (moment(v.end_date).get('year') + 543);
         obj.score = numeral(v.score).format('0,0.00');
@@ -222,9 +222,9 @@ router.get('/pdf/:id/:start/:end', (req, res, next) => {
       json.meetings = meetings;
       // Convert html to pdf
       gulp.start('pdf');
-    
+
     })
-    
+
     .catch(err => res.send({ ok: false, msg: err }));
 });
 
