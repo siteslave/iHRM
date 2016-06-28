@@ -7,7 +7,7 @@ angular.module('app.users.services.Reports', [])
 
   return {
     list(startDate, endDate, limit, offset) {
-      let _url = `${url}/users/meetings/reports/list`;
+      let _url = `/users/meetings/reports/list`;
       return $http.post(_url, {
         start: startDate,
         end: endDate,
@@ -17,7 +17,7 @@ angular.module('app.users.services.Reports', [])
     },
 
     total(startDate, endDate) {
-      let _url = `${url}/users/meetings/reports/total`;
+      let _url = `/users/meetings/reports/total`;
       return $http.post(_url, {
         start: startDate,
         end: endDate

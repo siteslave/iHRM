@@ -2,11 +2,11 @@
 
 angular.module('app.admin.services.Department', [])
   .factory('DepartmentService', ($q, $http, Configure) => {
-    let url = Configure.getUrl();
+    // let url = Configure.getUrl();
     return {
       getList() {
         let q = $q.defer();
-        let _url = `${url}/admin/department/list`;
+        let _url = `/admin/department/list`;
 
         $http.get(_url)
           .success(data => q.resolve(data))
@@ -17,7 +17,7 @@ angular.module('app.admin.services.Department', [])
 
       save(name) {
         let q = $q.defer();
-        let _url = `${url}/admin/department/save`;
+        let _url = `/admin/department/save`;
 
         $http.post(_url, {name: name})
           .success((data) => q.resolve(data))
@@ -28,7 +28,7 @@ angular.module('app.admin.services.Department', [])
 
       update(id, name) {
         let q = $q.defer();
-        let _url = `${url}/admin/department/save`;
+        let _url = `/admin/department/save`;
 
         $http.put(_url, { id: id, name: name })
           .success((data) => q.resolve(data))
@@ -39,7 +39,7 @@ angular.module('app.admin.services.Department', [])
 
       remove(id) {
         let q = $q.defer();
-        let _url = `${url}/admin/department/remove/${id}`;
+        let _url = `/admin/department/remove/${id}`;
 
         $http.delete(_url)
           .success(data => q.resolve(data))

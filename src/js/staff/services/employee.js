@@ -7,17 +7,17 @@ angular.module('app.staff.services.Employee', [])
 
     return {
       search(query) {
-        let _url = `${url}/staff/search`;
+        let _url = `/staff/search`;
         return $http.post(_url, {query: query});
       },
 
       list(limit, offset) {
-        let _url = `${url}/staff/list`;
+        let _url = `/staff/list`;
         return $http.post(_url, {limit: limit, offset: offset});
       },
 
       total() {
-        let _url = `${url}/staff/total`;
+        let _url = `/staff/total`;
         return $http.post(_url);
       }
 

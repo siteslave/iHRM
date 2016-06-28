@@ -6,7 +6,7 @@ angular.module('app.admin.services.MeetingHistory', [])
 
      return {
        list(id, startDate, endDate, limit, offset) {
-         let _url = `${url}/admin/employee/history/list`;
+         let _url = `/admin/employee/history/list`;
          return $http.post(_url, {
            id: id,
            start: startDate,
@@ -17,7 +17,7 @@ angular.module('app.admin.services.MeetingHistory', [])
        },
 
        total(id, startDate, endDate) {
-         let _url = `${url}/admin/employee/history/total`;
+         let _url = `/admin/employee/history/total`;
          return $http.post(_url, {
            id: id,
            start: startDate,

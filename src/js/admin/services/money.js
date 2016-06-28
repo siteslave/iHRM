@@ -6,7 +6,7 @@ angular.module('app.admin.services.Money', [])
     return {
       getList() {
         let q = $q.defer();
-        let _url = `${url}/admin/money/list`;
+        let _url = `/admin/money/list`;
 
         $http.get(_url)
           .success(data => q.resolve(data))
@@ -17,7 +17,7 @@ angular.module('app.admin.services.Money', [])
 
       save(name) {
         let q = $q.defer();
-        let _url = `${url}/admin/money/save`;
+        let _url = `/admin/money/save`;
 
         $http.post(_url, {name: name})
           .success((data) => q.resolve(data))
@@ -28,7 +28,7 @@ angular.module('app.admin.services.Money', [])
 
       update(id, name) {
         let q = $q.defer();
-        let _url = `${url}/admin/money/save`;
+        let _url = `/admin/money/save`;
 
         $http.put(_url, { id: id, name: name })
           .success((data) => q.resolve(data))
@@ -39,7 +39,7 @@ angular.module('app.admin.services.Money', [])
 
       remove(id) {
         let q = $q.defer();
-        let _url = `${url}/admin/money/remove/${id}`;
+        let _url = `/admin/money/remove/${id}`;
 
         $http.delete(_url)
           .success(data => q.resolve(data))

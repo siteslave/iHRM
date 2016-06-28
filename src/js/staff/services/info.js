@@ -7,13 +7,13 @@ angular.module('app.staff.services.Info', [])
 
     return {
       getInfo() {
-        let _url = `${url}/staff/info`;
+        let _url = `/staff/info`;
 
         return $http.post(_url);
       },
 
       changePassword(password) {
-        let _url = `${url}/staff/changepass`;
+        let _url = `/staff/changepass`;
 
         return $http.post(_url, {password: password});
       }
