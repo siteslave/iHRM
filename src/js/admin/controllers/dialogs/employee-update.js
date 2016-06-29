@@ -54,7 +54,8 @@ angular.module('app.admin.controllers.dialogs.EmployeeUpdate', [])
         // connection error
       });
 
-    $scope.employee.name = employee.fullname;
+    $scope.employee.firstName = employee.first_name;
+    $scope.employee.lastName = employee.last_name;
     $scope.employee.title = employee.title_id;
     $scope.employee.position = employee.position_id;
     $scope.employee.username = employee.username;

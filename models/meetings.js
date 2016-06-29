@@ -46,7 +46,8 @@ module.exports = {
     return db('meetings as m')
       .select('m.*', 't.name as type_meetings_name',
       db.raw('(select count(*) from meeting_assign where meeting_id=m.id) as total'),
-      db.raw('(select count(*) from meeting_register where meeting_id=m.id) as total_registered'))
+      db.raw('(select count(*) from meeting_register where meeting_id=m.id) as total_registered'),
+      db.raw('(select count(*) from meeting_register where meeting_id=m.id and approve_status="Y") as total_approve'))
       .leftJoin('l_type_meetings as t', 't.id', 'm.type_meetings_id')
       .groupBy('m.id')
       .limit(limit)
@@ -225,7 +226,7 @@ module.exports = {
   },
 
   getMeetingRegisteredDetail(db, meetingId, employeeId) {
-    let sql = `select lt.name as title_name, e.fullname, ls.name as sub_name, ld.name as main_name, lp.name as position_name,
+    let sql = `select concat(lt.name, " ", e.first_name, " ", e.last_name) as fullname, ls.name as sub_name, ld.name as main_name, lp.name as position_name,
       m.book_no, m.book_date, m.title, m.owner, m.place, m.start_date, m.end_date,
       timestampdiff(day, m.start_date, m.end_date) + 1 as total_days, ltt.name as transport_name
       from employees as e
@@ -243,7 +244,7 @@ module.exports = {
 
   getEmployeeRegistered(db, meetingId) {
     let sql = `select mr.meeting_id, mr.employee_id, mr.register_date, mr.transport_id, mr.price, mr.approve_status,
-      t.name as title_name,e.fullname, ls.name as sub_name, lp.name as position_name, lt.name as transport_name
+      t.name as title_name, e.first_name, e.last_name, ls.name as sub_name, lp.name as position_name, lt.name as transport_name
       from meeting_register as mr
       left join employees as e on e.id=mr.employee_id
       left join l_sub_departments as ls on ls.id=e.sub_department_id

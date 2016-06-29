@@ -103,10 +103,22 @@ div(layout-padding)
                               md-icon.material-icons print
                               | &nbsp; พิมพ์ใบสมัคร
                           md-menu-item
+                            md-button(href="/users/meetings/print/register/{{m.id}}")
+                              md-icon.material-icons print
+                              | &nbsp; พิมพ์ใบขออนุญาตไปราชการ
+                          md-menu-item
+                            md-button(href="/users/meetings/print/register/{{m.id}}")
+                              md-icon.material-icons print
+                              | &nbsp; ขออนุญาตใช้รถยนต์
+                          md-menu-item
+                            md-button(href="/users/meetings/print/register/{{m.id}}")
+                              md-icon.material-icons print
+                              | &nbsp; พิมพ์ใบสมัคร
+                          md-divider
+                          md-menu-item
                             md-button(ng-click="edit($event, m)", ng-disabled="m.approve_status=='Y'")
                               md-icon.material-icons create
                               | &nbsp; แก้ไข
-                          md-divider
                           md-menu-item
                             md-button(ng-click="cancelRegister($event, m)", ng-disabled="m.approve_status=='Y'")
                               md-icon.material-icons clear

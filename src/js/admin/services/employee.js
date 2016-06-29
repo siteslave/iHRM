@@ -48,7 +48,8 @@ angular.module('app.admin.services.Employee', [])
         let _url = `/admin/employee/save`;
 
         return $http.post(_url, {
-          fullname: employee.name,
+          firstName: employee.firstName,
+          lastName: employee.lastName,
           position: employee.position,
           department: employee.subDepId,
           title: employee.title,
@@ -61,7 +62,8 @@ angular.module('app.admin.services.Employee', [])
         let _url = `/admin/employee/save`;
 
         return $http.put(_url, {
-          fullname: employee.name,
+          firstName: employee.firstName,
+          lastName: employee.lastName,
           position: employee.position,
           department: employee.subDepId,
           title: employee.title,

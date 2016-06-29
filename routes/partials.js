@@ -29,7 +29,7 @@ router.get('/admin/employee', (req, res, next) => {
 });
 
 router.get('/admin/employee/dialog/new', (req, res, next) => {
-  res.render('admin/partials/dialogs/new-employee');
+  res.render('admin/partials/dialogs/employee-new');
 });
 
 router.get('/admin/meeting-history', (req, res, next) => {

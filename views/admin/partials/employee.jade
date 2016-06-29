@@ -37,7 +37,7 @@ md-card
           tr(md-row, ng-repeat="e in employees", ng-if="employees.length")
             td(md-cell) {{ $index + 1 }}
             //- td(md-cell) {{ e.username }}
-            td(md-cell) {{ e.title_name }}{{ e.fullname }}
+            td(md-cell) {{ e.title_name }}{{ e.first_name }} {{ e.last_name }}
             td(md-cell) {{ e.position_name }}
             td(md-cell) {{ e.sub_name }}
             td(md-cell)

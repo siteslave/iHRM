@@ -35,7 +35,8 @@ angular.module('app.admin.controllers.dialogs.MeetingRegistered', [])
              let obj = {};
              obj.approveStatus = v.approve_status;
              obj.employeeId = v.employee_id;
-             obj.fullname = v.fullname;
+             obj.firstName = v.first_name;
+             obj.lastName = v.last_name;
              obj.titleName = v.title_name;
              obj.meetingId = v.meeting_id;
              obj.positionName = v.position_name;

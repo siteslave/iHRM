@@ -22,12 +22,13 @@ md-card
           tr(md-row)
             th(md-column, md-numeric) #
             //- th(md-column) วันที่
-            th(md-column) เลขที่หนังสือ
+            //- th(md-column) เลขที่หนังสือ
             th(md-column) ระหว่างวันที่
-            th(md-column) หัวข้ออบรม/กิจกรรม
+            th(md-column, style="width: 70%;") หัวข้ออบรม/กิจกรรม
             //- th(md-column) หน่วยงานที่จัด
-            th(md-column, style="width: 10%;") Assign
-            th(md-column, style="width: 10%;") Register
+            th(md-column) มอบ
+            th(md-column) ลงทะเบียน
+            th(md-column) อนุมัติ
             th(md-column)
         tbody(md-body)
           tr(md-row, ng-if="!meetings.length")
@@ -36,12 +37,13 @@ md-card
           tr(md-row, ng-repeat="m in meetings", ng-if="meetings.length")
             td(md-cell) {{ $index + 1 }}
             //- td(md-cell) {{ m.book_date }}
-            td(md-cell) {{ m.book_no }}
+            //- td(md-cell) {{ m.book_no }}
             td(md-cell) {{ m.start_date }} - {{ m.end_date }}
-            td(md-cell) {{ m.title }}
+            td(md-cell, style="width: 70%;") {{ m.title }}
             //- td(md-cell) {{ m.owner }}
-            td(md-cell, style="width: 10%;") {{ m.total | number }}
-            td(md-cell, style="width: 10%;") {{ m.total_registered | number }}
+            td(md-cell) {{ m.total | number }}
+            td(md-cell) {{ m.total_registered | number }}
+            td(md-cell) {{ m.total_approve | number }}
             td(md-cell)
 
               md-menu

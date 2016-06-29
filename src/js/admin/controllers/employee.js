@@ -18,7 +18,7 @@ angular.module('app.admin.controllers.Employee', [
       console.log(e);
       $state.go('meeting-history', { id: e.id });
     };
-    
+
     $scope.query = {
       limit: 20,
       page: 1
@@ -106,7 +106,7 @@ angular.module('app.admin.controllers.Employee', [
 
       let confirm = $mdDialog.confirm()
         .title('Are you sure?')
-        .textContent('คุณต้องการลบ "'+ employee.fullname +'" หรือไม่?')
+        .textContent(`คุณต้องการลบ ${employee.first_name} ${employee.last_name} หรือไม่?`)
         .ariaLabel('Remove confirmation')
         .targetEvent(ev)
         .ok('ลบรายการ')
@@ -170,7 +170,7 @@ angular.module('app.admin.controllers.Employee', [
     $scope.changePassword = (ev, employee) => {
       var confirm = $mdDialog.prompt()
         .title('ระบุชื่อหน่วยงาน?')
-        .textContent('ระบุรหัสผ่านที่ต้องการเปลี่ยนสำหรับ "'+ employee.fullname +'"')
+        .textContent(`ระบุรหัสผ่านที่ต้องการเปลี่ยนสำหรับ ${employee.first_name} ${employee.last_name}`)
         .placeholder('...')
         .ariaLabel('Department name')
         .targetEvent(ev)

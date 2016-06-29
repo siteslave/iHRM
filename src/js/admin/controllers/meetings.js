@@ -146,6 +146,7 @@ angular.module('app.admin.controllers.Meetings', [
               obj.book_date = moment(v.book_date).format('DD/MM') + '/' + (moment(v.book_date).get('year')+543);
               obj.total = v.total;
               obj.total_registered = v.total_registered;
+              obj.total_approve = v.total_approve;
               obj.id = v.id;
 
               $scope.meetings.push(obj);

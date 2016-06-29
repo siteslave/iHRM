@@ -131,7 +131,7 @@ router.get('/meeting/print/:employeeId/:start/:end', (req, res, next) => {
     .then(rows => {
       let user = rows[0];
 
-      json.fullname = user.fullname;
+      json.fullname = `${user.title_name} ${user.first_name} ${user.last_name}`;
       json.departmentName = user.main_name;
       json.subDepartmentName = user.sub_name;
 

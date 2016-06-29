@@ -142,8 +142,13 @@ html
     table.table.table-condensed(style="width: 100%;")
       thead
         tr
-          th(colspan="9", style="text-align: center;")
-            | ประวัติการเข้าประชุม/อบรม ของ #{fullname} กลุ่มงาน #{departmentName} แผนก #{subDepartmentName}
+          th(colspan="9", style="text-align: center; font-size: 18px;")
+            | ประวัติการเข้าประชุม/อบรม ของ &nbsp;
+            u #{fullname}
+            | &nbsp; กลุ่มงาน &nbsp;
+            u #{departmentName}
+            | &nbsp; แผนก &nbsp;
+            u #{subDepartmentName}
         tr
           th(colspan="9", style="text-align: center;")
             | ระหว่างวันที่ #{startDate} ถึง #{endDate}

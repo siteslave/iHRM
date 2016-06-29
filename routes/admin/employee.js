@@ -45,7 +45,8 @@ router.post('/save', (req, res, next) => {
 
   let employee = {};
 
-  employee.fullname = req.body.fullname;
+  employee.first_name = req.body.firstName;
+  employee.last_name = req.body.lastName;
   employee.position_id = req.body.position;
   employee.sub_department_id = req.body.department;
   employee.title_id = req.body.title;
@@ -56,7 +57,9 @@ router.post('/save', (req, res, next) => {
 
   employee.password = crypto.createHash('md5').update(password).digest('hex');
 
-  if (employee.fullname && employee.position_id && employee.sub_department_id && employee.username && employee.password) {
+  if (employee.first_name && employee.last_name && employee.position_id && employee.sub_department_id && employee.username && employee.password) {
+    console.log(employee);
+
     Employee.save(req.db, employee)
       .then(() => res.send({ ok: true }))
       .catch(err => res.send({ ok: false, msg: err }));
@@ -69,15 +72,17 @@ router.post('/save', (req, res, next) => {
 router.put('/save', (req, res, next) => {
   let employee = {};
 
-  employee.fullname = req.body.fullname;
+  employee.first_name = req.body.firstName;
+  employee.last_name = req.body.lastName;
   employee.position_id = req.body.position;
   employee.sub_department_id = req.body.department;
   employee.title_id = req.body.title;
   employee.position_id = req.body.position;
   employee.id = req.body.id;
 
-  if (employee.fullname && employee.id) {
-    Employee.isDuplicated(req.db, employee.id, employee.fullname)
+  if (employee.first_name && employee.last_name && employee.id) {
+    console.log(employee);
+    Employee.isDuplicated(req.db, employee.id, employee.first_name, employee.last_name)
       .then(rows => {
         if (rows[0].total) {
           res.send({ ok: false, msg: 'Duplicated!' })

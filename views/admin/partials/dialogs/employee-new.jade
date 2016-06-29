@@ -30,8 +30,12 @@ md-dialog(aria-label="New Employee", ng-cloak, flex="80")
                     | {{t.name}}
           div(flex)
             md-input-container.md-block(flex-gt-sm)
-              label ชื่อ-สกุล
-              input(ng-model="employee.name", ng-required="true")
+              label ชื่อ
+              input(ng-model="employee.firstName", ng-required="true")
+          div(flex)
+            md-input-container.md-block(flex-gt-sm)
+              label สกุล
+              input(ng-model="employee.lastName", ng-required="true")
           div(flex)
             md-input-container.md-block(flex-gt-sm)
                 label ตำแหน่ง
