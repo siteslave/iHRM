@@ -13,7 +13,9 @@ angular.module('app', [
   'app.admin.controllers.Employee',
   'app.admin.controllers.MeetingHistory',
   'app.admin.controllers.Meetings',
-  'app.admin.controllers.Staff'
+  'app.admin.controllers.Staff',
+  'app.admin.controllers.ReportsMeeting',
+  'app.admin.controllers.ReportsDepartment'
 
 ])
   .config(($mdThemingProvider, $stateProvider, $urlRouterProvider, $mdDateLocaleProvider) => {
@@ -95,6 +97,20 @@ angular.module('app', [
         url: '/sub-department',
         templateUrl: '/partials/admin/sub-department',
         controller: 'SubDepartmentCtrl'
+      })
+      .state('reports', {
+        url: '/reports',
+        templateUrl: '/partials/admin/reports'
+      })
+      .state('reports-meeting', {
+        url: '/reports-meeting',
+        templateUrl: '/partials/admin/reports/meeting',
+        controller: 'ReportsMeetingCtrl'
+      })
+      .state('reports-department', {
+        url: '/reports-department',
+        templateUrl: '/partials/admin/reports/department',
+        controller: 'ReportsDepartmentCtrl'
       });
 
   });

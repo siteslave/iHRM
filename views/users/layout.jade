@@ -65,6 +65,16 @@ body(ng-app="app")
                       i.material-icons business_center
                     | การศึกษาต่อ (ลาศึกษา)
                 md-menu-item
+                  md-button(ui-sref="meetings")
+                    md-icon(md-menu-align-target)
+                      i.material-icons local_taxi
+                    | ขออนุญาตใช้รถยนต์
+                md-menu-item
+                  md-button(ui-sref="meetings")
+                    md-icon(md-menu-align-target)
+                      i.material-icons local_library
+                    | ขออนุญาตไปราชการ
+                md-menu-item
                   md-button(ui-sref="meetings", ng-disabled="true")
                     md-icon(md-menu-align-target)
                       i.material-icons monetization_on

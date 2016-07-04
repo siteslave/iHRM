@@ -55,6 +55,12 @@ head
   script(src="/javascripts/admin/controllers/dialogs/staff-update.js")
   script(src="/javascripts/admin/services/staff.js")
 
+  script(src="/javascripts/admin/controllers/reports-meeting.js")
+  script(src="/javascripts/admin/services/reports-meeting.js")
+
+  script(src="/javascripts/admin/controllers/reports-department.js")
+  script(src="/javascripts/admin/services/reports-department.js")
+
   block scripts
 
 body(ng-app="app")
@@ -89,11 +95,11 @@ body(ng-app="app")
                   md-icon(md-menu-align-target)
                     i.material-icons folder_shared
                   | ข้อมูลหัวหน้าหน่วยงาน
-              //- md-menu-item
-              //-   md-button(ng-click="go('main')")
-              //-     md-icon(md-menu-align-target)
-              //-       i.material-icons print
-              //-     | ระบบรายงาน
+              md-menu-item
+                md-button(ng-click="go('reports')")
+                  md-icon(md-menu-align-target)
+                    i.material-icons print
+                  | ระบบรายงาน
 
             md-divider
             md-subheader Settings

@@ -16,6 +16,7 @@ let department = require('./routes/admin/department');
 let subDepartment = require('./routes/admin/sub-department');
 let employee = require('./routes/admin/employee');
 let adminStaff = require('./routes/admin/staff');
+let adminReport = require('./routes/admin/reports');
 
 let partials = require('./routes/partials');
 let basic = require('./routes/basic');
@@ -128,6 +129,7 @@ app.use('/admin/meetings', userAuth, isAdmin, adminMeetings);
 app.use('/admin/money', userAuth, isAdmin, money);
 app.use('/admin/department', userAuth, isAdmin, department);
 app.use('/admin/sub-department', userAuth, isAdmin, subDepartment);
+app.use('/admin/reports', userAuth, isAdmin, adminReport);
 
 app.use('/users', userAuth, isUser, users);
 app.use('/users/meetings', userAuth, isUser, userMeetings);

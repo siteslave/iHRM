@@ -1,0 +1,43 @@
+md-toolbar.md-hue-2.md-whiteframe-z2
+  div.md-toolbar-tools
+    md-button.md-icon-button(aria-label="Back", ui-sref="reports")
+      md-icon.material-icons keyboard_backspace
+    h2
+      | &nbsp; รายงานแยกตามหัวข้อการอบรม/สัมนา/ประชุม
+
+md-progress-linear(md-mode="indeterminate", ng-show="showLoading")
+md-card
+  md-card-content
+    div(layout="row", layout-fill)
+      div(flex)
+      div(flex="20")
+        md-datepicker(ng-model="startDate", md-placeholder="Enter date")
+      div(flex="20")
+        md-datepicker(ng-model="endDate", md-placeholder="Enter date")
+
+      div(flex="10")
+        md-button.md-raised.md-primary(ng-click="getList()") แสดง
+
+    md-table-container
+      table(md-table)
+        thead(md-head)
+          tr(md-row)
+            th(md-column, md-numeric) #
+            //- th(md-column) วันที่
+            //- th(md-column) เลขที่หนังสือ
+            th(md-column) ระหว่างวันที่
+            th(md-column) หัวข้ออบรม/กิจกรรม
+            th(md-column) จัดโดย
+            th(md-column)
+        tbody(md-body)
+          tr(md-row, ng-if="!meetings.length")
+            td(md-cell, colspan="7") ไม่พบรายการ
+
+          tr(md-row, ng-repeat="m in meetings", ng-if="meetings.length")
+            td(md-cell) {{ $index + 1 }}
+            td(md-cell) {{ m.startDate }} - {{ m.endDate }}
+            td(md-cell) {{ m.title }}
+            td(md-cell) {{ m.owner }}
+            td(md-cell)
+              md-button.md-icon-button(aria-label="Print")
+                md-icon.material-icons print

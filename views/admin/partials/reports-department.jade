@@ -1,0 +1,49 @@
+md-toolbar.md-hue-2.md-whiteframe-z2
+  div.md-toolbar-tools
+    md-button.md-icon-button(aria-label="Back", ui-sref="reports")
+      md-icon.material-icons keyboard_backspace
+    h2
+      | &nbsp; รายงานแยกตามแผนก
+
+md-progress-linear(md-mode="indeterminate", ng-show="showLoading")
+md-card
+  md-card-content
+    div(layout="row", layout-fill)
+      div(flex)
+        md-input-container.md-block
+          label หน่วยงาน
+          md-select(ng-model="departmentId")
+            md-option(ng-repeat="d in departments" value="{{d.id}}")
+              | {{d.name}}
+      div(flex="20")
+        br
+        md-datepicker(ng-model="startDate", md-placeholder="dd/mm/yyyy")
+      div(flex="20")
+        br
+        md-datepicker(ng-model="endDate", md-placeholder="dd/mm/yyyy")
+
+      div(flex="10")
+        br
+        md-button.md-raised.md-primary(ng-click="getList()") แสดง
+    md-table-container
+      table(md-table)
+        thead(md-head)
+          tr(md-row)
+            th(md-column, md-numeric) #
+            th(md-column, style="width: 25%") ชื่อ-สกุล
+            th(md-column) ระหว่างวันที่
+            th(md-column) หัวข้ออบรม/กิจกรรม
+            th(md-column)
+        tbody(md-body)
+          tr(md-row, ng-if="!meetings.length")
+            td(md-cell, colspan="5") ไม่พบรายการ
+
+          tr(md-row, ng-repeat="m in meetings", ng-if="meetings.length")
+            td(md-cell) {{ $index + 1 }}
+            td(md-cell, style="width: 25%") {{ m.fullname }}
+            td(md-cell) {{ m.startDate }} - {{ m.endDate }}
+            td(md-cell) {{ m.title }}
+            td(md-cell)
+              md-button.md-icon-button(aria-label="Print")
+                md-icon.material-icons search
+             

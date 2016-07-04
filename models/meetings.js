@@ -275,6 +275,36 @@ module.exports = {
     return db('meeting_register')
       .where('meeting_id', meetingId)
       .update('approve_status', 'N');
-  }
+  }, 
 
+  /** Reports */
+
+
+  reportMeetingList(db, start, end) {
+
+    return db('meetings as m')
+      .select('m.*', 't.name as type_meetings_name')
+      .leftJoin('l_type_meetings as t', 't.id', 'm.type_meetings_id')
+      .whereBetween('m.start_date', [start, end])
+      .orderBy('m.start_date');
+  },
+
+  reportDepartmentList(db, departmentId, start, end) {
+    let sql = `
+      select t.name as title_name, e.first_name, e.last_name, p.name as position_name,
+      m.title, m.place, m.owner, m.start_date, m.end_date
+      from meeting_register as mr
+      inner join meetings as m on m.id=mr.meeting_id
+      inner join employees as e on e.id=mr.employee_id
+      inner join l_sub_departments as l on l.id=e.sub_department_id
+      inner join l_departments as d on d.id=l.department_id
+      left join l_titles as t on t.id=e.title_id
+      left join l_positions as p on p.id=e.position_id
+      where d.id=?
+      and m.start_date between ? and ?
+      order by m.title
+    `;
+
+    return db.raw(sql, [departmentId, start, end]);
+  }
 };

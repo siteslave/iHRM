@@ -1,7 +1,7 @@
 md-toolbar.md-hue-2.md-whiteframe-z2
   div.md-toolbar-tools
+    i.material-icons group
     h2
-      i.material-icons group
       | &nbsp; การเข้าร่วมประชุม/อบรม
 
 md-progress-linear(md-mode="indeterminate", ng-show="showLoading")
@@ -98,18 +98,6 @@ div(layout-padding)
                           md-icon.material-icons more_vert
 
                         md-menu-content(width="4")
-                          md-menu-item
-                            md-button(href="/users/meetings/print/register/{{m.id}}")
-                              md-icon.material-icons print
-                              | &nbsp; พิมพ์ใบสมัคร
-                          md-menu-item
-                            md-button(href="/users/meetings/print/register/{{m.id}}")
-                              md-icon.material-icons print
-                              | &nbsp; พิมพ์ใบขออนุญาตไปราชการ
-                          md-menu-item
-                            md-button(href="/users/meetings/print/register/{{m.id}}")
-                              md-icon.material-icons print
-                              | &nbsp; ขออนุญาตใช้รถยนต์
                           md-menu-item
                             md-button(href="/users/meetings/print/register/{{m.id}}")
                               md-icon.material-icons print

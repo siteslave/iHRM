@@ -64,6 +64,18 @@ router.get('/admin/meetings/dialog/registered-list', (req, res, next) => {
   res.render('admin/partials/dialogs/registered-list');
 });
 
+router.get('/admin/reports', (req, res, next) => {
+  res.render('admin/partials/reports');
+});
+
+router.get('/admin/reports/meeting', (req, res, next) => {
+  res.render('admin/partials/reports-meeting');
+});
+
+router.get('/admin/reports/department', (req, res, next) => {
+  res.render('admin/partials/reports-department');
+});
+
 // Staff
 router.get('/staff/main', (req, res, next) => {
   res.render('staff/partials/main');
