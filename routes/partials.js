@@ -76,6 +76,15 @@ router.get('/admin/reports/department', (req, res, next) => {
   res.render('admin/partials/reports-department');
 });
 
+
+// Driver
+router.get('/admin/drivers', (req, res, next) => {
+  res.render('admin/partials/drivers');
+});
+router.get('/admin/drivers/dialog/new', (req, res, next) => {
+  res.render('admin/partials/dialogs/driver-new');
+});
+
 // Staff
 router.get('/staff/main', (req, res, next) => {
   res.render('staff/partials/main');

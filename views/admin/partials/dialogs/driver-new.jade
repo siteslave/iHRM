@@ -1,0 +1,39 @@
+md-dialog(aria-label="New Driver", ng-cloak, flex="70")
+  form(name="frmNew")
+    md-toolbar
+      div.md-toolbar-tools
+        h2.md-headline
+          i.material-icons person_add
+          | &nbsp; เพิ่มข้อมูลพนักงานขับรถ
+        span(flex)
+        md-button.md-icon-button(ng-click="cancel()")
+          md-icon(aria-label="Close dialog").material-icons clear
+
+    md-dialog-content
+      div.md-dialog-content
+        div(layout="row")
+          div(flex="20")
+              md-input-container.md-block(flex-gt-sm)
+                label คำนำหน้า
+                md-select(ng-model="driver.titleId", ng-required="true")
+                  md-option(ng-repeat="t in titles", value="{{t.id}}")
+                    | {{t.name}}
+        div(layout="row")
+          div(flex)
+            md-input-container.md-block(flex-gt-sm)
+              label ชื่อ
+              input(ng-model="driver.firstName", ng-required="true")
+          div(flex)
+            md-input-container.md-block(flex-gt-sm)
+              label สกุล
+              input(ng-model="driver.lastName", ng-required="true")
+        div(layout="row")
+          div(flex="30")
+            md-switch(ng-model="driver.active")
+              | อนุญาตใช้งาน
+    md-dialog-actions(layout="row")
+      span(flex)
+      md-button(ng-click="save()", ng-disabled="frmNew.$invalid").md-raised.md-primary
+        | ตกลง
+      md-button(ng-click="cancel()")
+        | ยกเลิก

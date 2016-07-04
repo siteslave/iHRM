@@ -61,6 +61,11 @@ head
   script(src="/javascripts/admin/controllers/reports-department.js")
   script(src="/javascripts/admin/services/reports-department.js")
 
+  script(src="/javascripts/admin/controllers/drivers.js")
+  script(src="/javascripts/admin/controllers/dialogs/drivers-new.js")
+  script(src="/javascripts/admin/controllers/dialogs/drivers-update.js")
+  script(src="/javascripts/admin/services/drivers.js")
+
   block scripts
 
 body(ng-app="app")
@@ -72,19 +77,36 @@ body(ng-app="app")
         md-sidenav.md-sidenav-left(md-component-id="left",
          md-is-locked-open="$mdMedia('gt-sm')", md-disable-backdrop="")
 
-          md-toolbar.md-hue-2.md-whiteframe-z2
+          md-toolbar.md-whiteframe-z2
             div.md-toolbar-tools
               md-button.md-icon-button(aria-label="Settings", ng-click="toggleLeft()")
                 md-ico.material-icons group
               h2
                 span Smart HRM
           md-content
+            md-subheader Main menu
             md-menu-content
               md-menu-item
                 md-button(ng-click="go('meetings')")
                   md-icon(md-menu-align-target)
                     i.material-icons note_add
                   | บันทึกหัวข้อประชุม/อบรม
+              md-menu-item
+                md-button(ng-click="go('meetings')")
+                  md-icon(md-menu-align-target)
+                    i.material-icons local_library
+                  | ขออนุญาตไปราชการ
+              md-menu-item
+                md-button(ng-click="go('meetings')")
+                  md-icon(md-menu-align-target)
+                    i.material-icons local_taxi
+                  | ขออนุญาตใช้รถยนต์
+              md-menu-item
+                md-button(ng-click="go('meetings')", ng-disabled="true")
+                  md-icon(md-menu-align-target)
+                    i.material-icons perm_contact_calendar
+                  | ลาพักผ่อน/กิจ/คลอด
+              md-divider
               md-menu-item
                 md-button(ui-sref="employee")
                   md-icon(md-menu-align-target)
@@ -95,6 +117,11 @@ body(ng-app="app")
                   md-icon(md-menu-align-target)
                     i.material-icons folder_shared
                   | ข้อมูลหัวหน้าหน่วยงาน
+              md-menu-item
+                md-button(ng-click="go('drivers')")
+                  md-icon(md-menu-align-target)
+                    i.material-icons local_taxi
+                  | พนักงานขับรถ
               md-menu-item
                 md-button(ng-click="go('reports')")
                   md-icon(md-menu-align-target)
@@ -121,7 +148,7 @@ body(ng-app="app")
                   | หน่วยงานย่อย
       md-content(layout="column", layout-fill, layout-align="top center", style="background-color: #e9ebee;")
         div(layout="column", layout-fill, ng-controller="ToolbarCtrl")
-          md-toolbar.md-whiteframe-z2.md-hue-2(ng-show="!showSearch")
+          md-toolbar.md-whiteframe-z2(ng-show="!showSearch")
             div.md-toolbar-tools
               md-button.md-icon-button(aria-label="Toggle", ng-click="toggleLeft()", hide-gt-sm)
                 md-icon.material-icons menu

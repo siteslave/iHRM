@@ -1,4 +1,4 @@
-md-toolbar.md-hue-2.md-whiteframe-z2
+md-toolbar.md-whiteframe-z2
   div.md-toolbar-tools
     i.material-icons question_answer
     h2
@@ -8,7 +8,7 @@ md-progress-linear(md-mode="indeterminate", ng-show="showLoading")
 md-card
   md-card-content
     md-button.md-fab.md-fab-bottom-right(aria-label="Add", ng-click="addNew($event)")
-      md-icon.material.icons person_add
+      md-icon.material.icons add
 
     div(layout="row", layout-fill)
       div(flex)
@@ -23,8 +23,8 @@ md-card
             th(md-column, md-numeric) #
             //- th(md-column) วันที่
             //- th(md-column) เลขที่หนังสือ
-            th(md-column) ระหว่างวันที่
-            th(md-column, style="width: 70%;") หัวข้ออบรม/กิจกรรม
+            th(md-column, style="width: 20%") ระหว่างวันที่
+            th(md-column, style="width: 60%;") หัวข้ออบรม/กิจกรรม
             //- th(md-column) หน่วยงานที่จัด
             th(md-column) มอบ
             th(md-column) ลงทะเบียน
@@ -38,8 +38,8 @@ md-card
             td(md-cell) {{ $index + 1 }}
             //- td(md-cell) {{ m.book_date }}
             //- td(md-cell) {{ m.book_no }}
-            td(md-cell) {{ m.start_date }} - {{ m.end_date }}
-            td(md-cell, style="width: 70%;") {{ m.title }}
+            td(md-cell, style="width: 20%") {{ m.start_date }} - {{ m.end_date }}
+            td(md-cell, style="width: 60%;") {{ m.title }}
             //- td(md-cell) {{ m.owner }}
             td(md-cell) {{ m.total | number }}
             td(md-cell) {{ m.total_registered | number }}

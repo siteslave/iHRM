@@ -135,15 +135,15 @@ angular.module('app.admin.controllers.Meetings', [
               obj.end_date1 = v.end_date;
               obj.book_date1 = v.book_date;
 
-              obj.start_date = moment(v.start_date).format('DD/MM') + '/' + (moment(v.start_date).get('year')+543);
-              obj.end_date = moment(v.end_date).format('DD/MM') + '/' + (moment(v.end_date).get('year')+543);
+              obj.start_date = moment(v.start_date).format('D/M') + '/' + (moment(v.start_date).get('year')+543);
+              obj.end_date = moment(v.end_date).format('D/M') + '/' + (moment(v.end_date).get('year')+543);
               obj.title = v.title;
               obj.owner = v.owner;
               obj.place = v.place;
               obj.type_meetings_name = v.type_meetings_name;
               obj.type_meetings_id = v.type_meetings_id;
               obj.book_no = v.book_no;
-              obj.book_date = moment(v.book_date).format('DD/MM') + '/' + (moment(v.book_date).get('year')+543);
+              obj.book_date = moment(v.book_date).format('D/M') + '/' + (moment(v.book_date).get('year')+543);
               obj.total = v.total;
               obj.total_registered = v.total_registered;
               obj.total_approve = v.total_approve;
