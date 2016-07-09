@@ -81,8 +81,15 @@ router.get('/admin/reports/department', (req, res, next) => {
 router.get('/admin/drivers', (req, res, next) => {
   res.render('admin/partials/drivers');
 });
-router.get('/admin/drivers/dialog/new', (req, res, next) => {
+router.get('/admin/drivers/dialogs/new', (req, res, next) => {
   res.render('admin/partials/dialogs/driver-new');
+});
+// Car request
+router.get('/admin/car-request', (req, res, next) => {
+  res.render('admin/partials/car-request');
+});
+router.get('/admin/car-request/dialogs/approve', (req, res, next) => {
+  res.render('admin/partials/dialogs/car-request-approve');
 });
 
 // Staff
@@ -120,5 +127,30 @@ router.get('/users/dialogs/meeting-detail', (req, res, next) => {
 router.get('/users/info', (req, res, next) => {
   res.render('users/partials/info');
 });
+
+// Education
+router.get('/users/education', (req, res, next) => {
+  res.render('users/partials/education');
+});
+
+router.get('/users/education/dialogs/new', (req, res, next) => {
+  res.render('users/partials/dialogs/education-new');
+});
+// Car request
+router.get('/users/car-request', (req, res, next) => {
+  res.render('users/partials/car-request');
+});
+router.get('/users/car-request/dialogs/new', (req, res, next) => {
+  res.render('users/partials/dialogs/car-request-new');
+});
+
+// Ask Permission
+router.get('/users/ask-permission', (req, res, next) => {
+  res.render('users/partials/ask-permission');
+});
+router.get('/users/ask-permission/dialogs/new', (req, res, next) => {
+  res.render('users/partials/dialogs/ask-permission-new');
+});
+
 
 module.exports = router;

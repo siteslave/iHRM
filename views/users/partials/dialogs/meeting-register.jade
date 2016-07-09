@@ -2,6 +2,7 @@ md-dialog(aria-label="New Employee", ng-cloak, flex="80")
   form(name="frmNew")
     md-toolbar
       div.md-toolbar-tools
+        i.material-icons description
         h2.md-headline
           | ลงทะเบียนเข้าร่วมกิจกรรม
         span(flex)
@@ -10,62 +11,76 @@ md-dialog(aria-label="New Employee", ng-cloak, flex="80")
 
     md-dialog-content
       div.md-dialog-content
-        div(layout="row")
-          div(flex)
-            md-input-container.md-block.md-icon-float
-              label หัวข้อประชุม/อบรม
-              md-icon.material-icons description
-              input(ng-model="meetings.title", ng-disabled="true")
+        md-tabs(md-dynamic-height, md-border-bottom)
+          md-tab
+            md-tab-label
+              i.material-icons library_books
+              | &nbsp; รายละเอียด
+            md-tab-body
+              div(layout="row")
+                div(flex)
+                  md-input-container.md-block.md-icon-float
+                    label หัวข้อประชุม/อบรม
+                    md-icon.material-icons description
+                    input(ng-model="meetings.title", ng-disabled="true")
 
-        div(layout="row")
-          div(flex)
-            md-input-container.md-block.md-icon-float
-              label สถานที่ประชุม/อบรม
-              md-icon.material-icons home
-              input(ng-model="meetings.place", ng-disabled="true")
-          div(flex)
-            md-input-container.md-block.md-icon-float
-              label หน่วยงานที่จัด
-              md-icon.material-icons contact_mail
-              input(ng-model="meetings.owner", ng-disabled="true")
-        div(layout="row")
-          div(flex="20")
-            md-input-container.md-block.md-icon-float
-              label ตั้งแต่วันที่
-              md-icon.material-icons date_range
-              input(ng-model="meetings.start_date", ng-disabled="true")
-          div(flex="20")
-            md-input-container.md-block.md-icon-float
-              label ถึงวันที่
-              md-icon.material-icons date_range
-              input(ng-model="meetings.end_date", ng-disabled="true")
-          div(flex)
-            md-input-container.md-block(flex-gt-sm)
-              label คะแนน
-              md-icon.material-icons forward_30
-              input(type="number", ng-model="meetings.score", ng-disabled="true")
-        div(layout="row")
-          div(flex)
-            md-input-container.md-block.md-icon-float(flex-gt-sm)
-                label ประเภทเงินที่ใช้
-                md-icon.material-icons attach_money
-                md-select(ng-model="meetings.money_id", ng-required="true")
-                  md-option(ng-repeat="m in money", value="{{m.id}}")
-                    | {{m.name}}
-          div(flex)
-            md-input-container.md-block.md-icon-float(flex-gt-sm)
-              label ค่าใช้จ่ายโดยประมาณ
-              md-icon.material-icons dialpad
-              input(type="number", ng-model="meetings.price", ng-required="true")
+              div(layout="row")
+                div(flex)
+                  md-input-container.md-block.md-icon-float
+                    label สถานที่ประชุม/อบรม
+                    md-icon.material-icons home
+                    input(ng-model="meetings.place", ng-disabled="true")
+                div(flex)
+                  md-input-container.md-block.md-icon-float
+                    label หน่วยงานที่จัด
+                    md-icon.material-icons contact_mail
+                    input(ng-model="meetings.owner", ng-disabled="true")
+              div(layout="row")
+                div(flex="20")
+                  md-input-container.md-block.md-icon-float
+                    label ตั้งแต่วันที่
+                    md-icon.material-icons date_range
+                    input(ng-model="meetings.start_date", ng-disabled="true")
+                div(flex="20")
+                  md-input-container.md-block.md-icon-float
+                    label ถึงวันที่
+                    md-icon.material-icons date_range
+                    input(ng-model="meetings.end_date", ng-disabled="true")
 
-        div(layout="row")
-          div(flex)
-            md-input-container.md-block.md-icon-float(flex-gt-sm)
-                label เดินทางโดย
-                md-icon.material-icons directions_car
-                md-select(ng-model="meetings.transport_id", ng-required="true")
-                  md-option(ng-repeat="t in transports", value="{{t.id}}")
-                    | {{t.name}}
+
+          md-tab
+            md-tab-label
+              i.material-icons library_books
+              | &nbsp; ลงทะเบียน
+            md-tab-body
+        
+              div(layout="row")
+                div(flex)
+                  md-input-container.md-block(flex-gt-sm)
+                    label คะแนน
+                    md-icon.material-icons forward_30
+                    input(type="number", ng-model="meetings.score")
+                div(flex)
+                  md-input-container.md-block.md-icon-float(flex-gt-sm)
+                      label ประเภทเงินที่ใช้
+                      md-icon.material-icons attach_money
+                      md-select(ng-model="meetings.money_id", ng-required="true")
+                        md-option(ng-repeat="m in money", value="{{m.id}}")
+                          | {{m.name}}
+                div(flex)
+                  md-input-container.md-block.md-icon-float(flex-gt-sm)
+                    label ค่าใช้จ่ายโดยประมาณ
+                    md-icon.material-icons dialpad
+                    input(type="number", ng-model="meetings.price", ng-required="true")
+
+              div(layout="row")
+                div(flex)
+                  md-input-container.md-block.md-icon-float(flex-gt-sm)
+                      label เดินทางโดย
+                      md-icon.material-icons directions_car
+                      md-select(ng-model="meetings.transport_id", ng-required="true")
+                        md-option(ng-repeat="t in transports", value="{{t.id}}")
+                          | {{t.name}}
     md-dialog-actions(layout="row")
       span(flex)
       md-button(ng-click="save()", ng-disabled="frmNew.$invalid").md-raised.md-primary

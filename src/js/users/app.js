@@ -10,7 +10,10 @@ angular.module('app', [
   'app.users.controllers.Meetings',
   'app.users.controllers.Reports',
   'app.users.controllers.Info',
-  'app.users.controllers.dialog.MeetingDetail'
+  'app.users.controllers.dialog.MeetingDetail',
+  'app.users.controllers.Education',
+  'app.users.controllers.CarRequest',
+  'app.users.controllers.AskPermission'
 ])
   .config(($mdThemingProvider, $stateProvider, $urlRouterProvider, $mdDateLocaleProvider) => {
 
@@ -54,6 +57,21 @@ angular.module('app', [
         url: '/reports',
         templateUrl: '/partials/users/reports',
         controller: 'ReportsCtrl'
+      })
+      .state('education', {
+        url: '/education',
+        templateUrl: '/partials/users/education',
+        controller: 'EducationCtrl'
+      })
+      .state('car-request', {
+        url: '/car-request',
+        templateUrl: '/partials/users/car-request',
+        controller: 'CarRequestCtrl'
+      })
+      .state('ask-permission', {
+        url: '/ask-permission',
+        templateUrl: '/partials/users/ask-permission',
+        controller: 'AskPermissionCtrl'
       })
       .state('info', {
         url: '/info',

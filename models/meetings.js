@@ -75,7 +75,7 @@ module.exports = {
   getAssignList(db, departmentId, limit, offset) {
     return db('meetings as m')
       .select('m.id', 'm.book_no', 'm.book_date', 'm.title', 'm.owner', 'm.place',
-      'm.start_date', 'm.end_date', 'm.score', 'm.type_meetings_id', 'mr.employee_id')
+      'm.start_date', 'm.end_date', 'mr.score', 'm.type_meetings_id', 'mr.employee_id')
       .innerJoin('meeting_assign as ms', 'ms.meeting_id', 'm.id')
       .leftJoin('meeting_register as mr', 'mr.meeting_id', 'm.id')
       .where('ms.department_id', departmentId)
@@ -99,6 +99,20 @@ module.exports = {
     return db('meeting_register')
       .insert(register);
   },
+
+  // userDoRegister(db, register) {
+  //   return db('meeting_register')
+  //     .where('meeting_id', register.meeting_id)
+  //     .update({
+  //       money_id: register.money_id,
+  //       transport_id: register.transport_id,
+  //       price: register.price,
+  //       employee_id: register.employee_id,
+  //       register_date: register.register_date,
+  //       approve_status: register.approve_status,
+  //       score: register.score
+  //     });
+  // },
 
   updateRegister(db, register) {
     return db('meeting_register')
@@ -133,7 +147,7 @@ module.exports = {
   getRegisteredList(db, employeeId, limit, offset) {
     return db('meetings as m')
       .select('m.id', 'm.book_no', 'm.book_date', 'm.title', 'm.owner', 'm.place',
-      'm.start_date', 'm.end_date', 'm.score', 'm.type_meetings_id',
+      'm.start_date', 'm.end_date', 'mr.score', 'm.type_meetings_id',
       'mr.employee_id', 'mr.approve_status', 'mr.money_id', 'mr.transport_id', 'mr.price')
       .innerJoin('meeting_assign as ms', 'ms.meeting_id', 'm.id')
       .leftJoin('meeting_register as mr', 'mr.meeting_id', 'm.id')
@@ -175,7 +189,7 @@ module.exports = {
 
     return db('meeting_register as mr')
       .select('mr.meeting_id', 'mr.money_id', 'mr.register_date', 'mr.approve_status',
-      'mr.transport_id', 'mr.price', 'm.title', 'm.owner', 'm.place', 'm.end_date', 'm.start_date', 'm.book_date', 'm.type_meetings_id',
+      'mr.transport_id', 'mr.price', 'mr.score', 'm.title', 'm.owner', 'm.place', 'm.end_date', 'm.start_date', 'm.book_date', 'm.type_meetings_id',
       'm.book_no', 'lm.name as money_name', 'lt.name as transport_name')
       .innerJoin('meetings as m', 'm.id', 'mr.meeting_id')
       .leftJoin('l_money as lm', 'lm.id', 'mr.money_id')
@@ -215,7 +229,7 @@ module.exports = {
   getExportData(db, employeeId, startDate, endDate) {
 
     return db('meetings as m')
-      .select('m.*', 't.name as type_meetings_name', 'lm.name as money_name')
+      .select('m.*', 'mr.score', 'mr.price', 't.name as type_meetings_name', 'lm.name as money_name')
       .innerJoin('meeting_register as mr', 'mr.meeting_id', 'm.id')
       .leftJoin('l_type_meetings as t', 't.id', 'm.type_meetings_id')
       .leftJoin('l_money as lm', 'lm.id', 'mr.money_id')
@@ -227,7 +241,7 @@ module.exports = {
 
   getMeetingRegisteredDetail(db, meetingId, employeeId) {
     let sql = `select concat(lt.name, " ", e.first_name, " ", e.last_name) as fullname, ls.name as sub_name, ld.name as main_name, lp.name as position_name,
-      m.book_no, m.book_date, m.title, m.owner, m.place, m.start_date, m.end_date,
+      m.book_no, m.book_date, m.title, m.owner, m.place, m.start_date, m.end_date, mr.score, mr.price,
       timestampdiff(day, m.start_date, m.end_date) + 1 as total_days, ltt.name as transport_name
       from employees as e
       inner join meeting_register as mr on mr.employee_id=e.id

@@ -10,5 +10,4 @@ angular.module('app.controllers.SideNav', [])
   $scope.go = (state) => {
     $state.go(state);
   }; 
-  
 });

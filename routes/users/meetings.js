@@ -38,6 +38,7 @@ router.post('/register', (req, res, next) => {
   register.employee_id = req.session.userId;
   register.register_date = moment().format('YYYY-MM-DD');
   register.approve_status = 'N';
+  register.score = req.body.score;
 
   // console.log(register);
 

@@ -66,6 +66,10 @@ head
   script(src="/javascripts/admin/controllers/dialogs/drivers-update.js")
   script(src="/javascripts/admin/services/drivers.js")
 
+  script(src="/javascripts/admin/controllers/car-request.js")
+  script(src="/javascripts/admin/controllers/dialogs/car-request-approve.js")
+  script(src="/javascripts/admin/services/car-request.js")
+
   block scripts
 
 body(ng-app="app")
@@ -97,7 +101,7 @@ body(ng-app="app")
                     i.material-icons local_library
                   | ขออนุญาตไปราชการ
               md-menu-item
-                md-button(ng-click="go('meetings')")
+                md-button(ng-click="go('car-request')")
                   md-icon(md-menu-align-target)
                     i.material-icons local_taxi
                   | ขออนุญาตใช้รถยนต์

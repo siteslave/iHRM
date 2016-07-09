@@ -33,7 +33,7 @@ angular.module('app.admin.controllers.Drivers', [
     $scope.addNew = (ev) => {
       $mdDialog.show({
         controller: 'DriverNewCtrl',
-        templateUrl: '/partials/admin/drivers/dialog/new',
+        templateUrl: '/partials/admin/drivers/dialogs/new',
         parent: angular.element(document.body),
         targetEvent: ev,
         clickOutsideToClose: false

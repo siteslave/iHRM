@@ -18,7 +18,8 @@ head
   script(src="/libs/angular-ui-router/release/angular-ui-router.min.js")
   script(src="/libs/angular-material-data-table/dist/md-data-table.min.js")
   script(src="/libs/moment/min/moment-with-locales.min.js")
-
+  script(src="/libs/lodash/dist/lodash.min.js")
+  
   script(src="/javascripts/configure.js")
   script(src="/javascripts/users/app.js")
   script(src="/javascripts/users/controllers/sidenav.js")
@@ -33,6 +34,21 @@ head
   script(src="/javascripts/users/controllers/info.js")
   script(src="/javascripts/users/services/info.js")
 
+  script(src="/javascripts/users/controllers/education.js")
+  script(src="/javascripts/users/controllers/dialogs/education-new.js")
+  script(src="/javascripts/users/controllers/dialogs/education-update.js")
+  script(src="/javascripts/users/services/education.js")
+
+  script(src="/javascripts/users/controllers/car-request.js")
+  script(src="/javascripts/users/controllers/dialogs/car-request-new.js")
+  script(src="/javascripts/users/controllers/dialogs/car-request-update.js")
+  script(src="/javascripts/users/services/car-request.js")
+
+  script(src="/javascripts/users/controllers/ask-permission.js")
+  script(src="/javascripts/users/controllers/dialogs/ask-permission-update.js")
+  script(src="/javascripts/users/controllers/dialogs/ask-permission-new.js")
+  script(src="/javascripts/users/services/ask-permission.js")
+
   block scripts
 
 
@@ -42,12 +58,11 @@ body(ng-app="app")
 
     section(layout="row", flex, style="height: 100%")
       div(ng-controller="SideNavCtrl")
-        md-sidenav.md-sidenav-left(md-component-id="left",
-         md-is-locked-open="$mdMedia('gt-sm')", md-disable-backdrop="")
+        md-sidenav.md-sidenav-left(md-component-id="left", md-is-locked-open="$mdMedia('gt-sm')", md-disable-backdrop="")
 
-          md-toolbar.md-hue-2.md-whiteframe-z2
+          md-toolbar.md-whiteframe-z2
             div.md-toolbar-tools
-              md-button.md-icon-button(aria-label="Settings", ng-click="toggleLeft()")
+              md-button.md-icon-button(aria-label="Settings", href="#/meetings")
                 md-ico.material-icons group
               h2
                 span Smart HRM
@@ -60,17 +75,17 @@ body(ng-app="app")
                       i.material-icons business_center
                     | ประชุม/ฝึกอบรม
                 md-menu-item
-                  md-button(ui-sref="meetings")
+                  md-button(ui-sref="education")
                     md-icon(md-menu-align-target)
-                      i.material-icons business_center
-                    | การศึกษาต่อ (ลาศึกษา)
+                      i.material-icons update
+                    | สำรวจความต้องการวิชาการ
                 md-menu-item
-                  md-button(ui-sref="meetings")
+                  md-button(ui-sref="car-request")
                     md-icon(md-menu-align-target)
                       i.material-icons local_taxi
                     | ขออนุญาตใช้รถยนต์
                 md-menu-item
-                  md-button(ui-sref="meetings")
+                  md-button(ui-sref="ask-permission")
                     md-icon(md-menu-align-target)
                       i.material-icons local_library
                     | ขออนุญาตไปราชการ
@@ -109,7 +124,7 @@ body(ng-app="app")
 
       md-content(layout="column", layout-fill, layout-align="top center", style="background-color: #e9ebee;")
         div(layout="column", layout-fill, ng-controller="ToolbarCtrl")
-          md-toolbar.md-whiteframe-z2.md-hue-2(ng-show="!showSearch")
+          md-toolbar.md-whiteframe-z2(ng-show="!showSearch")
             div.md-toolbar-tools
               md-button.md-icon-button(aria-label="Toggle", ng-click="toggleLeft()", hide-gt-sm)
                 md-icon.material-icons menu

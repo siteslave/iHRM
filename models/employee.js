@@ -22,6 +22,20 @@ module.exports = {
       .offset(offset);
   },
 
+  listAll(db) {
+
+    return db('employees as e')
+      .select(
+      'e.first_name', 'e.last_name', 'e.id', 'e.title_id', 'e.position_id', 'e.sub_department_id',
+      'e.username', 'sd.department_id as main_id', 'sd.id as sub_id',
+      'sd.name as sub_name', 't.name as title_name', 'p.name as position_name'
+      )
+      .leftJoin('l_titles as t', 't.id', 'e.title_id')
+      .leftJoin('l_positions as p', 'p.id', 'e.position_id')
+      .leftJoin('l_sub_departments as sd', 'sd.id', 'e.sub_department_id')
+      .orderBy('e.first_name');
+  },
+
   search(db, query) {
 
     let _query = `%${query}%`;

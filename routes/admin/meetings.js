@@ -124,7 +124,7 @@ router.post('/assign', (req, res, next) => {
     data.push(obj);
   });
 
-  console.log(data);
+  // console.log(data);
 
   Meetings.clearAssign(req.db, meetingId)
     .then(() => {

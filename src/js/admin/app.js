@@ -16,7 +16,8 @@ angular.module('app', [
   'app.admin.controllers.Staff',
   'app.admin.controllers.ReportsMeeting',
   'app.admin.controllers.ReportsDepartment',
-  'app.admin.controllers.Drivers'
+  'app.admin.controllers.Drivers',
+  'app.admin.controllers.CarRequest'
 
 ])
   .config(($mdThemingProvider, $stateProvider, $urlRouterProvider, $mdDateLocaleProvider) => {
@@ -96,6 +97,11 @@ angular.module('app', [
         url: '/drivers',
         templateUrl: '/partials/admin/drivers',
         controller: 'DriverCtrl'
+      })
+      .state('car-request', {
+        url: '/car-request',
+        templateUrl: '/partials/admin/car-request',
+        controller: 'CarRequestCtrl'
       })
       .state('reports', {
         url: '/reports',

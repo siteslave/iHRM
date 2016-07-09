@@ -21,7 +21,6 @@ angular.module('app.admin.controllers.dialogs.DriverUpdate', [])
         // connection error
       });
     
-
     $scope.driver.id = $rootScope.currentDriver.id;
     $scope.driver.firstName = $rootScope.currentDriver.first_name;
     $scope.driver.lastName = $rootScope.currentDriver.last_name;

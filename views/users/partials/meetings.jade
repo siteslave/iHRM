@@ -1,4 +1,4 @@
-md-toolbar.md-hue-2.md-whiteframe-z2
+md-toolbar.md-whiteframe-z2
   div.md-toolbar-tools
     i.material-icons group
     h2
@@ -50,11 +50,11 @@ div(layout-padding)
                           md-menu-item
                             md-button(ng-click="register($event, m)")
                               md-icon.material-icons create
-                              | &nbsp; สมัครเข้าร่วมกิจกรรม
-                          md-menu-item
-                            md-button(ng-click="info($event, m)")
-                              md-icon.material-icons search
-                              | &nbsp; ดูรายละเอียดเพิ่มเติม
+                              | &nbsp; สมัครเข้าร่วมกิจกรรม/ดูรายละเอียดเพิ่มเติม
+                          //- md-menu-item
+                          //-   md-button(ng-click="info($event, m)")
+                          //-     md-icon.material-icons search
+                          //-     | &nbsp; ดูรายละเอียดเพิ่มเติม
 
               md-table-pagination(md-limit="query.limit", md-page="query.page", md-total="{{ total }}",
                 md-on-paginate="onPaginate",

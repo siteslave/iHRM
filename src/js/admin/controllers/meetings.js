@@ -60,7 +60,7 @@ angular.module('app.admin.controllers.Meetings', [
         clickOutsideToClose: false
       })
         .then(() => {
-          // $scope.initialData();
+          $scope.initialData();
         }, () => {
 
         });

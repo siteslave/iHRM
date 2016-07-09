@@ -36,11 +36,11 @@ angular.module('app.admin.controllers.dialogs.MeetingAssign', [])
 
       }, err => {
         $mdToast.show(
-            $mdToast.simple()
-              .textContent('Error: Connection error')
-              .position('right top')
-              .hideDelay(3000)
-          );
+          $mdToast.simple()
+            .textContent('Error: Connection error')
+            .position('right top')
+            .hideDelay(3000)
+        );
       });
 
     $scope.toggle = (id) => {
