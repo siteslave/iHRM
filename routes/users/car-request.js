@@ -163,8 +163,8 @@ router.get('/print/:id', (req, res, next) => {
               res.send({ ok: false, msg: err });
             } else {
               res.download(pdfName, function () {
-                // rimraf.sync(destPath);
-                // fse.removeSync(pdfName);
+                rimraf.sync(destPath);
+                fse.removeSync(pdfName);
               });
             }
           });
