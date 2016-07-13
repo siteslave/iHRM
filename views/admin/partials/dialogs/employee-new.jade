@@ -38,11 +38,15 @@ md-dialog(aria-label="New Employee", ng-cloak, flex="80")
               input(ng-model="employee.lastName", ng-required="true")
           div(flex)
             md-input-container.md-block(flex-gt-sm)
+                label เลขบัตรประชาชน
+                input(ng-model="employee.cid", ng-required="true")
+        div(layout="row")
+          div(flex)
+            md-input-container.md-block(flex-gt-sm)
                 label ตำแหน่ง
                 md-select(ng-model="employee.position", ng-required="true")
                   md-option(ng-repeat="p in positions", value="{{p.id}}")
                     | {{p.name}}
-        div(layout="row")
           div(flex)
             md-input-container.md-block(flex-gt-sm)
               label หน่วยงานหลัก

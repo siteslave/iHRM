@@ -5,20 +5,18 @@ angular.module('app', [
   'ngMaterial',
   'md.data.table',
   'app.Configure',
-  'app.controllers.SideNav',
-  'app.controllers.Toolbar',
-  'app.admin.controllers.Money',
-  'app.admin.controllers.Department',
-  'app.admin.controllers.SubDepartment',
-  'app.admin.controllers.Employee',
-  'app.admin.controllers.MeetingHistory',
-  'app.admin.controllers.Meetings',
-  'app.admin.controllers.Staff',
-  'app.admin.controllers.ReportsMeeting',
-  'app.admin.controllers.ReportsDepartment',
-  'app.admin.controllers.Drivers',
-  'app.admin.controllers.CarRequest'
-
+  'app.SideNav',
+  'app.Toolbar',
+  'app.SubDepartment',
+  'app.Staff',
+  'app.Report',
+  'app.Money',
+  'app.Meeting',
+  'app.Employee',
+  'app.Driver',
+  'app.Department',
+  'app.CareRequest',
+  'app.AskPermission'
 ])
   .config(($mdThemingProvider, $stateProvider, $urlRouterProvider, $mdDateLocaleProvider) => {
 
@@ -41,14 +39,13 @@ angular.module('app', [
     };
 
     $mdDateLocaleProvider.formatDate = function (date) {
-      return moment(date).format('DD/MM/YYYY');
+      return `${moment(date).format('DD/MM')}/${moment(date).get('year') + 543}`;
     };
 
     $mdDateLocaleProvider.parseDate = function (dateString) {
       var m = moment(dateString, 'L', true);
       return m.isValid() ? m.toDate() : new Date(NaN);
     };
-
 
     // Routing Setting
     $urlRouterProvider.otherwise('/meetings');
@@ -102,6 +99,11 @@ angular.module('app', [
         url: '/car-request',
         templateUrl: '/partials/admin/car-request',
         controller: 'CarRequestCtrl'
+      })
+      .state('ask-permission', {
+        url: '/ask-permission',
+        templateUrl: '/partials/admin/ask-permission',
+        controller: 'AskPermissionCtrl'
       })
       .state('reports', {
         url: '/reports',

@@ -2,9 +2,11 @@
 
 module.exports = {
   list(db, employeeId, limit, offset) {
-    return db('car_request')
-      .where('employee_id', employeeId)
-      .orderBy('request_date', 'desc')
+    return db('car_request as c')
+      .select('c.*', db.raw('concat(d.first_name, " ", d.last_name) as driver_name'))
+      .leftJoin('drivers as d', 'd.id', 'c.driver_id')
+      .where('c.employee_id', employeeId)
+      .orderBy('c.request_date', 'desc')
       .limit(limit)
       .offset(offset);
   }, 
@@ -15,6 +17,19 @@ module.exports = {
       .count('* as total');
   },
 
+  getPrintInfo(db, id) {
+    let sql = `
+    select c.*, concat(t.name, " ", e.first_name, " ", e.last_name) as fullname,
+    p.name as position_name
+    from car_request as c
+    inner join employees as e on e.id=c.employee_id
+    left join l_titles as t on t.id=e.title_id
+    left join l_positions as p on p.id=e.position_id
+    where c.id=?
+    `;
+    return db.raw(sql, [id]);
+  },
+  
   adminList(db, approveStatus, startDate, endDate, limit, offset) {
     return db('car_request as c')
       .select('c.id', 'c.target_name', 'c.cause', 'c.start_date', 'c.end_date', 'c.start_time', 'c.end_time',

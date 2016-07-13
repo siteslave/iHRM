@@ -47,6 +47,7 @@ router.post('/save', (req, res, next) => {
 
   employee.first_name = req.body.firstName;
   employee.last_name = req.body.lastName;
+  employee.cid = req.body.cid;
   employee.position_id = req.body.position;
   employee.sub_department_id = req.body.department;
   employee.title_id = req.body.title;
@@ -78,14 +79,15 @@ router.put('/save', (req, res, next) => {
   employee.sub_department_id = req.body.department;
   employee.title_id = req.body.title;
   employee.position_id = req.body.position;
+  employee.cid = req.body.cid;
   employee.id = req.body.id;
 
-  if (employee.first_name && employee.last_name && employee.id) {
+  if (employee.first_name && employee.cid && employee.last_name && employee.id) {
     console.log(employee);
-    Employee.isDuplicated(req.db, employee.id, employee.first_name, employee.last_name)
+    Employee.isDuplicated(req.db, employee.id, employee.cid)
       .then(rows => {
         if (rows[0].total) {
-          res.send({ ok: false, msg: 'Duplicated!' })
+          res.send({ ok: false, msg: 'ข้อมูลซ้ำ!' })
         } else {
           Employee.update(req.db, employee)
             .then(() => res.send({ ok: true }))
@@ -94,7 +96,7 @@ router.put('/save', (req, res, next) => {
       })
       .catch(err => res.send({ ok: false, msg: err }));
   } else {
-    res.send({ok: false, msg: 'Employee id not found!'})
+    res.send({ok: false, msg: 'ข้อมูลไม่สมบูรณ์ กรุณาตรวจสอบ!'})
   }
 });
 
@@ -106,7 +108,7 @@ router.delete('/delete/:id', (req, res, next) => {
       .then(() => res.send({ ok: true }))
       .catch(err => res.send({ ok: false, msg: err }));
   } else {
-    res.send({ok: false, msg: 'Employee id not found!'})
+    res.send({ok: false, msg: 'ข้อมูลไม่สมบูรณ์ กรุณาตรวจสอบ!'})
   }
 });
 

@@ -2,6 +2,18 @@ let express = require('express');
 let router = express.Router();
 let moment = require('moment');
 
+let gulp = require('gulp');
+let data = require('gulp-data');
+let jade = require('gulp-jade');
+let rimraf = require('rimraf');
+let fse = require('fs-extra');
+let fs = require('fs');
+let path = require('path');
+let pdf = require('html-pdf');
+let numeral = require('numeral');
+
+let Utils = require('../../helpers/utils');
+
 let AskPermission = require('../../models/ask-permission');
 let Employee = require('../../models/employee');
 
@@ -147,5 +159,91 @@ router.post('/get-employee-selected', (req, res, next) => {
     res.send({ ok: false, msg: 'Ask ID not found' });
   }
 });
+
+
+router.get('/print/:id', (req, res, next) => {
+
+  let json = {};
+  let id = req.params.id;
+  let db = req.db;
+
+  if (id) {
+    fse.ensureDirSync('./templates/html');
+    fse.ensureDirSync('./templates/pdf');
+
+    var destPath = './templates/html/' + moment().format('x');
+    fse.ensureDirSync(destPath);
+    AskPermission.getPrintEmployeeList(db, id)
+      .then(rows => {
+        json.employees = rows[0];
+        return AskPermission.getPrintInfo(db, id);
+      })
+      .then(rows => {
+        //json.data = rows;
+        // console.log(rows);
+        let _data = rows[0][0];
+        // console.log(_data);
+        let ask = {};
+
+        ask.currentDate = `${moment().format('D')} ${Utils.getMonthName(moment().format('MM'))} ${moment().get('year') + 543}`;
+        ask.fullname = _data.fullname;
+        ask.positionName = _data.position_name;
+        ask.targetName = _data.target_name;
+        ask.cause = _data.cause;
+        ask.totalDay = _data.total_day;
+        ask.distance = _data.distance;
+        ask.startDate = `${moment(_data.start_date).format('D')} ${Utils.getMonthName(moment(_data.start_date).format('MM'))} ${moment(_data.start_date).get('year') + 543}`;
+        ask.endDate = `${moment(_data.end_date).format('D')} ${Utils.getMonthName(moment(_data.end_date).format('MM'))} ${moment(_data.end_date).get('year') + 543}`;
+        ask.startTime = moment(_data.start_time, 'HH:mm:ss').format('HH:mm');
+        ask.endTime = moment(_data.end_time, 'HH:mm:ss').format('HH:mm');
+
+        json.ask = ask;
+        console.log(json);
+        // Create pdf
+        gulp.task('html', (cb) => {
+          return gulp.src('./templates/ask-permission.jade')
+            .pipe(data(function () {
+              return json;
+            }))
+            .pipe(jade())
+            .pipe(gulp.dest(destPath));
+        });
+
+        gulp.task('pdf', ['html'], function () {
+          var html = fs.readFileSync(destPath + '/ask-permission.html', 'utf8')
+          var options = {
+            format: 'A4',
+            // orientation: "landscape",
+            footer: {
+              height: "15mm",
+              contents: '<span style="color: #444;"><small>Printed: ' + new Date() + '</small></span>'
+            }
+          };
+
+          var pdfName = `./templates/pdf/ask-permission-${moment().format('x')}.pdf`;
+
+          pdf.create(html, options).toFile(pdfName, function (err, resp) {
+            if (err) {
+              res.send({ ok: false, msg: err });
+            } else {
+              res.download(pdfName, function () {
+                // rimraf.sync(destPath);
+                // fse.removeSync(pdfName);
+              });
+            }
+          });
+        });
+        // Convert html to pdf
+        gulp.start('pdf');
+
+      })
+      .catch(err => res.send({ ok: false, msg: err }));
+
+  } else {
+    res.send({ ok: false, msg: 'Id not found!' });
+  }
+  
+});
+
 
 module.exports = router;

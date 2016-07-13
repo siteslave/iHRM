@@ -92,6 +92,14 @@ router.get('/admin/car-request/dialogs/approve', (req, res, next) => {
   res.render('admin/partials/dialogs/car-request-approve');
 });
 
+// Ask permission
+router.get('/admin/ask-permission', (req, res, next) => {
+  res.render('admin/partials/ask-permission');
+});
+router.get('/admin/ask-permission/dialogs/employee-list', (req, res, next) => {
+  res.render('admin/partials/dialogs/ask-permission-employee-list');
+});
+
 // Staff
 router.get('/staff/main', (req, res, next) => {
   res.render('staff/partials/main');
@@ -143,11 +151,15 @@ router.get('/users/car-request', (req, res, next) => {
 router.get('/users/car-request/dialogs/new', (req, res, next) => {
   res.render('users/partials/dialogs/car-request-new');
 });
+router.get('/users/car-request/dialogs/approve-info', (req, res, next) => {
+  res.render('users/partials/dialogs/car-request-approve');
+});
 
 // Ask Permission
 router.get('/users/ask-permission', (req, res, next) => {
   res.render('users/partials/ask-permission');
 });
+
 router.get('/users/ask-permission/dialogs/new', (req, res, next) => {
   res.render('users/partials/dialogs/ask-permission-new');
 });

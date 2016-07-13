@@ -15,6 +15,23 @@ module.exports = {
       .count('* as total');
   },
 
+  
+  getEmployeesList(db, id) {
+    let sql = `
+    select concat(t.name, " ", e.first_name, " ", e.last_name) as fullname, p.name as position_name
+    from ask_permission_employee as ae
+    inner join employees as e on e.id=ae.employee_id
+    left join l_titles as t on t.id=e.title_id
+    left join l_positions as p on p.id=e.position_id
+
+    where ae.ask_permission_id=?
+    order by ae.id
+    `;
+
+    return db.raw(sql, [id])
+
+  },
+  
   getEmployeeSelectedList(db, askId) {
     return db('ask_permission_employee as a')
       .select('e.id', 'e.first_name', 'e.last_name')
@@ -23,14 +40,14 @@ module.exports = {
   },
 
   adminList(db, approveStatus, startDate, endDate, limit, offset) {
-    return db('ask_permission as c')
-      .select('c.id', 'c.target_name', 'c.cause', 'c.start_date', 'c.end_date', 'c.start_time', 'c.end_time',
-        'c.request_date', 'c.car_license', 'c.driver_id', 't.name as title_name', 'e.first_name', 'e.last_name', 'c.approve_status')
-      .leftJoin('employees as e', 'e.id', 'c.employee_id')
+    return db('ask_permission as a')
+      .select('a.id', 'a.target_name', 'a.cause', 'a.start_date', 'a.end_date', 'a.start_time', 'a.end_time',
+        'a.ask_date', 't.name as title_name', 'e.first_name', 'e.last_name', 'a.approve_status')
+      .leftJoin('employees as e', 'e.id', 'a.employee_id')
       .leftJoin('l_titles as t', 't.id', 'e.title_id')
-      .where('c.approve_status', approveStatus)
-      .whereBetween('c.start_date', [startDate, endDate])
-      .orderBy('c.start_date', 'desc')
+      .where('a.approve_status', approveStatus)
+      .whereBetween('a.start_date', [startDate, endDate])
+      .orderBy('a.start_date', 'desc')
       .limit(limit)
       .offset(offset);
   }, 
@@ -86,5 +103,35 @@ module.exports = {
     return db('ask_permission')
       .where('id', requestId)
       .del();
+  },
+
+  getPrintInfo(db, id) {
+    let sql = `
+    select a.*, concat(t.name, " ", e.first_name, " ", e.last_name) as fullname,
+    p.name as position_name, timestampdiff(day, a.start_date, a.end_date)+1 as total_day
+    from ask_permission as a
+    inner join employees as e on e.id=a.employee_id
+    left join l_titles as t on t.id=e.title_id
+    left join l_positions as p on p.id=e.position_id
+    where a.id=?
+    `;
+
+    return db.raw(sql, [id]);
+  },
+
+  getPrintEmployeeList(db, id) {
+    let sql = `
+    select concat(t.name, " ", e.first_name, " ", e.last_name) as fullname, p.name as position_name
+    from ask_permission_employee as ae
+    inner join employees as e on e.id=ae.employee_id
+    left join l_titles as t on t.id=e.title_id
+    left join l_positions as p on p.id=e.position_id
+
+    where ae.ask_permission_id=?
+    order by ae.id
+    `;
+
+    return db.raw(sql, [id])
+
   }
 }

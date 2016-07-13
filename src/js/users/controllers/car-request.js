@@ -3,7 +3,8 @@
 angular.module('app.users.controllers.CarRequest', [
   'app.users.services.CarRequest',
   'app.users.controllers.dialogs.CarRequestNew',
-  'app.users.controllers.dialogs.CarRequestUpdate'
+  'app.users.controllers.dialogs.CarRequestUpdate',
+  'app.users.controllers.dialogs.CarRequestApproveInfo'
 ])
   .controller('CarRequestCtrl', ($scope, $rootScope, $mdDialog, $mdToast, CarRequestService) => {
       
@@ -62,7 +63,8 @@ angular.module('app.users.controllers.CarRequest', [
               
               obj.startDate = `${moment(v.start_date).format('D/M')}/${moment(v.start_date).get('year') + 543}`;
               obj.endDate = `${moment(v.end_date).format('D/M')}/${moment(v.end_date).get('year') + 543}`;
-
+              obj.driverName = v.driver_name;
+              obj.carLicense = v.car_license;
               obj.startTime = v.start_time;
               obj.endTime = v.end_time;
               obj.cause = v.cause;
@@ -94,6 +96,22 @@ angular.module('app.users.controllers.CarRequest', [
       })
         .then(() => {
           $scope.getList();
+        }, () => {
+
+        });
+    };
+
+    $scope.approveInfo = (ev, approve) => {
+      $rootScope.currentApprove = approve;
+      $mdDialog.show({
+        controller: 'CarRequestApproveInfoCtrl',
+        templateUrl: '/partials/users/car-request/dialogs/approve-info',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        clickOutsideToClose: false
+      })
+        .then(() => {
+        
         }, () => {
 
         });

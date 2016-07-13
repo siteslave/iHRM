@@ -29,7 +29,7 @@ angular.module('app', [
     };
 
     $mdDateLocaleProvider.formatDate = function (date) {
-      return moment(date).format('DD/MM/YYYY');
+      return `${moment(date).format('DD/MM')}/${moment(date).get('year') + 543}`;
     };
 
     $mdDateLocaleProvider.parseDate = function (dateString) {

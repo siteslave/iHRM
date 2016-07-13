@@ -1,0 +1,30 @@
+md-dialog(aria-label="New Driver", ng-cloak, flex="50")
+  form(name="frmNew")
+    md-toolbar
+      div.md-toolbar-tools
+        i.material-icons local_library
+        h2.md-headline
+          | &nbsp; รายชื่อเจ้าหน้าที่ผู้ร่วมเดินทาง
+        span(flex)
+        md-button.md-icon-button(ng-click="cancel()")
+          md-icon(aria-label="Close dialog").material-icons clear
+
+    md-dialog-content
+      div.md-dialog-content
+        md-table-container
+          table(md-table)
+            thead(md-head)
+              tr(md-row)
+                th(md-column, md-numeric) #
+                th(md-column) ชื่อ - สกุล
+                th(md-column) ตำแหน่ง
+            tbody(md-body)
+              tr(md-row, ng-if="!employees.length")
+                td(md-cell, colspan="3") ไม่พบรายการ/เดินทางคนเดียว
+              tr(md-row, ng-repeat="empployee in employees", ng-if="employees.length")
+                td(md-cell) {{ $index + 1 }}
+                td(md-cell) {{ empployee.fullname }}
+                td(md-cell) {{ empployee.position_name }}
+    md-dialog-actions(layout="row")
+      md-button(ng-click="cancel()")
+        | ปิดหน้าต่าง

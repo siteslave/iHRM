@@ -19,6 +19,7 @@ let adminStaff = require('./routes/admin/staff');
 let adminReport = require('./routes/admin/reports');
 let adminDrivers = require('./routes/admin/drivers');
 let adminCarRequest = require('./routes/admin/car-request');
+let adminAskPermission = require('./routes/admin/ask-permission');
 
 let partials = require('./routes/partials');
 let basic = require('./routes/basic');
@@ -137,6 +138,7 @@ app.use('/admin/sub-department', userAuth, isAdmin, subDepartment);
 app.use('/admin/reports', userAuth, isAdmin, adminReport);
 app.use('/admin/drivers', userAuth, isAdmin, adminDrivers);
 app.use('/admin/car-request', userAuth, isAdmin, adminCarRequest);
+app.use('/admin/ask-permission', userAuth, isAdmin, adminAskPermission);
 
 app.use('/users', userAuth, isUser, users);
 app.use('/users/meetings', userAuth, isUser, userMeetings);

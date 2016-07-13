@@ -1,0 +1,224 @@
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    title ขออนุญาตใช้รถยนต์ โรงพยาบาลกันทรวิชัย
+    style.
+      html, body {
+      margin: 0;
+      padding: 10px 20px 0px 20px;
+      font-size: 16px;
+      font-family: 'TH Sarabun New';
+      line-height: 100%;
+      }
+
+      .small-space-line {
+        line-height: 85%;
+      }
+
+      /*table*/
+      table {
+        border-spacing: 0;
+        border-collapse: collapse;
+      }
+      td,
+      th {
+      padding: 0;
+      }
+      table {
+      background-color: transparent;
+      }
+      caption {
+      padding-top: 8px;
+      padding-bottom: 8px;
+      color: #777;
+      text-align: left;
+      }
+      th {
+      text-align: left;
+      }
+      .table {
+      width: 100%;
+      max-width: 100%;
+      margin-bottom: 20px;
+      }
+      .table > thead > tr > th,
+      .table > tbody > tr > th,
+      .table > tfoot > tr > th,
+      .table > thead > tr > td,
+      .table > tbody > tr > td,
+      .table > tfoot > tr > td {
+      padding: 1px;
+      vertical-align: top;
+      border-top: 1px solid #333232;
+      }
+      .table > thead > tr > th {
+      vertical-align: bottom;
+      border-bottom: 2px solid #333232;
+      }
+      .table > caption + thead > tr:first-child > th,
+      .table > colgroup + thead > tr:first-child > th,
+      .table > thead:first-child > tr:first-child > th,
+      .table > caption + thead > tr:first-child > td,
+      .table > colgroup + thead > tr:first-child > td,
+      .table > thead:first-child > tr:first-child > td {
+      border-top: 0;
+      }
+      .table > tbody + tbody {
+      border-top: 0 solid #333232;
+      }
+      .table .table {
+      background-color: #fff;
+      }
+      .table-condensed > thead > tr > th,
+      .table-condensed > tbody > tr > th,
+      .table-condensed > tfoot > tr > th,
+      .table-condensed > thead > tr > td,
+      .table-condensed > tbody > tr > td,
+      .table-condensed > tfoot > tr > td {
+      padding: 5px;
+      }
+      .table-bordered {
+      border: 1px solid #333232;
+      }
+      .table-bordered > thead > tr > th,
+      .table-bordered > tbody > tr > th,
+      .table-bordered > tfoot > tr > th,
+      .table-bordered > thead > tr > td,
+      .table-bordered > tbody > tr > td,
+      .table-bordered > tfoot > tr > td {
+      border: 1px solid #333232;
+      }
+      .table-bordered > thead > tr > th,
+      .table-bordered > thead > tr > td {
+      border-bottom-width: 2px;
+      }
+      .table-striped > tbody > tr:nth-of-type(odd) {
+      background-color: #f9f9f9;
+      }
+      .table-hover > tbody > tr:hover {
+      background-color: #f5f5f5;
+      }
+      table col[class*="col-"] {
+      position: static;
+      display: table-column;
+      float: none;
+      }
+      table td[class*="col-"],
+      table th[class*="col-"] {
+      position: static;
+      display: table-cell;
+      float: none;
+      }
+      .table > thead > tr > td.active,
+      .table > tbody > tr > td.active,
+      .table > tfoot > tr > td.active,
+      .table > thead > tr > th.active,
+      .table > tbody > tr > th.active,
+      .table > tfoot > tr > th.active,
+      .table > thead > tr.active > td,
+      .table > tbody > tr.active > td,
+      .table > tfoot > tr.active > td,
+      .table > thead > tr.active > th,
+      .table > tbody > tr.active > th,
+      .table > tfoot > tr.active > th {
+      background-color: #f5f5f5;
+      }
+      .table-hover > tbody > tr > td.active:hover,
+      .table-hover > tbody > tr > th.active:hover,
+      .table-hover > tbody > tr.active:hover > td,
+      .table-hover > tbody > tr:hover > .active,
+      .table-hover > tbody > tr.active:hover > th {
+      background-color: #e8e8e8;
+      }
+      .table-responsive {
+      min-height: .01%;
+      overflow-x: auto;
+      }
+  body
+    div(style="text-align: center;")
+      h2(style="line-height: 2px") ใบขออนุญาตใช้รถยนต์ โรงพยาบาลกันทรวิชัย
+
+    table(width="100%")
+      tr
+        td(width="50%", style="text-align: center;") &nbsp;
+        td(width="50%", style="text-align: center;")
+          strong วันที่ #{request.currentDate}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+    p: | เรื่อง &nbsp;&nbsp;
+      strong ขออนุญาตใช้รถยนต์
+      br
+      | เรียน &nbsp;&nbsp;
+      strong ผู้อำนวยการโรงพยาบาลกันทรวิชัย
+
+    p: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ข้าพเจ้า &nbsp;
+      strong #{request.fullname}
+      | &nbsp; ตำแหน่ง&nbsp;
+      strong #{request.positionName}
+      | &nbsp;ขออนุญาตใช้รถยนต์ (ไปที่ไหน) ไป &nbsp;
+      strong #{request.targetName}
+      | &nbsp;เพื่อ &nbsp;
+      strong #{request.cause}
+      | &nbsp;มีคนนั่ง &nbsp;
+      strong #{request.travelerNum}
+      | &nbsp; คน
+      | &nbsp; ในวันที่ &nbsp;
+      strong #{request.startDate}
+      | &nbsp; เวลา &nbsp;
+      strong #{request.startTime} 
+      | &nbsp; น. ถึงวันที่ &nbsp;
+      strong #{request.endDate}
+      | &nbsp; เวลา 
+      strong #{request.endTime} 
+      | &nbsp; น. โดย &nbsp;
+      strong #{request.responsibleName} 
+      | &nbsp; เป็นผู้รับผิดชอบ
+      
+    p &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; จึงเรียนมาเพื่อโปรดอนุญาต
+    br
+    table(width="100%")
+      tr
+        td(width="50%") &nbsp;
+        td(width="50%", style="text-align: left;")
+          | (ลงชื่อ)...........................................ผู้ขออนุญาต
+          br
+          | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (#{request.fullname}) 
+          br
+          |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ตำแหน่ง #{request.positionName}
+      
+    br 
+    br
+    div(style="padding: 10px 0 0 0")
+      | ความเห็นของผู้ควบคุมรถยนต์ (ผู้ใช้รถ ในกรณีผู้ใช้รถยนต์เดินทางไปกับรถยนต์ และอาวุโสที่สุดในกรณีเดินทางไปหลายคน) 
+      | ...............................................................................................................................................................................................
+    br
+    br
+
+    table(width="100%")
+      tr
+        td(width="50%") &nbsp;
+        td(width="50%", style="text-align: left;")
+          | (ลงชื่อ)...........................................ผู้ควบคุมรถยนต์
+          br
+          | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (...................................................)
+          br
+          | ตำแหน่ง ..................................................
+
+    br
+    br
+    div(style="font-size: 18px; padding: 10px 0 0 0")
+      | ความเห็นของผู้มีอำนวจสั่งการใช้รถยนต์
+      | .......................................................................................................
+    br
+    br
+    br
+    br
+    table(width="100%")
+      tr
+        td(width="50%") &nbsp;
+        td(width="50%", style="text-align: left; font-size: 18px;")
+          | (ลงชื่อ)...........................................ผู้อนุญาต
+          br
+          | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(นายเจษฐา  พัชรเวทิน)
+          br
+          | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ผู้อำนวยการโรงพยาบาลกันทรวิชัย
