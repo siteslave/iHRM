@@ -55,6 +55,12 @@ module.exports = {
       .catch(err => q.reject(err));
 
     return q.promise;
+  },
+
+  getInfo(db, departmentId) {
+    return db('l_departments')
+      .where('id', departmentId)
+      .limit(1);
   }
 
 };

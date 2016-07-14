@@ -130,7 +130,68 @@ angular.module('app.AskPermission.Controller', [])
       
     };
 
+    $scope.approve = (ev, ask) => {
+      let status = ask.approveStatus == 'Y' ? 'N' : 'Y';
 
+      let confirm;
+      if (status == 'Y') {
+        confirm = $mdDialog.confirm()
+          .title('Are you sure?')
+          .textContent('คุณต้องการอนุมัติรายการนี้ใช่หรือไม่')
+          .ariaLabel('Confirmation')
+          .targetEvent(ev)
+          .ok('ใช่, ฉันต้องการอนุมัติรายการนี้!')
+          .cancel('ไม่ใช่, ยกเลิก'); 
+      } else {
+        confirm = $mdDialog.confirm()
+          .title('Are you sure?')
+          .textContent('คุณต้องการยกเลิกอนุมัติรายการนี้ใช่หรือไม่')
+          .ariaLabel('Confirmation')
+          .targetEvent(ev)
+          .ok('ใช่, ฉันต้องการยกเลิกอนุมัติรายการนี้!')
+          .cancel('ไม่ใช่, ยกเลิก');
+      }
+
+      $mdDialog.show(confirm)
+        .then(() => {
+          $rootScope.showLoading = true;
+          let approve = {
+            askId: ask.id,
+            status: status
+          };
+
+          AskPermissionService.approve(approve)
+            .then(res => {
+              let data = res.data;
+              if (data.ok) {
+                $mdToast.show(
+                  $mdToast.simple()
+                    .textContent('อนุมัติ/ยกเลิกอนุมัติ เสร็จเรียบร้อยแล้ว')
+                    .position('right top')
+                    .hideDelay(3000)
+                );
+                $rootScope.showLoading = false;
+              // Get new list
+                $scope.getList();
+              } else {
+                $mdToast.show(
+                  $mdToast.simple()
+                    .textContent('Error: ' + JSON.stringify(data.msg))
+                    .position('right top')
+                    .hideDelay(3000)
+                );
+              }
+            }, () => {
+              $mdToast.show(
+                $mdToast.simple()
+                  .textContent('Connection error')
+                  .position('right top')
+                  .hideDelay(3000)
+              );
+            });
+        });
+    }
+    
     $scope.remove = (ev, request) => {
 
       var confirm = $mdDialog.confirm()

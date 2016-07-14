@@ -44,18 +44,15 @@ router.post('/employee-list', (req, res, next) => {
 
 router.put('/approve', (req, res, next) => {
   let db = req.db;
-  let requestId = req.body.requestId;
-  let driverId = req.body.driverId;
-  let carLicense = req.body.carLicense;
+  let askId = req.body.askId;
+  let status = req.body.status;
 
-  if (requestId && driverId && carLicense) {
+  if (askId && status) {
     let approve = {};
-    approve.approve_status = 'Y';
+    approve.approve_status = status;
     approve.approved_at = moment().format('YYYY-MM-DD HH:mm:ss');
-    approve.car_license = carLicense;
-    approve.driver_id = driverId;
 
-    AskPermission.adminApprove(db, requestId, approve)
+    AskPermission.adminApprove(db, askId, approve)
       .then(() => res.send({ ok: true }))
       .catch(err => res.send({ ok: false, msg: err }));
   } else {

@@ -45,7 +45,7 @@ angular.module('app.Driver.Controller', [])
 
       $mdDialog.show({
         controller: 'DriverUpdateCtrl',
-        templateUrl: '/partials/admin/drivers/dialog/new',
+        templateUrl: '/partials/admin/drivers/dialogs/new',
         parent: angular.element(document.body),
         targetEvent: ev,
         clickOutsideToClose: false

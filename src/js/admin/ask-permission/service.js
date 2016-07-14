@@ -27,9 +27,8 @@ angular.module('app.AskPermission.Service', [])
 
       approve(approve) {
         return $http.put('/admin/ask-permission/approve', {
-          requestId: approve.requestId,
-          carLicense: approve.carLicense,
-          driverId: approve.driverId
+          askId: approve.askId,
+          status: approve.status
         });
       },
 

@@ -39,5 +39,5 @@ md-card
             td(md-cell) {{ m.title }}
             td(md-cell) {{ m.owner }}
             td(md-cell)
-              md-button.md-icon-button(aria-label="Print")
+              md-button.md-icon-button(aria-label="Print", href="/admin/reports/print/by-meeting/{{m.id}}")
                 md-icon.material-icons print

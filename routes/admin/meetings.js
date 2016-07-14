@@ -108,6 +108,14 @@ router.post('/list', (req, res, next) => {
     .catch(err => res.send({ ok: false, msg: err }));
 });
 
+router.post('/search', (req, res, next) => {
+  let query = req.body.query;
+
+  Meetings.searchAdmin(req.db, query)
+    .then(rows => res.send({ ok: true, rows: rows }))
+    .catch(err => res.send({ ok: false, msg: err }));
+});
+
 router.post('/assign', (req, res, next) => {
 
   let meetingId = req.body.id;

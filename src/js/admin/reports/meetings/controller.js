@@ -26,6 +26,7 @@ angular.module('app.Reports.Meeting.Controller', [])
               
               data.rows.forEach(v => {
                 let obj = {};
+                obj.id = v.id;
                 obj.startDate = `${moment(v.start_date).format('DD/MM')}/${moment(v.start_date).get('year') + 543}`;
                 obj.endDate = `${moment(v.end_date).format('DD/MM')}/${moment(v.end_date).get('year') + 543}`;
                 obj.title = v.title;

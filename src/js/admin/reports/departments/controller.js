@@ -67,4 +67,14 @@ angular.module('app.Reports.Department.Controller', [])
       
     };
 
+
+    $scope.printData = () => {
+      let start = moment($scope.startDate).format('YYYY-MM-DD');
+      let end = moment($scope.endDate).format('YYYY-MM-DD');
+      let departmentId = $scope.departmentId;
+
+      if (departmentId && start && end) {
+        window.open(`/admin/reports/print/by-department/${departmentId}/${start}/${end}`);
+      }
+    }    
   });

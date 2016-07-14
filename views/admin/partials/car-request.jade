@@ -33,8 +33,8 @@ div(layout-padding)
             th(md-column) วันที่
             th(md-column) ชื่อ-สกุล
             th(md-column) ขออนุญาตไปที่
-            th(md-column) เพื่อ
             th(md-column) อนุมัติ
+            th(md-column) ทะเบียนรถ
             th(md-column)
         tbody(md-body)
           tr(md-row, ng-if="!requests.length")
@@ -44,10 +44,10 @@ div(layout-padding)
             td(md-cell) {{ req.startDate }}
             td(md-cell) {{ req.titleName }} {{ req.firstName }} {{ req.lastName }}
             td(md-cell) {{ req.targetName }}
-            td(md-cell) {{ req.cause }}
             td(md-cell) 
               md-icon.material-icons(ng-if="req.approveStatus == 'N'") clear
               md-icon.material-icons(ng-if="req.approveStatus == 'Y'") done
+            td(md-cell) {{ req.carLicense }}
             td(md-cell)
 
               md-menu

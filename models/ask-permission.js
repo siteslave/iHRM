@@ -59,9 +59,9 @@ module.exports = {
       .count('* as total');
   },
   
-  adminApprove(db, requestId, approve) {
+  adminApprove(db, askId, approve) {
     return db('ask_permission')
-      .where('id', requestId)
+      .where('id', askId)
       .update(approve);
   },
   

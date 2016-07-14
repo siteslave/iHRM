@@ -55,6 +55,20 @@ module.exports = {
       .orderBy('m.start_date')
   },
 
+  searchAdmin(db, query) {
+    let _query = `%${query}%`;
+    return db('meetings as m')
+      .select('m.*', 't.name as type_meetings_name',
+      db.raw('(select count(*) from meeting_assign where meeting_id=m.id) as total'),
+      db.raw('(select count(*) from meeting_register where meeting_id=m.id) as total_registered'),
+      db.raw('(select count(*) from meeting_register where meeting_id=m.id and approve_status="Y") as total_approve'))
+      .leftJoin('l_type_meetings as t', 't.id', 'm.type_meetings_id')
+      .where('m.title', 'like', _query)
+      .groupBy('m.id')
+      .orderBy('m.start_date')
+      .limit(100);
+  },
+
   clearAssign(db, meetingId) {
     return db('meeting_assign')
       .where('meeting_id', meetingId)
@@ -189,7 +203,8 @@ module.exports = {
 
     return db('meeting_register as mr')
       .select('mr.meeting_id', 'mr.money_id', 'mr.register_date', 'mr.approve_status',
-      'mr.transport_id', 'mr.price', 'mr.score', 'm.title', 'm.owner', 'm.place', 'm.end_date', 'm.start_date', 'm.book_date', 'm.type_meetings_id',
+      'mr.transport_id', 'mr.price', 'mr.score', 'm.title', 'm.owner', 'm.place',
+      'm.end_date', 'm.start_date', 'm.book_date', 'm.type_meetings_id',
       'm.book_no', 'lm.name as money_name', 'lt.name as transport_name')
       .innerJoin('meetings as m', 'm.id', 'mr.meeting_id')
       .leftJoin('l_money as lm', 'lm.id', 'mr.money_id')
@@ -290,6 +305,13 @@ module.exports = {
       .where('meeting_id', meetingId)
       .update('approve_status', 'N');
   }, 
+
+  getMeetingInfo(db, meetingId) {
+    return db('meetings as m')
+      .select('m.*', 'tm.name as type_meetings_name')
+      .leftJoin('l_type_meetings as tm', 'tm.id', 'm.type_meetings_id')
+      .where('m.id', meetingId);
+  },
 
   /** Reports */
 

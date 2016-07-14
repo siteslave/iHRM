@@ -200,9 +200,59 @@ angular.module('app.Meeting.Controller', [])
 
     };
 
-    $scope.getTotal();
-    $scope.getList();
 
+    $scope.doSearch = (event) => {
+
+      if (event.keyCode == 13) {
+        let query = $scope.searchQuery;
+        if (query.length >= 3 ) {
+          $scope.getSearchResult(query);
+        }
+      }
+    };
+
+    $scope.getSearchResult = (query) => {
+      $scope.showLoading = true;
+      $scope.showPaging = false;
+      $scope.meetings = [];
+
+      MeetingService.search(query)
+        .then(res => {
+          $scope.showLoading = false;
+          let data = res.data;
+          if (data.ok) {
+            $scope.showLoading = false;
+
+            data.rows.forEach(v => {
+              let obj = {};
+              obj.start_date1 = v.start_date;
+              obj.end_date1 = v.end_date;
+              obj.book_date1 = v.book_date;
+
+              obj.start_date = moment(v.start_date).format('D/M') + '/' + (moment(v.start_date).get('year') + 543);
+              obj.end_date = moment(v.end_date).format('D/M') + '/' + (moment(v.end_date).get('year') + 543);
+              obj.title = v.title;
+              obj.owner = v.owner;
+              obj.place = v.place;
+              obj.type_meetings_name = v.type_meetings_name;
+              obj.type_meetings_id = v.type_meetings_id;
+              obj.book_no = v.book_no;
+              obj.book_date = moment(v.book_date).format('D/M') + '/' + (moment(v.book_date).get('year') + 543);
+              obj.total = v.total;
+              obj.total_registered = v.total_registered;
+              obj.total_approve = v.total_approve;
+              obj.id = v.id;
+
+              $scope.meetings.push(obj);
+            });
+
+          } else {
+            console.log(data.msg);
+          }
+        });
+    };
+
+    $scope.initialData();
 
   })
   
@@ -300,8 +350,7 @@ angular.module('app.Meeting.Controller', [])
 
       window.location.href = `/admin/employee/pdf/${$scope.userId}/${startDate}/${endDate}`;
     }
-    //
-    $scope.getList();
-    $scope.getTotal();
+
+    $scope.initialData();
 
   });
