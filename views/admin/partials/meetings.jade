@@ -1,33 +1,37 @@
-md-toolbar.md-hue-2.md-whiteframe-z2
+md-toolbar.md-whiteframe-z2
   div.md-toolbar-tools
+    i.material-icons question_answer
     h2
-      i.material-icons question_answer
       | &nbsp; จัดการข้อมูลการประชุม/อบรม
 
 md-progress-linear(md-mode="indeterminate", ng-show="showLoading")
 md-card
   md-card-content
     md-button.md-fab.md-fab-bottom-right(aria-label="Add", ng-click="addNew($event)")
-      md-icon.material.icons person_add
+      md-icon.material-icons add
 
     div(layout="row", layout-fill)
       div(flex)
         md-input-container.md-block
           md-icon.material-icons search
           input(ng-model="searchQuery", placeholder="พิมพ์ หัวข้ออบรม/ประชุม แล้วกด ENTER...", ng-keypress="doSearch($event)")
-
+      div(flex="20")
+        md-button.md-raised(ng-click="initialData()")
+          md-icon.material-icons refresh
+          | รีเฟรช &nbsp;
     md-table-container
       table(md-table)
         thead(md-head)
           tr(md-row)
             th(md-column, md-numeric) #
             //- th(md-column) วันที่
-            th(md-column) เลขที่หนังสือ
-            th(md-column) ระหว่างวันที่
-            th(md-column) หัวข้ออบรม/กิจกรรม
+            //- th(md-column) เลขที่หนังสือ
+            th(md-column, style="width: 20%") ระหว่างวันที่
+            th(md-column, style="width: 60%;") หัวข้ออบรม/กิจกรรม
             //- th(md-column) หน่วยงานที่จัด
-            th(md-column, style="width: 10%;") Assign
-            th(md-column, style="width: 10%;") Register
+            th(md-column) มอบ
+            th(md-column) ลงทะเบียน
+            th(md-column) อนุมัติ
             th(md-column)
         tbody(md-body)
           tr(md-row, ng-if="!meetings.length")
@@ -36,12 +40,13 @@ md-card
           tr(md-row, ng-repeat="m in meetings", ng-if="meetings.length")
             td(md-cell) {{ $index + 1 }}
             //- td(md-cell) {{ m.book_date }}
-            td(md-cell) {{ m.book_no }}
-            td(md-cell) {{ m.start_date }} - {{ m.end_date }}
-            td(md-cell) {{ m.title }}
+            //- td(md-cell) {{ m.book_no }}
+            td(md-cell, style="width: 20%") {{ m.start_date }} - {{ m.end_date }}
+            td(md-cell, style="width: 60%;") {{ m.title }}
             //- td(md-cell) {{ m.owner }}
-            td(md-cell, style="width: 10%;") {{ m.total | number }}
-            td(md-cell, style="width: 10%;") {{ m.total_registered | number }}
+            td(md-cell) {{ m.total | number }}
+            td(md-cell) {{ m.total_registered | number }}
+            td(md-cell) {{ m.total_approve | number }}
             td(md-cell)
 
               md-menu

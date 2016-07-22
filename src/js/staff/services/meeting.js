@@ -6,7 +6,7 @@ angular.module('app.staff.services.Meeting', [])
 
      return {
        list(employeeId, startDate, endDate, limit, offset) {
-         let _url = `${url}/staff/meeting/list`;
+         let _url = `/staff/meeting/list`;
          return $http.post(_url, {
            employeeId: employeeId,
            start: startDate,
@@ -17,7 +17,7 @@ angular.module('app.staff.services.Meeting', [])
        },
 
        total(employeeId, startDate, endDate) {
-         let _url = `${url}/staff/meeting/total`;
+         let _url = `/staff/meeting/total`;
          return $http.post(_url, {
            employeeId: employeeId,
            start: startDate,

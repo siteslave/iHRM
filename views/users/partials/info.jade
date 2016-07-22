@@ -19,8 +19,12 @@ md-card
             input(ng-model="info.title_name", ng-disabled="true")
         div(flex)
           md-input-container.md-block(flex-gt-sm)
-            label ชื่อ-สกุล
-            input(ng-model="info.fullname", ng-disabled="true")
+            label ชื่อ
+            input(ng-model="info.first_name", ng-disabled="true")
+        div(flex)
+          md-input-container.md-block(flex-gt-sm)
+            label สกุล
+            input(ng-model="info.last_name", ng-disabled="true")
         div(flex)
           md-input-container.md-block
             label ตำแหน่ง

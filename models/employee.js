@@ -1,17 +1,17 @@
 'use strict';
 
 module.exports = {
-  
+
   total(db) {
     return db('employees')
       .count('* as total');
   },
-  
+
   list(db, limit, offset) {
 
     return db('employees as e')
       .select(
-        'e.fullname', 'e.id', 'e.title_id', 'e.position_id', 'e.sub_department_id',
+        'e.first_name', 'e.last_name', 'e.id', 'e.cid', 'e.title_id', 'e.position_id', 'e.sub_department_id',
         'e.username', 'sd.department_id as main_id', 'sd.id as sub_id',
         'sd.name as sub_name', 't.name as title_name', 'p.name as position_name'
       )
@@ -22,12 +22,26 @@ module.exports = {
       .offset(offset);
   },
 
+  listAll(db) {
+
+    return db('employees as e')
+      .select(
+      'e.first_name', 'e.last_name', 'e.cid', 'e.id', 'e.title_id', 'e.position_id', 'e.sub_department_id',
+      'e.username', 'sd.department_id as main_id', 'sd.id as sub_id',
+      'sd.name as sub_name', 't.name as title_name', 'p.name as position_name'
+      )
+      .leftJoin('l_titles as t', 't.id', 'e.title_id')
+      .leftJoin('l_positions as p', 'p.id', 'e.position_id')
+      .leftJoin('l_sub_departments as sd', 'sd.id', 'e.sub_department_id')
+      .orderBy('e.first_name');
+  },
+
   search(db, query) {
 
     let _query = `%${query}%`;
     return db('employees as e')
       .select(
-      'e.fullname', 'e.id', 'e.title_id', 'e.position_id', 'e.sub_department_id',
+      'e.first_name', 'e.last_name', 'e.id', 'e.title_id', 'e.position_id', 'e.sub_department_id',
       'e.username', 'sd.department_id as main_id', 'sd.id as sub_id',
       'sd.name as sub_name', 't.name as title_name', 'p.name as position_name'
       )
@@ -45,9 +59,11 @@ module.exports = {
   update(db, employee) {
     return db('employees')
       .update({
-        fullname: employee.fullname,
+        first_name: employee.first_name,
+        last_name: employee.last_name,
         title_id: employee.title_id,
         position_id: employee.position_id,
+        cid: employee.cid,
         sub_department_id: employee.sub_department_id
       })
       .where('id', employee.id);
@@ -65,17 +81,17 @@ module.exports = {
       .del();
   },
 
-  isDuplicated(db, id, fullname) {
+  isDuplicated(db, id, cid) {
     return db('employees')
       .count('* as total')
       .whereNot('id', id)
-      .where('fullname', fullname);
+      .where('cid', cid);
   },
 
   getInfo(db, id) {
 
     return db('employees as e')
-      .select('e.fullname', 'e.id', 'e.username', 't.name as title_name',
+      .select('e.first_name', 'e.last_name', 'e.cid', 'e.id', 'e.username', 't.name as title_name',
         'p.name as position_name', 's.name as sub_name', 'd.name as main_name')
       .leftJoin('l_titles as t', 't.id', 'e.title_id')
       .leftJoin('l_positions as p', 'p.id', 'e.position_id')

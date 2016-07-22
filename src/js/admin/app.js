@@ -5,31 +5,26 @@ angular.module('app', [
   'ngMaterial',
   'md.data.table',
   'app.Configure',
-  'app.controllers.SideNav',
-  'app.controllers.Toolbar',
-  'app.admin.controllers.Money',
-  'app.admin.controllers.Department',
-  'app.admin.controllers.SubDepartment',
-  'app.admin.controllers.Employee',
-  'app.admin.controllers.MeetingHistory',
-  'app.admin.controllers.Meetings',
-  'app.admin.controllers.Staff'
-
+  'app.SideNav',
+  'app.Toolbar',
+  'app.SubDepartment',
+  'app.Staff',
+  'app.Report',
+  'app.Money',
+  'app.Meeting',
+  'app.Employee',
+  'app.Driver',
+  'app.Department',
+  'app.CareRequest',
+  'app.AskPermission'
 ])
   .config(($mdThemingProvider, $stateProvider, $urlRouterProvider, $mdDateLocaleProvider) => {
 
   $mdThemingProvider.theme('default')
-    .primaryPalette('pink', {
-      'default': '400', // by default use shade 400 from the pink palette for primary intentions
-      'hue-1': '100', // use shade 100 for the <code>md-hue-1</code> class
-      'hue-2': '600', // use shade 600 for the <code>md-hue-2</code> class
-      'hue-3': 'A100' // use shade A100 for the <code>md-hue-3</code> class
-    })
+    .primaryPalette('indigo')
     // If you specify less than all of the keys, it will inherit from the
     // default shades
-    .accentPalette('purple', {
-      'default': '200' // use shade 200 for default, and keep all other shades the same
-    });
+    .accentPalette('pink');
 
 
     let shortMonths = ['ม.ค', 'ก.พ', 'มี.ค', 'เม.ย', 'พ.ค', 'มิ.ย', 'ก.ค', 'ส.ค', 'ก.ย', 'ต.ค', 'พ.ย', 'ธ.ค'];
@@ -44,14 +39,13 @@ angular.module('app', [
     };
 
     $mdDateLocaleProvider.formatDate = function (date) {
-      return moment(date).format('DD/MM/YYYY');
+      return `${moment(date).format('DD/MM')}/${moment(date).get('year') + 543}`;
     };
 
     $mdDateLocaleProvider.parseDate = function (dateString) {
       var m = moment(dateString, 'L', true);
       return m.isValid() ? m.toDate() : new Date(NaN);
     };
-
 
     // Routing Setting
     $urlRouterProvider.otherwise('/meetings');
@@ -95,6 +89,35 @@ angular.module('app', [
         url: '/sub-department',
         templateUrl: '/partials/admin/sub-department',
         controller: 'SubDepartmentCtrl'
+      })
+      .state('drivers', {
+        url: '/drivers',
+        templateUrl: '/partials/admin/drivers',
+        controller: 'DriverCtrl'
+      })
+      .state('car-request', {
+        url: '/car-request',
+        templateUrl: '/partials/admin/car-request',
+        controller: 'CarRequestCtrl'
+      })
+      .state('ask-permission', {
+        url: '/ask-permission',
+        templateUrl: '/partials/admin/ask-permission',
+        controller: 'AskPermissionCtrl'
+      })
+      .state('reports', {
+        url: '/reports',
+        templateUrl: '/partials/admin/reports'
+      })
+      .state('reports-meeting', {
+        url: '/reports-meeting',
+        templateUrl: '/partials/admin/reports/meeting',
+        controller: 'ReportsMeetingCtrl'
+      })
+      .state('reports-department', {
+        url: '/reports-department',
+        templateUrl: '/partials/admin/reports/department',
+        controller: 'ReportsDepartmentCtrl'
       });
 
   });

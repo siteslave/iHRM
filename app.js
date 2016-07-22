@@ -16,12 +16,19 @@ let department = require('./routes/admin/department');
 let subDepartment = require('./routes/admin/sub-department');
 let employee = require('./routes/admin/employee');
 let adminStaff = require('./routes/admin/staff');
+let adminReport = require('./routes/admin/reports');
+let adminDrivers = require('./routes/admin/drivers');
+let adminCarRequest = require('./routes/admin/car-request');
+let adminAskPermission = require('./routes/admin/ask-permission');
 
 let partials = require('./routes/partials');
 let basic = require('./routes/basic');
 
 let users = require('./routes/users');
 let userMeetings = require('./routes/users/meetings');
+let userEducation = require('./routes/users/education');
+let userCarRequest = require('./routes/users/car-request');
+let userAskPermission = require('./routes/users/ask-permission');
 
 let staff = require('./routes/staff');
 
@@ -128,9 +135,16 @@ app.use('/admin/meetings', userAuth, isAdmin, adminMeetings);
 app.use('/admin/money', userAuth, isAdmin, money);
 app.use('/admin/department', userAuth, isAdmin, department);
 app.use('/admin/sub-department', userAuth, isAdmin, subDepartment);
+app.use('/admin/reports', userAuth, isAdmin, adminReport);
+app.use('/admin/drivers', userAuth, isAdmin, adminDrivers);
+app.use('/admin/car-request', userAuth, isAdmin, adminCarRequest);
+app.use('/admin/ask-permission', userAuth, isAdmin, adminAskPermission);
 
 app.use('/users', userAuth, isUser, users);
 app.use('/users/meetings', userAuth, isUser, userMeetings);
+app.use('/users/education', userAuth, isUser, userEducation);
+app.use('/users/car-request', userAuth, isUser, userCarRequest);
+app.use('/users/ask-permission', userAuth, isUser, userAskPermission);
 
 app.use('/staff', userAuth, isStaff, staff);
 
@@ -149,6 +163,7 @@ app.use((req, res, next) => {
 // will print stacktrace
 if (app.get('env') === 'development') {
   app.use((err, req, res, next) => {
+    console.log(err);
     res.status(err.status || 500);
     res.send({
       message: err.message,
@@ -160,6 +175,7 @@ if (app.get('env') === 'development') {
 // production error handler
 // no stacktraces leaked to user
 app.use((err, req, res, next) => {
+  console.log(err);
   res.status(err.status || 500);
    res.send({
       message: err.message,

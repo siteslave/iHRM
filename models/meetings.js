@@ -46,12 +46,27 @@ module.exports = {
     return db('meetings as m')
       .select('m.*', 't.name as type_meetings_name',
       db.raw('(select count(*) from meeting_assign where meeting_id=m.id) as total'),
-      db.raw('(select count(*) from meeting_register where meeting_id=m.id) as total_registered'))
+      db.raw('(select count(*) from meeting_register where meeting_id=m.id) as total_registered'),
+      db.raw('(select count(*) from meeting_register where meeting_id=m.id and approve_status="Y") as total_approve'))
       .leftJoin('l_type_meetings as t', 't.id', 'm.type_meetings_id')
       .groupBy('m.id')
       .limit(limit)
       .offset(offset)
       .orderBy('m.start_date')
+  },
+
+  searchAdmin(db, query) {
+    let _query = `%${query}%`;
+    return db('meetings as m')
+      .select('m.*', 't.name as type_meetings_name',
+      db.raw('(select count(*) from meeting_assign where meeting_id=m.id) as total'),
+      db.raw('(select count(*) from meeting_register where meeting_id=m.id) as total_registered'),
+      db.raw('(select count(*) from meeting_register where meeting_id=m.id and approve_status="Y") as total_approve'))
+      .leftJoin('l_type_meetings as t', 't.id', 'm.type_meetings_id')
+      .where('m.title', 'like', _query)
+      .groupBy('m.id')
+      .orderBy('m.start_date')
+      .limit(100);
   },
 
   clearAssign(db, meetingId) {
@@ -74,7 +89,7 @@ module.exports = {
   getAssignList(db, departmentId, limit, offset) {
     return db('meetings as m')
       .select('m.id', 'm.book_no', 'm.book_date', 'm.title', 'm.owner', 'm.place',
-      'm.start_date', 'm.end_date', 'm.score', 'm.type_meetings_id', 'mr.employee_id')
+      'm.start_date', 'm.end_date', 'mr.score', 'm.type_meetings_id', 'mr.employee_id')
       .innerJoin('meeting_assign as ms', 'ms.meeting_id', 'm.id')
       .leftJoin('meeting_register as mr', 'mr.meeting_id', 'm.id')
       .where('ms.department_id', departmentId)
@@ -98,6 +113,20 @@ module.exports = {
     return db('meeting_register')
       .insert(register);
   },
+
+  // userDoRegister(db, register) {
+  //   return db('meeting_register')
+  //     .where('meeting_id', register.meeting_id)
+  //     .update({
+  //       money_id: register.money_id,
+  //       transport_id: register.transport_id,
+  //       price: register.price,
+  //       employee_id: register.employee_id,
+  //       register_date: register.register_date,
+  //       approve_status: register.approve_status,
+  //       score: register.score
+  //     });
+  // },
 
   updateRegister(db, register) {
     return db('meeting_register')
@@ -132,7 +161,7 @@ module.exports = {
   getRegisteredList(db, employeeId, limit, offset) {
     return db('meetings as m')
       .select('m.id', 'm.book_no', 'm.book_date', 'm.title', 'm.owner', 'm.place',
-      'm.start_date', 'm.end_date', 'm.score', 'm.type_meetings_id',
+      'm.start_date', 'm.end_date', 'mr.score', 'm.type_meetings_id',
       'mr.employee_id', 'mr.approve_status', 'mr.money_id', 'mr.transport_id', 'mr.price')
       .innerJoin('meeting_assign as ms', 'ms.meeting_id', 'm.id')
       .leftJoin('meeting_register as mr', 'mr.meeting_id', 'm.id')
@@ -174,7 +203,8 @@ module.exports = {
 
     return db('meeting_register as mr')
       .select('mr.meeting_id', 'mr.money_id', 'mr.register_date', 'mr.approve_status',
-      'mr.transport_id', 'mr.price', 'm.title', 'm.owner', 'm.place', 'm.end_date', 'm.start_date', 'm.book_date', 'm.type_meetings_id',
+      'mr.transport_id', 'mr.price', 'mr.score', 'm.title', 'm.owner', 'm.place',
+      'm.end_date', 'm.start_date', 'm.book_date', 'm.type_meetings_id',
       'm.book_no', 'lm.name as money_name', 'lt.name as transport_name')
       .innerJoin('meetings as m', 'm.id', 'mr.meeting_id')
       .leftJoin('l_money as lm', 'lm.id', 'mr.money_id')
@@ -214,7 +244,7 @@ module.exports = {
   getExportData(db, employeeId, startDate, endDate) {
 
     return db('meetings as m')
-      .select('m.*', 't.name as type_meetings_name', 'lm.name as money_name')
+      .select('m.*', 'mr.score', 'mr.price', 't.name as type_meetings_name', 'lm.name as money_name')
       .innerJoin('meeting_register as mr', 'mr.meeting_id', 'm.id')
       .leftJoin('l_type_meetings as t', 't.id', 'm.type_meetings_id')
       .leftJoin('l_money as lm', 'lm.id', 'mr.money_id')
@@ -225,8 +255,8 @@ module.exports = {
   },
 
   getMeetingRegisteredDetail(db, meetingId, employeeId) {
-    let sql = `select lt.name as title_name, e.fullname, ls.name as sub_name, ld.name as main_name, lp.name as position_name,
-      m.book_no, m.book_date, m.title, m.owner, m.place, m.start_date, m.end_date,
+    let sql = `select concat(lt.name, " ", e.first_name, " ", e.last_name) as fullname, ls.name as sub_name, ld.name as main_name, lp.name as position_name,
+      m.book_no, m.book_date, m.title, m.owner, m.place, m.start_date, m.end_date, mr.score, mr.price,
       timestampdiff(day, m.start_date, m.end_date) + 1 as total_days, ltt.name as transport_name
       from employees as e
       inner join meeting_register as mr on mr.employee_id=e.id
@@ -243,7 +273,7 @@ module.exports = {
 
   getEmployeeRegistered(db, meetingId) {
     let sql = `select mr.meeting_id, mr.employee_id, mr.register_date, mr.transport_id, mr.price, mr.approve_status,
-      t.name as title_name,e.fullname, ls.name as sub_name, lp.name as position_name, lt.name as transport_name
+      t.name as title_name, e.first_name, e.last_name, ls.name as sub_name, lp.name as position_name, lt.name as transport_name
       from meeting_register as mr
       left join employees as e on e.id=mr.employee_id
       left join l_sub_departments as ls on ls.id=e.sub_department_id
@@ -274,6 +304,43 @@ module.exports = {
     return db('meeting_register')
       .where('meeting_id', meetingId)
       .update('approve_status', 'N');
-  }
+  }, 
 
+  getMeetingInfo(db, meetingId) {
+    return db('meetings as m')
+      .select('m.*', 'tm.name as type_meetings_name')
+      .leftJoin('l_type_meetings as tm', 'tm.id', 'm.type_meetings_id')
+      .where('m.id', meetingId);
+  },
+
+  /** Reports */
+
+
+  reportMeetingList(db, start, end) {
+
+    return db('meetings as m')
+      .select('m.*', 't.name as type_meetings_name')
+      .leftJoin('l_type_meetings as t', 't.id', 'm.type_meetings_id')
+      .whereBetween('m.start_date', [start, end])
+      .orderBy('m.start_date');
+  },
+
+  reportDepartmentList(db, departmentId, start, end) {
+    let sql = `
+      select t.name as title_name, e.first_name, e.last_name, p.name as position_name,
+      m.title, m.place, m.owner, m.start_date, m.end_date
+      from meeting_register as mr
+      inner join meetings as m on m.id=mr.meeting_id
+      inner join employees as e on e.id=mr.employee_id
+      inner join l_sub_departments as l on l.id=e.sub_department_id
+      inner join l_departments as d on d.id=l.department_id
+      left join l_titles as t on t.id=e.title_id
+      left join l_positions as p on p.id=e.position_id
+      where d.id=?
+      and m.start_date between ? and ?
+      order by m.title
+    `;
+
+    return db.raw(sql, [departmentId, start, end]);
+  }
 };

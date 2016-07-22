@@ -80,9 +80,9 @@ angular.module('app.users.controllers.Meetings', [
       $scope.initialRegisterData();
     };
 
-    $scope.refresh = () => {
-      $scope.initialData();
-    };
+    // $scope.refresh = () => {
+    //   $scope.initialData();
+    // };
 
     $scope.getList = (limit, offset) => {
       $scope.showLoading = true;
@@ -250,6 +250,6 @@ angular.module('app.users.controllers.Meetings', [
       }
     };
 
-    $scope.initialData();
+    // $scope.initialData();
 
   });

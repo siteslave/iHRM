@@ -67,8 +67,8 @@ angular.module('app.users.controllers.Reports', [
 
             data.rows.forEach(v => {
               let obj = {};
-              obj.start_date = moment(v.start_date).format('DD/MM/YYYY');
-              obj.end_date = moment(v.end_date).format('DD/MM/YYYY');
+              obj.start_date = `${moment(v.start_date).format('DD/MM')}/${moment(v.start_date).get('year') + 543}`;
+              obj.end_date = `${moment(v.end_date).format('DD/MM')}/${moment(v.end_date).get('year') + 543}`;
               obj.start_date1 = v.start_date;
               obj.end_date1 = v.end_date;
               obj.title = v.title;
@@ -108,8 +108,8 @@ angular.module('app.users.controllers.Reports', [
 
             data.rows.forEach(v => {
               let obj = {};
-              obj.start_date = moment(v.start_date).format('DD/MM/YYYY');
-              obj.end_date = moment(v.end_date).format('DD/MM/YYYY');
+              obj.start_date = `${moment(v.start_date).format('DD/MM')}/${moment(v.start_date).get('year') + 543}`;
+              obj.end_date = `${moment(v.end_date).format('DD/MM')}/${moment(v.end_date).get('year') + 543}`;
               obj.meeting_title = v.meeting_title;
               obj.meeting_owner = v.meeting_owner;
               obj.meeting_place = v.meeting_place;

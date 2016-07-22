@@ -2,8 +2,8 @@ md-dialog(aria-label="New Employee", ng-cloak, flex="80")
   form(name="frmNew")
     md-toolbar
       div.md-toolbar-tools
+        i.material-icons person_add
         h2.md-headline
-          i.material-icons person_add
           | &nbsp; กำหนดหน่วยงานที่จะเข้าร่วมกิจกรรม
         span(flex)
         md-button.md-icon-button(ng-click="cancel()")
@@ -27,7 +27,7 @@ md-dialog(aria-label="New Employee", ng-cloak, flex="80")
                 td(md-cell, colspan="7") ไม่พบรายการ
               tr(md-row, ng-repeat="m in members", ng-if="members.length")
                 td(md-cell) {{ $index + 1 }}
-                td(md-cell) {{m.titleName}} {{ m.fullname }}
+                td(md-cell) {{m.titleName}} {{ m.firstName }} {{ m.lastName }}
                 td(md-cell) {{ m.positionName }}
                 td(md-cell) {{ m.subName }}
                 td(md-cell) {{ m.transportName }}
@@ -36,6 +36,8 @@ md-dialog(aria-label="New Employee", ng-cloak, flex="80")
                   md-checkbox(ng-checked="exist(m.employeeId)", ng-click="toggle(m.employeeId)", aria-label="toggle selected")
 
     md-dialog-actions(layout="row")
+      md-button(ng-click="print()", ng-disabled="!members.length").md-raised.md-warn
+        | พิมพ์รายชื่อผู้เข้าร่วม
       span(flex)
       md-button(ng-click="save()", ng-disabled="!members.length").md-raised.md-primary
         | ตกลง

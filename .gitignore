@@ -2,5 +2,7 @@ node_modules
 public/libs
 public/javascripts
 public/stylesheets/style.css
+templates/html
+templates/pdf
 .DS_Store
 .idea

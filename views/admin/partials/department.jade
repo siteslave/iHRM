@@ -1,7 +1,7 @@
-md-toolbar.md-hue-2.md-whiteframe-z2
+md-toolbar.md-whiteframe-z2
   div.md-toolbar-tools
+    i.material-icons perm_media
     h2
-      i.material-icons perm_media
       | &nbsp; หน่วยงานหลัก
 
 md-progress-linear(md-mode="indeterminate", ng-show="showLoading")
@@ -25,7 +25,7 @@ md-card
             td(md-cell) {{ $index + 1 }}
             td(md-cell) {{ d.name }}
             td(md-cell)
-              md-button.md-icon-button(aria-label="Remove", ng-click="remove(d)")
-                md-icon.material-icons delete_sweep
               md-button.md-icon-button(aria-label="More", ng-click="edit($event, d)")
                 md-icon.material-icons create
+              md-button.md-icon-button(aria-label="Remove", ng-click="remove(d)")
+                md-icon.material-icons delete_sweep

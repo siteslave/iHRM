@@ -1,0 +1,32 @@
+md-toolbar.md-whiteframe-z2
+  div.md-toolbar-tools
+    i.material-icons local_taxi
+    h2
+      | &nbsp; พนักงานขับรถ
+
+md-progress-linear(md-mode="indeterminate", ng-show="showLoading")
+md-card
+  md-card-content
+    md-button.md-fab.md-fab-bottom-right(aria-label="Add", ng-click="addNew($event)")
+      md-icon.material.icons add
+
+    md-table-container
+      table(md-table)
+        thead(md-head)
+          tr(md-row)
+            th(md-column, md-numeric) #
+            th(md-column) ชื่อ - สกุล
+            th(md-column) ใช้งาน
+            th(md-column)
+        tbody(md-body)
+          tr(md-row, ng-repeat="d in drivers")
+            td(md-cell) {{ $index + 1 }}
+            td(md-cell) {{ d.title_name }} {{ d.first_name }} {{ d.last_name }} 
+            td(md-cell)
+              md-icon.material-icons.md-primary(ng-if="d.is_active == 'Y'") done
+              md-icon.material-icons(ng-if="d.is_active == 'N'") clear
+            td(md-cell)
+              md-button.md-icon-button(aria-label="Edit", ng-click="edit($event, d)")
+                md-icon.material-icons create
+              md-button.md-icon-button(aria-label="Remove", ng-click="remove($event, d)")
+                md-icon.material-icons delete_sweep

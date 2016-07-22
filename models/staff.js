@@ -95,7 +95,7 @@ module.exports = {
 
   getEmployeeList(db, departmentId, limit, offset) {
     return db('employees as e')
-      .select('e.id', 'lt.name as title_name', 'e.fullname', 'ls.name as sub_department_name',
+      .select('e.id', 'lt.name as title_name', 'e.first_name', 'e.last_name', 'ls.name as sub_department_name',
       'lp.name as position_name')
       .join('l_positions as lp', 'lp.id', 'e.position_id')
       .leftJoin('l_titles as lt', 'lt.id', 'e.title_id')
