@@ -6,3 +6,4 @@ templates/html
 templates/pdf
 .DS_Store
 .idea
+.env

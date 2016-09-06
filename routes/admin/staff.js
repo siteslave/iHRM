@@ -79,7 +79,11 @@ router.post('/search', (req, res, next) => {
 });
 
 router.post('/list', (req, res, next) => {
-  Staff.list(req.db)
+  let db = req.db;
+  let limit = req.body.limit;
+  let offset = req.body.offset;
+
+  Staff.list(db, limit, offset)
     .then(rows => res.send({ ok: true, rows: rows }),
     err => res.send({ ok: false, msg: err }))
 });

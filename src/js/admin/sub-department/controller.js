@@ -92,10 +92,10 @@ angular.module('app.SubDepartment.Controller', [])
     };
 
     $scope.remove = (department) => {
-
+      console.log(department);
       var confirm = $mdDialog.confirm()
         .title('Are you sure?')
-        .textContent('คุณต้องการลบรายการ "' + department.name + '" ใช่หรือไม่?')
+        .textContent('คุณต้องการลบรายการ "' + department.sub_name + '" ใช่หรือไม่?')
         .ariaLabel('Confirmation')
         .ok('ใช่, ฉันต้องการลบ!')
         .cancel('ไม่ใช่, ยกเลิก');
@@ -103,12 +103,12 @@ angular.module('app.SubDepartment.Controller', [])
       $mdDialog.show(confirm).then(function () {
         $rootScope.showLoading = true;
         // remove
-        SubDepartmentService.remove(department.id)
+        SubDepartmentService.remove(department.sub_id)
           .then(data => {
             if (data.ok) {
               $mdToast.show(
                 $mdToast.simple()
-                  .textContent(department.name + ' deleted!')
+                  .textContent(department.sub_name + ' deleted!')
                   .position('right top')
                   .hideDelay(3000)
               );

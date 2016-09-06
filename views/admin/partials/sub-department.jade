@@ -4,14 +4,16 @@ md-toolbar.md-whiteframe-z2
     h2
       | &nbsp; หน่วยงานย่อย
 
+    //- span(flex)
+    //- md-button.md-icon-button(aria-label="Add", ng-click="addNew()")
+    //-   md-icon.material-icons add
+
 md-progress-linear(md-mode="indeterminate", ng-show="showLoading")
+md-button.md-fab.md-fab-bottom-right(aria-label="Add", ng-click="addNew()")
+  md-icon.material.icons add
 md-card
   md-card-content
     //- span.md-headline หน่วยงานย่อย
-
-
-    md-button.md-fab.md-fab-bottom-right(aria-label="Add", ng-click="addNew()")
-      md-icon.material.icons add
 
     div(layout="row", layout-fill)
       div(flex)

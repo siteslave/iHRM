@@ -24,7 +24,7 @@ module.exports = {
     return db('employees as e')
       .select('e.id', 'lt.name as title_name', 'e.fullname', 'ls.name as sub_department_name',
       'lp.name as position_name')
-      .join('l_positions as lp', 'lp.id', 'e.position_id')
+      .leftJoin('l_positions as lp', 'lp.id', 'e.position_id')
       .leftJoin('l_titles as lt', 'lt.id', 'e.title_id')
       .leftJoin('l_sub_departments as ls', 'ls.id', 'e.sub_department_id')
       .leftJoin('l_departments as ld', 'ld.id', 'ls.department_id')
@@ -37,7 +37,7 @@ module.exports = {
     return db('staff as s')
       .select('s.id', 'lt.name as title_name', 's.first_name', 's.last_name', 'ld.name as department_name',
       'lp.name as position_name')
-      .join('l_positions as lp', 'lp.id', 's.position_id')
+      .leftJoin('l_positions as lp', 'lp.id', 's.position_id')
       .leftJoin('l_titles as lt', 'lt.id', 's.title_id')
       .leftJoin('l_departments as ld', 'ld.id', 's.department_id')
       .limit(limit)
@@ -61,7 +61,7 @@ module.exports = {
     return db('staff as s')
       .select('s.id', 's.username', 'lt.name as title_name', 's.first_name', 's.last_name', 'ld.name as department_name',
       'lp.name as position_name')
-      .join('l_positions as lp', 'lp.id', 's.position_id')
+      .leftJoin('l_positions as lp', 'lp.id', 's.position_id')
       .leftJoin('l_titles as lt', 'lt.id', 's.title_id')
       .leftJoin('l_departments as ld', 'ld.id', 's.department_id')
       .where('s.id', staffId)
@@ -74,7 +74,7 @@ module.exports = {
     return db('staff as s')
       .select('s.id', 'lt.name as title_name', 's.first_name', 's.last_name', 'ld.name as department_name',
       'lp.name as position_name')
-      .join('l_positions as lp', 'lp.id', 's.position_id')
+      .leftJoin('l_positions as lp', 'lp.id', 's.position_id')
       .leftJoin('l_titles as lt', 'lt.id', 's.title_id')
       .leftJoin('l_departments as ld', 'ld.id', 's.department_id')
       .where('s.first_name', 'like', _query)
@@ -97,7 +97,7 @@ module.exports = {
     return db('employees as e')
       .select('e.id', 'lt.name as title_name', 'e.first_name', 'e.last_name', 'ls.name as sub_department_name',
       'lp.name as position_name')
-      .join('l_positions as lp', 'lp.id', 'e.position_id')
+      .leftJoin('l_positions as lp', 'lp.id', 'e.position_id')
       .leftJoin('l_titles as lt', 'lt.id', 'e.title_id')
       .leftJoin('l_sub_departments as ls', 'ls.id', 'e.sub_department_id')
       .leftJoin('l_departments as ld', 'ld.id', 'ls.department_id')
@@ -108,7 +108,7 @@ module.exports = {
 
   getEmployeeTotal(db, departmentId) {
     return db('employees as e')
-      .join('l_positions as lp', 'lp.id', 'e.position_id')
+      .leftJoin('l_positions as lp', 'lp.id', 'e.position_id')
       .leftJoin('l_titles as lt', 'lt.id', 'e.title_id')
       .leftJoin('l_sub_departments as ls', 'ls.id', 'e.sub_department_id')
       .leftJoin('l_departments as ld', 'ld.id', 'ls.department_id')
