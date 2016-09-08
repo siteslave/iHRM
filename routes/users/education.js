@@ -10,15 +10,17 @@ router.post('/list', (req, res, next) => {
   let db = req.db;
   let limit = req.body.limit;
   let offset = req.body.offset;
+  let employeeId = req.session.userId;
 
-  Education.list(db, limit, offset)
+  Education.list(db, limit, offset, employeeId)
     .then(rows => res.send({ ok: true, rows: rows }))
     .catch(err => res.send({ ok: false, msg: err }));
 });
 
 router.post('/total', (req, res, next) => {
   let db = req.db;
-  Education.total(db)
+  let employeeId = req.session.userId;
+  Education.total(db, employeeId)
     .then(rows => res.send({ ok: true, total: rows[0].total }))
     .catch(err => res.send({ ok: false, msg: err }));
 });

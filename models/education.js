@@ -15,17 +15,19 @@ module.exports = {
       .where('id', educationId)
       .update({deleted_status: 'Y'});
   },
-  list(db, limit, offset) {
+  list(db, limit, offset, employeeId) {
     return db('education_request')
       .where('deleted_status', 'N')
+      .where('employee_id', employeeId)
       .limit(limit)
       .offset(offset)
       .orderBy('request_year', 'desc'); 
   },
 
-  total(db) {
+  total(db, employeeId) {
     return db('education_request')
       .where('deleted_status', 'N')
+      .where('employee_id', employeeId)
       .count('* as total');
   }
 }
