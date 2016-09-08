@@ -95,7 +95,6 @@ module.exports = {
       .where('ms.department_id', departmentId)
       .whereNull('mr.employee_id')
       .orderBy('m.start_date')
-      .groupBy('m.id')
       .limit(limit)
       .offset(offset);
   },
@@ -163,11 +162,10 @@ module.exports = {
       .select('m.id', 'm.book_no', 'm.book_date', 'm.title', 'm.owner', 'm.place',
       'm.start_date', 'm.end_date', 'mr.score', 'm.type_meetings_id',
       'mr.employee_id', 'mr.approve_status', 'mr.money_id', 'mr.transport_id', 'mr.price')
-      .innerJoin('meeting_assign as ms', 'ms.meeting_id', 'm.id')
-      .leftJoin('meeting_register as mr', 'mr.meeting_id', 'm.id')
+      .innerJoin('meeting_register as mr', 'mr.meeting_id', 'm.id')
       .where('mr.employee_id', employeeId)
+      .groupBy('mr.meeting_id')
       .orderBy('m.start_date')
-      .groupBy('m.id')
       .limit(limit)
       .offset(offset);
   },
@@ -175,7 +173,7 @@ module.exports = {
   getRegisteredTotal(db, employeeId) {
     return db('meetings as m')
       .count('* as total')
-      .leftJoin('meeting_register as mr', 'mr.meeting_id', 'm.id')
+      .innerJoin('meeting_register as mr', 'mr.meeting_id', 'm.id')
       .where('mr.employee_id', employeeId);
   },
 

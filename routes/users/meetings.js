@@ -95,7 +95,10 @@ router.post('/assign/list', (req, res, next) => {
 
   Meetings.getAssignList(req.db, department_id, limit, offset)
     .then(rows => res.send({ ok: true, rows: rows }))
-    .catch(err => res.send({ ok: false, msg: err }));
+    .catch(err => {
+      console.log(err);
+      res.send({ ok: false, msg: err })
+    });
 });
 
 router.post('/register/total', (req, res, next) => {
