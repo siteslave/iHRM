@@ -48,7 +48,7 @@ module.exports = {
       .leftJoin('l_titles as t', 't.id', 'e.title_id')
       .leftJoin('l_positions as p', 'p.id', 'e.position_id')
       .leftJoin('l_sub_departments as sd', 'sd.id', 'e.sub_department_id')
-      .where('fullname', 'like', _query);
+      .where('first_name', 'like', _query);
   },
 
   save(db, employee) {

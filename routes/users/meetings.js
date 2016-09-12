@@ -80,6 +80,7 @@ router.put('/register', (req, res, next) => {
 
 router.post('/assign/total', (req, res, next) => {
   let department_id = req.session.department_id;
+  // console.log(department_id)
   Meetings.getAssignTotal(req.db, department_id)
     .then(rows => {
       console.log(rows[0]);

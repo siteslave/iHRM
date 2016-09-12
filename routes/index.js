@@ -67,6 +67,7 @@ router.post('/user-login', (req, res, next)  => {
           req.session.department_id = rows[0].department_id;
           req.session.department_name = rows[0].department_name;
           req.session.sub_department_name = rows[0].sub_department_name;
+          console.log(req.session)
           res.redirect('/users')
         } else {
           res.render('user-login', {err: 'ชื่อผู้ใช้งาน หรือ รหัสผ่าน ไม่ถูกต้อง!'})

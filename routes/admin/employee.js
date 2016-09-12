@@ -36,6 +36,7 @@ router.post('/list', (req, res, next) => {
 router.post('/search', (req, res, next) => {
   let query = req.body.query;
 
+  console.log(query);
   Employee.search(req.db, query)
     .then(rows => res.send({ ok: true, rows: rows }))
     .catch(err => res.send({ ok: false, msg: err }));
