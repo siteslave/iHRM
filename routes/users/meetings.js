@@ -294,8 +294,10 @@ router.get('/print/register/:id', (req, res, next) => {
   // json.fullname = req.session.fullname;
   // json.departmentName = req.session.department_name;
   // json.subDepartmentName =  req.session.sub_department_name
+
   Meetings.getMeetingRegisteredDetail(req.db, meetingId, employeeId)
     .then(rows => {
+      console.log(rows[0][0])
       json.meetings = rows[0][0];
       let mStartDate = Utils.getMonthName(moment(json.meetings.start_date).format('MM'));
       let mEndDate = Utils.getMonthName(moment(json.meetings.end_date).format('MM'));
