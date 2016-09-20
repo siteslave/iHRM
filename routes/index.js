@@ -59,6 +59,7 @@ router.post('/user-login', (req, res, next)  => {
     let _password = crypto.createHash('md5').update(password).digest('hex');
     Login.userLogin(req.db, username, _password)
       .then(rows => {
+        console.log(rows)
         if (rows.length) {
           req.session.logged = true;
           req.session.type = 2;

@@ -80,7 +80,7 @@ router.put('/register', (req, res, next) => {
 
 router.post('/assign/total', (req, res, next) => {
   let department_id = req.session.department_id;
-  // console.log(department_id)
+  console.log(department_id)
   Meetings.getAssignTotal(req.db, department_id)
     .then(rows => {
       console.log(rows[0]);
@@ -93,6 +93,8 @@ router.post('/assign/list', (req, res, next) => {
   let limit = req.body.limit;
   let offset = req.body.offset;
   let department_id = req.session.department_id;
+
+  console.log(department_id)
 
   Meetings.getAssignList(req.db, department_id, limit, offset)
     .then(rows => res.send({ ok: true, rows: rows }))
