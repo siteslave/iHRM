@@ -40,7 +40,7 @@ angular.module('app.users.controllers.dialogs.EducationNew', [])
             }
         })
       } else {
-        
+        alert('ข้อูลไม่สมบูรณ์')
       }
     };
     

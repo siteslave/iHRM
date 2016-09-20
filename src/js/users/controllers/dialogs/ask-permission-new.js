@@ -1,7 +1,7 @@
 'use strict'; 
 
 angular.module('app.users.controllers.dialogs.AskPermissionNew', [])
-  .controller('AskPermissionNewCtrl', ($scope, $rootScope, $mdDialog, $mdToast, AskPermissionService) => {
+  .controller('AskPermissionNewCtrl', ($scope, $rootScope, $mdDialog, $mdToast, $q, AskPermissionService) => {
   
     $scope.ask = {};
     $scope.employees = [];
@@ -56,14 +56,29 @@ angular.module('app.users.controllers.dialogs.AskPermissionNew', [])
 
       // console.log(ask);
       // console.log($scope.selectedEmployees);
-      let employees = [];
+      let _employees = [];
 
       $scope.selectedEmployees.forEach(v => {
-        employees.push(v.id);
+        _employees.push(v.id);
       });
 
-      ask.employees = employees;
-      
+      ask.employees = _employees;
+    
+      let querySearch = (query) => {
+        let _employees = [];
+        let q = $q.defer();
+
+        $scope.employees.forEach(v => {
+          if (v.indexOf(query)) _employees.push(v)
+        })
+        
+        let data = _employees.length ? _employees : $scope.employees;
+        q.resolve(data);
+        return q.promise;
+        //return query ? $scope.employees.filter(createFilterFor(query)) : $scope.employees;
+      }
+
+
       AskPermissionService.save(ask)
         .then(res => {
           let data = res.data;
