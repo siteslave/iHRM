@@ -94,6 +94,7 @@ module.exports = {
       .leftJoin('meeting_register as mr', 'mr.meeting_id', 'm.id')
       .where('ms.department_id', departmentId)
       .whereNotIn('m.id', meetingIds)
+      .groupBy('m.id')
       .orderBy('m.start_date')
       .limit(limit)
       .offset(offset);
@@ -105,7 +106,8 @@ module.exports = {
       .innerJoin('meeting_assign as ms', 'ms.meeting_id', 'm.id')
       .leftJoin('meeting_register as mr', 'mr.meeting_id', 'm.id')
       .where('ms.department_id', departmentId)
-      .whereNotIn('m.id', meetingIds);
+      .whereNotIn('m.id', meetingIds)
+      .groupBy('m.id');
   },
 
   getRegisteredMeetings(db, employeeId) {

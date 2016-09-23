@@ -107,7 +107,7 @@ router.post('/assign/list', (req, res, next) => {
 
   Meetings.getRegisteredMeetings(req.db, employeeId)
     .then(rows => {
-      console.log(rows)
+      // console.log(rows)
       rows.forEach(v => {
         meetingIds.push(v.id)
       })
