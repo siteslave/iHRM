@@ -86,26 +86,33 @@ module.exports = {
       .where('meeting_id', id);
   },
 
-  getAssignList(db, departmentId, limit, offset) {
+  getAssignList(db, meetingIds, departmentId, limit, offset) {
     return db('meetings as m')
       .select('m.id', 'm.book_no', 'm.book_date', 'm.title', 'm.owner', 'm.place',
       'm.start_date', 'm.end_date', 'mr.score', 'm.type_meetings_id', 'mr.employee_id')
       .innerJoin('meeting_assign as ms', 'ms.meeting_id', 'm.id')
       .leftJoin('meeting_register as mr', 'mr.meeting_id', 'm.id')
       .where('ms.department_id', departmentId)
-      .whereNull('mr.employee_id')
+      .whereNotIn('m.id', meetingIds)
       .orderBy('m.start_date')
       .limit(limit)
       .offset(offset);
   },
 
-  getAssignTotal(db, departmentId) {
+  getAssignTotal(db, meetingIds, departmentId) {
     return db('meetings as m')
       .count('* as total')
       .innerJoin('meeting_assign as ms', 'ms.meeting_id', 'm.id')
       .leftJoin('meeting_register as mr', 'mr.meeting_id', 'm.id')
       .where('ms.department_id', departmentId)
-      .whereNull('mr.employee_id');
+      .whereNotIn('m.id', meetingIds);
+  },
+
+  getRegisteredMeetings(db, employeeId) {
+    return db('meetings as m')
+      .distinct('m.id')
+      .innerJoin('meeting_register as mr', 'mr.meeting_id', 'm.id')
+      .where('mr.employee_id', employeeId);
   },
 
   doRegister(db, register) {

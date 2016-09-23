@@ -80,10 +80,18 @@ router.put('/register', (req, res, next) => {
 
 router.post('/assign/total', (req, res, next) => {
   let department_id = req.session.department_id;
-  console.log(department_id)
-  Meetings.getAssignTotal(req.db, department_id)
+  let employeeId = req.session.userId;
+  let meetingIds = [];
+
+  Meetings.getRegisteredMeetings(req.db, employeeId)
     .then(rows => {
-      console.log(rows[0]);
+      rows.forEach(v => {
+        meetingIds.push(v.id)
+      })
+      return Meetings.getAssignTotal(req.db, meetingIds, department_id)
+  })
+  
+    .then(rows => {
       res.send({ ok: true, total: rows[0].total });
     })
     .catch(err => res.send({ ok: false, msg: err }));
@@ -93,10 +101,18 @@ router.post('/assign/list', (req, res, next) => {
   let limit = req.body.limit;
   let offset = req.body.offset;
   let department_id = req.session.department_id;
+  let employeeId = req.session.userId;
+  // console.log(department_id)
+  let meetingIds = [];
 
-  console.log(department_id)
-
-  Meetings.getAssignList(req.db, department_id, limit, offset)
+  Meetings.getRegisteredMeetings(req.db, employeeId)
+    .then(rows => {
+      console.log(rows)
+      rows.forEach(v => {
+        meetingIds.push(v.id)
+      })
+      return Meetings.getAssignList(req.db, meetingIds, department_id, limit, offset)
+    })
     .then(rows => res.send({ ok: true, rows: rows }))
     .catch(err => {
       console.log(err);
