@@ -30,7 +30,7 @@ angular.module('app.users.controllers.dialogs.AskPermissionNew', [])
        
       });
     
-    $scope.selectedItemChange = (employee) => {
+    $scope.selectEmployee = (employee) => {
       // console.log(employee);
       if (_.size(employee)) {
         let idx = _.findIndex($scope.selectedEmployees, { id: employee.id });
