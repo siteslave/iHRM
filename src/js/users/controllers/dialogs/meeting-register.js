@@ -32,7 +32,7 @@ angular.module('app.users.controllers.dialog.MeetingRegister', [])
 
 
     $scope.save = () => {
-      // console.log($scope.meetings);
+      console.log($scope.meetings);
       MeetingsService.saveRegister($scope.meetings)
         .then(res => {
           let data = res.data;

@@ -15,13 +15,16 @@ angular.module('app.Meeting.dialog.Update', [])
     $scope.meetings.id = $rootScope.currentMeeting.id;
     $scope.meetings.book_no = $rootScope.currentMeeting.book_no;
     $scope.meetings.book_date = new Date(moment($rootScope.currentMeeting.book_date1).format());
-    $scope.meetings.start_date = new Date(moment($rootScope.currentMeeting.start_date1).format());
-    $scope.meetings.end_date = new Date(moment($rootScope.currentMeeting.end_date1).format());
+    $scope.meetings.start = new Date(moment($rootScope.currentMeeting.start_date1).format());
+    $scope.meetings.end = new Date(moment($rootScope.currentMeeting.end_date1).format());
     $scope.meetings.title = $rootScope.currentMeeting.title;
     $scope.meetings.owner = $rootScope.currentMeeting.owner;
     $scope.meetings.place = $rootScope.currentMeeting.place;
     $scope.meetings.type_meetings_id = $rootScope.currentMeeting.type_meetings_id;
 
+
+    console.log($scope.meetings);
+    
     // Get type meetings
     MeetingService.getTypeMeetings()
       .then(res => {
@@ -40,19 +43,22 @@ angular.module('app.Meeting.dialog.Update', [])
     // save meetings
     $scope.save = () => {
 
-      let meeting = {};
+      let _meeting = {};
 
-      meeting.id = $scope.meetings.id
-      meeting.book_no = $scope.meetings.book_no;
-      meeting.book_date = moment($scope.meetings.book_date).format('YYYY-MM-DD'); 
-      meeting.start_date = moment($scope.meetings.start_date).format('YYYY-MM-DD');
-      meeting.end_date = $scope.meetings.end_date = moment($scope.meetings.end_date).format('YYYY-MM-DD');
-      meeting.title = $scope.meetings.title;
-      meeting.owner = $scope.meetings.owner;
-      meeting.place = $scope.meetings.place;
-      meeting.type_meetings_id = $scope.meetings.type_meetings_id;
+      let startDate = $scope.meetings.start;
+      let endDate = $scope.meetings.end;    
       
-      MeetingService.update(meeting)
+      _meeting.id = $scope.meetings.id
+      _meeting.book_no = $scope.meetings.book_no;
+      _meeting.book_date = moment($scope.meetings.book_date).format('YYYY-MM-DD'); 
+      _meeting.start_date = moment(startDate).format('YYYY-MM-DD');
+      _meeting.end_date = moment(endDate).format('YYYY-MM-DD');
+      _meeting.title = $scope.meetings.title;
+      _meeting.owner = $scope.meetings.owner;
+      _meeting.place = $scope.meetings.place;
+      _meeting.type_meetings_id = $scope.meetings.type_meetings_id;
+      
+      MeetingService.update(_meeting)
         .then(res => {
           let data = res.data;
           if (data.ok) {

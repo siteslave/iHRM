@@ -322,7 +322,10 @@ angular.module('app.Meeting.Controller', [])
             data.rows.forEach(v => {
               let obj = {};
               obj.start_date = moment(v.start_date).format('DD/MM/YYYY');
+              obj.start_date1 = v.start_date;
               obj.end_date = moment(v.end_date).format('DD/MM/YYYY');
+              obj.end_date1 = v.end_date;
+
               obj.title = v.title;
               obj.owner = v.owner;
               obj.place = v.place;
@@ -334,6 +337,8 @@ angular.module('app.Meeting.Controller', [])
               $scope.meetings.push(obj);
 
             });
+
+            console.log($scope.meetings)
 
           } else {
             $scope.showLoading = false;
