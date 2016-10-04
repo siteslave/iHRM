@@ -44,7 +44,17 @@ angular.module('app.users.controllers.dialogs.AskPermissionUpdate', [])
        
       });
     
-    $scope.selectedItemChange = (employee) => {
+    // $scope.selectedItemChange = (employee) => {
+    //   // console.log(employee);
+    //   if (_.size(employee)) {
+    //     let idx = _.findIndex($scope.selectedEmployees, { id: employee.id });
+    //     if (idx == -1) {
+    //       $scope.selectedEmployees.push({ id: employee.id, fullname: employee.fullname });
+    //     }
+    //   }
+    // };
+    
+    $scope.selectEmployee = (employee) => {
       // console.log(employee);
       if (_.size(employee)) {
         let idx = _.findIndex($scope.selectedEmployees, { id: employee.id });
@@ -53,7 +63,7 @@ angular.module('app.users.controllers.dialogs.AskPermissionUpdate', [])
         }
       }
     };
-    
+
     $scope.removeSelectedEmployee = (idx) => {
       $scope.selectedEmployees.splice(idx, 1);
     };

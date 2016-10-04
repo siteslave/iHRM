@@ -125,9 +125,9 @@ router.put('/', (req, res, next) => {
       .then(() => res.send({ ok: true }))
       .catch((err) => res.send({ ok: false, msg: err }));
 
-    AskPermission.save(db, ask)
-      .then(() => res.send({ ok: true }))
-      .catch(err => res.send({ ok: false, msg: err }));
+  //   AskPermission.save(db, ask)
+  //     .then(() => res.send({ ok: true }))
+  //     .catch(err => res.send({ ok: false, msg: err }));
   } else {
     res.send({ ok: false, msg: 'ข้อมูลไม่สมบูรณ์' });
   }
