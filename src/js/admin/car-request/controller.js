@@ -85,6 +85,7 @@ angular.module('app.CareRequest.Controller', [])
               obj.firstName = v.first_name;
               obj.lastName = v.last_name;
               obj.approveStatus = v.approve_status;
+              console.log(obj);
               $scope.requests.push(obj);
             });
 
