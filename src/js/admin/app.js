@@ -12,6 +12,7 @@ angular.module('app', [
   'app.Report',
   'app.Money',
   'app.Position',
+  'app.CarLicense',
   'app.Meeting',
   'app.Employee',
   'app.Driver',
@@ -80,6 +81,11 @@ angular.module('app', [
         url: '/position',
         templateUrl: '/partials/admin/position',
         controller: 'PositionCtrl'
+      })
+      .state('car-license', {
+        url: '/car-license',
+        templateUrl: '/partials/admin/car-license',
+        controller: 'CarLicenseCtrl'
       })
       .state('department', {
         url: '/department',

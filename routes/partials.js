@@ -16,6 +16,10 @@ router.get('/admin/position', (req, res, next) => {
   res.render('admin/partials/position');
 });
 
+router.get('/admin/car-license', (req, res, next) => {
+  res.render('admin/partials/car-license');
+});
+
 router.get('/admin/department', (req, res, next) => {
   res.render('admin/partials/department');
 });
