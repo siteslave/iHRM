@@ -15,7 +15,7 @@ md-dialog(aria-label="New Driver", ng-cloak, flex="70")
           div(flex="20")
               md-input-container.md-block(flex-gt-sm)
                 label คำนำหน้า
-                md-select(ng-model="driver.titleId", ng-required="true")
+                md-select(ng-model="driver.titleId", ng-required="false")
                   md-option(ng-repeat="t in titles", value="{{t.id}}")
                     | {{t.name}}
         div(layout="row")
