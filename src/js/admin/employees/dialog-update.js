@@ -6,8 +6,18 @@ angular.module('app.Employee.dialog.Update', [])
     $scope.employee = {};
     $scope.isUpdate = true;
 
-    let employee = $rootScope.currentEmployee;
-
+    let _employee = $rootScope.currentEmployee;
+    // console.log($rootScope.currentEmployee)
+    $scope.employee.firstName = _employee.first_name;
+    $scope.employee.lastName = _employee.last_name;
+    $scope.employee.title = _employee.title_id;
+    $scope.employee.position = _employee.position_id;
+    $scope.employee.username = _employee.username;
+    $scope.employee.mainDepId = _employee.main_id;
+    $scope.employee.subDepId = _employee.sub_id;
+    $scope.employee.cid = _employee.cid;
+    $scope.employee.id = _employee.id;
+    
     $scope.getSubDepartment = () => {
       let mainId = $scope.employee.mainDepId;
       EmployeeService.getSubDepartment(mainId)
@@ -46,7 +56,7 @@ angular.module('app.Employee.dialog.Update', [])
         // connection error
       });
 
-    EmployeeService.getSubDepartment(employee.main_id)
+    EmployeeService.getSubDepartment(_employee.main_id)
       .then(res => {
         let data = res.data;
         $scope.subDepartments = data.rows;
@@ -54,48 +64,41 @@ angular.module('app.Employee.dialog.Update', [])
         // connection error
       });
 
-    $scope.employee.firstName = employee.first_name;
-    $scope.employee.lastName = employee.last_name;
-    $scope.employee.title = employee.title_id;
-    $scope.employee.position = employee.position_id;
-    $scope.employee.username = employee.username;
-    $scope.employee.mainDepId = employee.main_id;
-    $scope.employee.subDepId = employee.sub_id;
-    $scope.employee.cid = employee.cid;
-    $scope.employee.id = employee.id;
-
-    //console.log($scope.employee);
-
-
     $scope.save = () => {
-      //console.log($scope.employee);
-      EmployeeService.update($scope.employee)
-        .then(res => {
-          let data = res.data;
-          if (data.ok) {
+      console.log($scope.employee);
+      if ($scope.employee.firstName && $scope.employee.lastName &&
+        $scope.employee.mainDepId && $scope.employee.subDepId &&
+        $scope.employee.position && $scope.employee.title) {
+        EmployeeService.update($scope.employee)
+          .then(res => {
+            let data = res.data;
+            if (data.ok) {
+              $mdToast.show(
+                $mdToast.simple()
+                  .textContent('บันทึกรายการเสร็จเรียบร้อยแล้ว')
+                  .position('right top')
+                  .hideDelay(3000)
+              );
+              $mdDialog.hide();
+            } else {
+              $mdToast.show(
+                $mdToast.simple()
+                  .textContent('ERROR: ' + JSON.stringify(data.msg))
+                  .position('right top')
+                  .hideDelay(3000)
+              );
+            }
+          }, () => {
             $mdToast.show(
               $mdToast.simple()
-                .textContent('บันทึกรายการเสร็จเรียบร้อยแล้ว')
+                .textContent('ERROR: Connection error')
                 .position('right top')
                 .hideDelay(3000)
             );
-            $mdDialog.hide();
-          } else {
-            $mdToast.show(
-              $mdToast.simple()
-                .textContent('ERROR: ' + JSON.stringify(data.msg))
-                .position('right top')
-                .hideDelay(3000)
-            );
-          }
-        }, () => {
-          $mdToast.show(
-            $mdToast.simple()
-              .textContent('ERROR: Connection error')
-              .position('right top')
-              .hideDelay(3000)
-          );
-        });
+          });
+      } else {
+        alert('กรุณาระบุข้อมูลให้ครบถ้วน')
+      }
     };
 
 

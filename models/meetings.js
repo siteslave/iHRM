@@ -52,7 +52,7 @@ module.exports = {
       .groupBy('m.id')
       .limit(limit)
       .offset(offset)
-      .orderBy('m.start_date')
+      .orderBy('m.start_date', 'desc')
   },
 
   searchAdmin(db, query) {
@@ -65,7 +65,7 @@ module.exports = {
       .leftJoin('l_type_meetings as t', 't.id', 'm.type_meetings_id')
       .where('m.title', 'like', _query)
       .groupBy('m.id')
-      .orderBy('m.start_date')
+      .orderBy('m.start_date', 'desc')
       .limit(100);
   },
 

@@ -114,7 +114,6 @@ angular.module('app.CareRequest.Controller', [])
         });
     };
 
-
     $scope.remove = (ev, request) => {
 
       var confirm = $mdDialog.confirm()

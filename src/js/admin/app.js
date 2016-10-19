@@ -11,6 +11,7 @@ angular.module('app', [
   'app.Staff',
   'app.Report',
   'app.Money',
+  'app.Position',
   'app.Meeting',
   'app.Employee',
   'app.Driver',
@@ -74,6 +75,11 @@ angular.module('app', [
         url: '/money',
         templateUrl: '/partials/admin/money',
         controller: 'MoneyCtrl'
+      })
+      .state('position', {
+        url: '/position',
+        templateUrl: '/partials/admin/position',
+        controller: 'PositionCtrl'
       })
       .state('department', {
         url: '/department',

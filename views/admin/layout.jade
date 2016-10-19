@@ -28,6 +28,10 @@ head
   script(src="/javascripts/admin/money/controller.js")
   script(src="/javascripts/admin/money/service.js")
 
+  script(src="/javascripts/admin/positions/index.js")
+  script(src="/javascripts/admin/positions/controller.js")
+  script(src="/javascripts/admin/positions/service.js")
+
   script(src="/javascripts/admin/departments/index.js")
   script(src="/javascripts/admin/departments/controller.js")
   script(src="/javascripts/admin/departments/service.js")
@@ -161,6 +165,11 @@ body(ng-app="app")
                   md-icon(md-menu-align-target)
                     i.material-icons device_hub
                   | หน่วยงานย่อย
+              md-menu-item
+                md-button(ui-sref="position")
+                  md-icon(md-menu-align-target)
+                    i.material-icons event_seat
+                  | ตำแหน่ง
       md-content(layout="column", layout-fill, layout-align="top center", style="background-color: #e9ebee;")
         div(layout="column", layout-fill, ng-controller="ToolbarCtrl")
           md-toolbar.md-whiteframe-z2(ng-show="!showSearch")

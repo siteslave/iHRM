@@ -25,7 +25,7 @@ md-dialog(aria-label="New Employee", ng-cloak, flex="80")
           div(flex="20")
               md-input-container.md-block(flex-gt-sm)
                 label คำนำหน้า
-                md-select(ng-model="employee.title", ng-required="true")
+                md-select(ng-model="employee.title", ng-required="false")
                   md-option(ng-repeat="t in titles", value="{{t.id}}")
                     | {{t.name}}
           div(flex)
@@ -44,19 +44,19 @@ md-dialog(aria-label="New Employee", ng-cloak, flex="80")
           div(flex)
             md-input-container.md-block(flex-gt-sm)
                 label ตำแหน่ง
-                md-select(ng-model="employee.position", ng-required="true")
+                md-select(ng-model="employee.position", ng-required="false")
                   md-option(ng-repeat="p in positions", value="{{p.id}}")
                     | {{p.name}}
           div(flex)
             md-input-container.md-block(flex-gt-sm)
               label หน่วยงานหลัก
-              md-select(ng-model="employee.mainDepId", ng-required="true", ng-change="getSubDepartment()")
+              md-select(ng-model="employee.mainDepId", ng-required="false", ng-change="getSubDepartment()")
                 md-option(ng-repeat="dep in departments", value="{{dep.id}}")
                   | {{dep.name}}
           div(flex)
             md-input-container.md-block(flex-gt-sm)
               label หน่วยงานย่อย
-              md-select(ng-model="employee.subDepId", ng-required="true")
+              md-select(ng-model="employee.subDepId", ng-required="false")
                 md-option(ng-repeat="dep in subDepartments", value="{{dep.sub_id}}")
                   | {{dep.sub_name}}
 

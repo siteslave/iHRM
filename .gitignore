@@ -7,3 +7,4 @@ templates/pdf
 .DS_Store
 .idea
 .env
+yarn.lock

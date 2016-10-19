@@ -2,8 +2,6 @@
 
 angular.module('app.Employee.dialog.New', [])
   .controller('EmployeeNewCtrl', ($scope, $rootScope, $mdDialog, $mdToast, EmployeeService) => {
-    console.log('initial new ctrl');
-
     $scope.employee = {};
     $scope.isUpdate = false;
 
@@ -47,8 +45,11 @@ angular.module('app.Employee.dialog.New', [])
     // Save employee
     $scope.save = () => {
       //console.log($scope.employee);
-      if ($scope.employee.name && $scope.employee.cid && $scope.employee.username && $scope.employee.password) {
-        EmployeeService.save($scope.employee)
+      if ($scope.employee.username && $scope.employee.password &&
+        $scope.employee.firstName && $scope.employee.lastName &&
+        $scope.employee.mainDepId && $scope.employee.subDepId &&
+        $scope.employee.position && $scope.employee.title) {
+      EmployeeService.save($scope.employee)
           .then(res => {
             let data = res.data;
             if (data.ok) {

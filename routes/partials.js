@@ -12,6 +12,10 @@ router.get('/admin/money', (req, res, next) => {
   res.render('admin/partials/money');
 });
 
+router.get('/admin/position', (req, res, next) => {
+  res.render('admin/partials/position');
+});
+
 router.get('/admin/department', (req, res, next) => {
   res.render('admin/partials/department');
 });
