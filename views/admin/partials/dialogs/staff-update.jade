@@ -25,7 +25,7 @@ md-dialog(aria-label="New Staff", ng-cloak, flex="70")
           div(flex="20")
               md-input-container.md-block(flex-gt-sm)
                 label คำนำหน้า
-                md-select(ng-model="staff.titleId", ng-required="true")
+                md-select(ng-model="staff.titleId", ng-required="false")
                   md-option(ng-repeat="t in titles", value="{{t.id}}")
                     | {{t.name}}
           div(flex)
@@ -39,14 +39,14 @@ md-dialog(aria-label="New Staff", ng-cloak, flex="70")
           div(flex)
             md-input-container.md-block(flex-gt-sm)
                 label ตำแหน่ง
-                md-select(ng-model="staff.positionId", ng-required="true")
+                md-select(ng-model="staff.positionId", ng-required="false")
                   md-option(ng-repeat="p in positions", value="{{p.id}}")
                     | {{p.name}}
         div(layout="row")
           div(flex="50")
             md-input-container.md-block(flex-gt-sm)
               label หน่วยงานที่รับผิดชอบ
-              md-select(ng-model="staff.departmentId", ng-required="true")
+              md-select(ng-model="staff.departmentId", ng-required="false")
                 md-option(ng-repeat="dep in departments", value="{{dep.id}}")
                   | {{dep.name}}
           div(flex)

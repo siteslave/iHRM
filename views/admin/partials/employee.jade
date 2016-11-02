@@ -25,17 +25,17 @@ md-card
         thead(md-head)
           tr(md-row)
             th(md-column, md-numeric) #
-            //- th(md-column) ชื่อผู้ใช้งาน
+            th(md-column) รหัส
             th(md-column) ชื่อ-สกุล
             th(md-column) ตำแหน่ง
             th(md-column) สังกัด
             th(md-column)
         tbody(md-body)
           tr(md-row, ng-if="!employees.length")
-            td(md-cell, colspan="5") ไม่พบรายการ
+            td(md-cell, colspan="6") ไม่พบรายการ
           tr(md-row, ng-repeat="e in employees", ng-if="employees.length")
             td(md-cell) {{ $index + 1 }}
-            //- td(md-cell) {{ e.username }}
+            td(md-cell) {{ e.employee_code }}
             td(md-cell) {{ e.title_name }}{{ e.first_name }} {{ e.last_name }}
             td(md-cell) {{ e.position_name }}
             td(md-cell) {{ e.sub_name }}

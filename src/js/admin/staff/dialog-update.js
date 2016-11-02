@@ -58,7 +58,7 @@ angular.module('app.Staff.dialog.Update', [])
       $scope.staff.activeStatus = $scope.staff.active ? 'Y' : 'N';
       $scope.staff.staffId = $scope.staffId;
 
-      if ($scope.staff.firstName && $scope.staff.lastName) {
+      if ($scope.staff.firstName && $scope.staff.lastName && $scope.staff.departmentId) {
         StaffService.update($scope.staff)
           .then(res => {
             let data = res.data;

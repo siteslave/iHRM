@@ -3,8 +3,9 @@
 module.exports = {
   list(db, employeeId, limit, offset) {
     return db('car_request as c')
-      .select('c.*', db.raw('concat(d.first_name, " ", d.last_name) as driver_name'))
+      .select('c.*', 'cl.name as car_license_name', db.raw('concat(d.first_name, " ", d.last_name) as driver_name'))
       .leftJoin('drivers as d', 'd.id', 'c.driver_id')
+      .leftJoin('car_license as cl', 'cl.id', 'c.car_license_id')
       .where('c.employee_id', employeeId)
       .orderBy('c.request_date', 'desc')
       .limit(limit)
@@ -32,15 +33,18 @@ module.exports = {
   
   adminList(db, approveStatus, startDate, endDate, limit, offset) {
     return db('car_request as c')
-      .select('c.id', 'c.target_name', 'c.cause', 'c.start_date', 'c.end_date', 'c.start_time', 'c.end_time',
-        'c.request_date', 'c.car_license', 'c.driver_id', 't.name as title_name', 'e.first_name', 'e.last_name', 'c.approve_status')
-      .leftJoin('employees as e', 'e.id', 'c.employee_id')
-      .leftJoin('l_titles as t', 't.id', 'e.title_id')
-      .where('c.approve_status', approveStatus)
-      .whereBetween('c.start_date', [startDate, endDate])
-      .orderBy('c.start_date', 'desc')
-      .limit(limit)
-      .offset(offset);
+      .select('c.id', 'c.target_name', 'cl.name as car_license_name',
+        'c.cause', 'c.start_date', 'c.end_date', 'c.start_time', 'c.end_time',
+        'c.request_date', 'c.car_license_id', 'c.driver_id', 't.name as title_name', 
+        'e.first_name', 'e.last_name', 'c.approve_status')
+        .leftJoin('employees as e', 'e.id', 'c.employee_id')
+        .leftJoin('l_titles as t', 't.id', 'e.title_id')
+        .leftJoin('car_license as cl', 'cl.id', 'c.car_license_id')
+        .where('c.approve_status', approveStatus)
+        .whereBetween('c.start_date', [startDate, endDate])
+        .orderBy('c.start_date', 'desc')
+        .limit(limit)
+        .offset(offset);
   }, 
   
   adminTotal(db, approveStatus, startDate, endDate) {
@@ -61,9 +65,8 @@ module.exports = {
       .where('id', requestId)
       .update({
         approve_status: 'N',
-        approved_at: '',
-        car_license: '',
-        driver_id: ''
+        car_license_id: 0,
+        driver_id: 0
       });
   },
 

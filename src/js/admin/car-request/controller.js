@@ -64,7 +64,8 @@ angular.module('app.CareRequest.Controller', [])
             data.rows.forEach(v => {
               let obj = {};
               obj.id = v.id;
-              obj.carLicense = v.car_license;
+              obj.carLicenseId = v.car_license_id;
+              obj.carLicenseName = v.car_license_name;
               obj.driverId = v.driver_id;
               obj.startDate2 = v.start_date;
               obj.endDate2 = v.end_date;

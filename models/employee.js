@@ -11,7 +11,7 @@ module.exports = {
 
     return db('employees as e')
       .select(
-        'e.first_name', 'e.last_name', 'e.id', 'e.cid', 'e.title_id', 'e.position_id', 'e.sub_department_id',
+        'e.employee_code', 'e.first_name', 'e.last_name', 'e.id', 'e.cid', 'e.title_id', 'e.position_id', 'e.sub_department_id',
         'e.username', 'sd.department_id as main_id', 'sd.id as sub_id',
         'sd.name as sub_name', 't.name as title_name', 'p.name as position_name'
       )
@@ -26,7 +26,7 @@ module.exports = {
 
     return db('employees as e')
       .select(
-      'e.first_name', 'e.last_name', 'e.cid', 'e.id', 'e.title_id', 'e.position_id', 'e.sub_department_id',
+      'e.employee_code', 'e.first_name', 'e.last_name', 'e.cid', 'e.id', 'e.title_id', 'e.position_id', 'e.sub_department_id',
       'e.username', 'sd.department_id as main_id', 'sd.id as sub_id',
       'sd.name as sub_name', 't.name as title_name', 'p.name as position_name'
       )
@@ -41,7 +41,7 @@ module.exports = {
     let _query = `%${query}%`;
     return db('employees as e')
       .select(
-      'e.first_name', 'e.last_name', 'e.id', 'e.title_id', 'e.position_id', 'e.sub_department_id',
+      'e.employee_code', 'e.first_name', 'e.last_name', 'e.id', 'e.cid',  'e.title_id', 'e.position_id', 'e.sub_department_id',
       'e.username', 'sd.department_id as main_id', 'sd.id as sub_id',
       'sd.name as sub_name', 't.name as title_name', 'p.name as position_name'
       )
@@ -91,7 +91,7 @@ module.exports = {
   getInfo(db, id) {
 
     return db('employees as e')
-      .select('e.first_name', 'e.last_name', 'e.cid', 'e.id', 'e.username', 't.name as title_name',
+      .select('e.employee_code', 'e.first_name', 'e.last_name', 'e.cid', 'e.id', 'e.username', 't.name as title_name',
         'p.name as position_name', 's.name as sub_name', 'd.name as main_name')
       .leftJoin('l_titles as t', 't.id', 'e.title_id')
       .leftJoin('l_positions as p', 'p.id', 'e.position_id')
@@ -99,5 +99,10 @@ module.exports = {
       .leftJoin('l_departments as d', 'd.id', 's.department_id')
       .where('e.id', id);
 
+  },
+
+  getMaxCode(db) {
+    return db('employees').max('employee_code as empcode');
   }
+
 };

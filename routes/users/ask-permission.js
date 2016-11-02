@@ -65,6 +65,9 @@ router.post('/', (req, res, next) => {
   ask.target_name = req.body.targetName;
   ask.cause = req.body.cause;
   ask.distance = req.body.distance;
+  ask.is_car_request = req.body.isCarRequest;
+  ask.responsible_name = req.body.isCarRequest == 'Y' ? req.body.responsibleName : '';
+
   ask.created_at = moment().format('YYYY-MM-DD HH:mm:ss');
 
   if (ask.start_date && ask.end_date && ask.target_name && ask.cause) {
@@ -101,6 +104,9 @@ router.put('/', (req, res, next) => {
   ask.target_name = req.body.targetName;
   ask.cause = req.body.cause;
   ask.distance = req.body.distance;
+  ask.is_car_request = req.body.isCarRequest;
+  ask.responsible_name = req.body.isCarRequest == 'Y' ? req.body.responsibleName : '';
+  
   ask.updated_at = moment().format('YYYY-MM-DD HH:mm:ss');
 
   if (ask.start_date && ask.end_date && ask.target_name && ask.cause) {
@@ -178,6 +184,10 @@ router.get('/print/:id', (req, res, next) => {
     AskPermission.getPrintEmployeeList(db, id)
       .then(rows => {
         json.employees = rows[0];
+        return AskPermission.getDriversList(db);
+      })
+      .then(rows => {
+        json.drivers = rows[0];
         return AskPermission.getPrintInfo(db, id);
       })
       .then(rows => {
@@ -194,6 +204,7 @@ router.get('/print/:id', (req, res, next) => {
         ask.cause = _data.cause;
         ask.totalDay = _data.total_day;
         ask.distance = _data.distance;
+        ask.responsibleName = _data.responsible_name;
         ask.startDate = `${moment(_data.start_date).format('D')} ${Utils.getMonthName(moment(_data.start_date).format('MM'))} ${moment(_data.start_date).get('year') + 543}`;
         ask.endDate = `${moment(_data.end_date).format('D')} ${Utils.getMonthName(moment(_data.end_date).format('MM'))} ${moment(_data.end_date).get('year') + 543}`;
         ask.startTime = moment(_data.start_time, 'HH:mm:ss').format('HH:mm');
@@ -218,7 +229,7 @@ router.get('/print/:id', (req, res, next) => {
             // orientation: "landscape",
             footer: {
               height: "15mm",
-              contents: '<span style="color: #444;"><small>Printed: ' + new Date() + '</small></span>'
+              contents: '<span style="color: #444;"><small>โรงพยาบาลกันทรวิชัย เอกสารนี้ถูกพิมพ์เมื่อ: ' + new Date() + '</small></span>'
             }
           };
 
@@ -229,8 +240,8 @@ router.get('/print/:id', (req, res, next) => {
               res.send({ ok: false, msg: err });
             } else {
               res.download(pdfName, function () {
-                // rimraf.sync(destPath);
-                // fse.removeSync(pdfName);
+                rimraf.sync(destPath);
+                fse.removeSync(pdfName);
               });
             }
           });

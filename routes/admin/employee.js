@@ -53,16 +53,20 @@ router.post('/save', (req, res, next) => {
   employee.sub_department_id = req.body.department;
   employee.title_id = req.body.title;
   employee.position_id = req.body.position;
-  employee.username = req.body.username;
-
-  let password = req.body.password;
-
-  employee.password = crypto.createHash('md5').update(password).digest('hex');
-
-  if (employee.first_name && employee.last_name && employee.position_id && employee.sub_department_id && employee.username && employee.password) {
-    console.log(employee);
-
-    Employee.save(req.db, employee)
+  
+  if (employee.first_name && employee.last_name && employee.position_id && employee.sub_department_id) {
+    // console.log(employee);
+    // get max employee code
+    Employee.getMaxCode(req.db)
+      .then(rows => {
+        let maxCode = rows[0].empcode;
+        let newEmployeeCode = parseInt(maxCode) + 1;
+        employee.employee_code = newEmployeeCode;
+        employee.username = newEmployeeCode;
+        employee.password = crypto.createHash('md5').update(newEmployeeCode.toString()).digest('hex');
+        
+        return Employee.save(req.db, employee);
+      })
       .then(() => res.send({ ok: true }))
       .catch(err => res.send({ ok: false, msg: err }));
   } else {
@@ -84,7 +88,7 @@ router.put('/save', (req, res, next) => {
   employee.id = req.body.id;
 
   if (employee.first_name && employee.cid && employee.last_name && employee.id) {
-    console.log(employee);
+    // console.log(employee);
     Employee.isDuplicated(req.db, employee.id, employee.cid)
       .then(rows => {
         if (rows[0].total) {

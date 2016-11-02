@@ -49,7 +49,9 @@ angular.module('app.Staff.dialog.New', [])
       console.log($scope.staff);
       $scope.staff.activeStatus = $scope.staff.active ? 'Y' : 'N';
 
-      if ($scope.staff.firstName && $scope.staff.lastName && $scope.staff.username && $scope.staff.password) {
+      if ($scope.staff.firstName && $scope.staff.lastName &&
+        $scope.staff.username && $scope.staff.password &&
+        $scope.staff.departmentId) {
         StaffService.save($scope.staff)
           .then(res => {
             let data = res.data;

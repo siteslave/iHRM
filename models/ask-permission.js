@@ -38,6 +38,14 @@ module.exports = {
       .leftJoin('employees as e', 'e.id', 'a.employee_id')
       .where('a.ask_permission_id', askId);
   },
+  
+  getDriversList(db) {
+    let sql = `select concat(t.name,d.first_name, " ", d.last_name) as fullname
+      from drivers as d
+      left join l_titles as t on t.id=d.title_id
+      where d.is_active='Y'`;
+    return db.raw(sql, []);
+  },
 
   adminList(db, approveStatus, startDate, endDate, limit, offset) {
     return db('ask_permission as a')
@@ -107,7 +115,7 @@ module.exports = {
 
   getPrintInfo(db, id) {
     let sql = `
-    select a.*, concat(t.name, " ", e.first_name, " ", e.last_name) as fullname,
+    select a.*, concat(t.name,e.first_name, " ", e.last_name) as fullname,
     p.name as position_name, timestampdiff(day, a.start_date, a.end_date)+1 as total_day
     from ask_permission as a
     inner join employees as e on e.id=a.employee_id
@@ -121,7 +129,7 @@ module.exports = {
 
   getPrintEmployeeList(db, id) {
     let sql = `
-    select concat(t.name, " ", e.first_name, " ", e.last_name) as fullname, p.name as position_name
+    select concat(t.name,e.first_name, " ", e.last_name) as fullname, p.name as position_name
     from ask_permission_employee as ae
     inner join employees as e on e.id=ae.employee_id
     left join l_titles as t on t.id=e.title_id

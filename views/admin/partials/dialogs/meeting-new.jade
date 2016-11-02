@@ -56,7 +56,7 @@ md-dialog(aria-label="New Meeting", ng-cloak, flex="80")
             md-input-container.md-block.md-icon-float(flex-gt-sm)
                   label ประเภท
                   md-icon.material-icons directions_walk
-                  md-select(ng-model="meetings.type_meetings_id", ng-required="true")
+                  md-select(ng-model="meetings.type_meetings_id", ng-required="false")
                     md-option(ng-repeat="t in typeMeetings", value="{{t.id}}")
                       | {{t.name}}
 

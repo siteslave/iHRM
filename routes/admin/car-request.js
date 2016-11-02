@@ -40,7 +40,7 @@ router.put('/approve', (req, res, next) => {
     let approve = {};
     approve.approve_status = 'Y';
     approve.approved_at = moment().format('YYYY-MM-DD HH:mm:ss');
-    approve.car_license = carLicense;
+    approve.car_license_id = carLicense;
     approve.driver_id = driverId;
 
     CareRequest.adminApprove(db, requestId, approve)

@@ -27,7 +27,7 @@ angular.module('app.Meeting.dialog.New', [])
 
     // save meetings
     $scope.save = () => {
-      console.log($scope.meetings);
+      // console.log($scope.meetings);
 
       let _meeting = {};
 
@@ -43,35 +43,43 @@ angular.module('app.Meeting.dialog.New', [])
       _meeting.owner = $scope.meetings.owner;
       _meeting.place = $scope.meetings.place;
       _meeting.type_meetings_id = $scope.meetings.type_meetings_id;
-      console.log(_meeting)
-      MeetingService.save(_meeting)
-        .then(res => {
-          let data = res.data;
-          console.log(res);
-          if (data.ok) {
+      // console.log(_meeting)
+      if (_meeting.book_no && _meeting.book_date && _meeting.start_date && 
+        _meeting.end_date && _meeting.title && _meeting.owner && _meeting.place && _meeting.type_meetings_id) {
+        
+        MeetingService.save(_meeting)
+          .then(res => {
+            let data = res.data;
+            console.log(res);
+            if (data.ok) {
+              $mdToast.show(
+                $mdToast.simple()
+                  .textContent('Saved!')
+                  .position('right top')
+                  .hideDelay(3000)
+              );
+              $mdDialog.hide();
+            } else {
+              $mdToast.show(
+                $mdToast.simple()
+                  .textContent('Error: ' + JSON.stringify(data.msg))
+                  .position('right top')
+                  .hideDelay(3000)
+              );
+            }
+          }, err => {
             $mdToast.show(
               $mdToast.simple()
-              .textContent('Saved!')
-              .position('right top')
-              .hideDelay(3000)
+                .textContent('Error: ' + JSON.stringify(err))
+                .position('right top')
+                .hideDelay(3000)
             );
-            $mdDialog.hide();
-          } else {
-            $mdToast.show(
-              $mdToast.simple()
-              .textContent('Error: ' + JSON.stringify(data.msg))
-              .position('right top')
-              .hideDelay(3000)
-            );
-          }
-        }, err => {
-          $mdToast.show(
-            $mdToast.simple()
-            .textContent('Error: ' + JSON.stringify(err))
-            .position('right top')
-            .hideDelay(3000)
-          );
-        });
+          });
+        
+      } else {
+        alert('กรุณาระบุข้อมูลให้ครบถ้วน')
+      }
+
     }
 
   });

@@ -13,13 +13,18 @@ md-dialog(aria-label="New Driver", ng-cloak, flex="50")
       div.md-dialog-content
         div(layout="row")
           div(flex="30")
+            //- md-input-container.md-block(flex-gt-sm)
+            //-   label ทะเบียนรถยนต์ที่อนุมัติ
+            //-   input(ng-model="driver.carLicense", ng-required="true")
             md-input-container.md-block(flex-gt-sm)
               label ทะเบียนรถยนต์ที่อนุมัติ
-              input(ng-model="driver.carLicense", ng-required="true")
+              md-select(ng-model="driver.carLicense", ng-required="false")
+                md-option(ng-repeat="l in licenses", value="{{ l.id }}")
+                  | {{ l.name }}
           div(flex)
               md-input-container.md-block(flex-gt-sm)
                 label พนักงานขับรถ
-                md-select(ng-model="driver.driverId", ng-required="true")
+                md-select(ng-model="driver.driverId", ng-required="false")
                   md-option(ng-repeat="d in drivers", value="{{d.id}}")
                     | {{d.title_name}} {{ d.first_name }} {{ d.last_name }}
     md-dialog-actions(layout="row")

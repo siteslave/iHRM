@@ -146,6 +146,7 @@ angular.module('app.Employee.Controller', [])
     };
 
     $scope.edit = (ev, employee) => {
+      console.log(employee)
       $rootScope.currentEmployee = employee;
 
       $mdDialog.show({
@@ -165,10 +166,10 @@ angular.module('app.Employee.Controller', [])
 
     $scope.changePassword = (ev, employee) => {
       var confirm = $mdDialog.prompt()
-        .title('ระบุชื่อหน่วยงาน?')
+        .title('เปลี่ยนรหัสผ่าน')
         .textContent(`ระบุรหัสผ่านที่ต้องการเปลี่ยนสำหรับ ${employee.first_name} ${employee.last_name}`)
         .placeholder('...')
-        .ariaLabel('Department name')
+        .ariaLabel('Change password')
         .targetEvent(ev)
         .ok('ตกลง')
         .cancel('ยกเลิก');

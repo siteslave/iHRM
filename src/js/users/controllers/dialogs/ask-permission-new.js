@@ -53,7 +53,8 @@ angular.module('app.users.controllers.dialogs.AskPermissionNew', [])
       ask.targetName = $scope.ask.targetName;
       ask.distance = $scope.ask.distance;
       ask.cause = $scope.ask.cause;
-
+      ask.isCarRequest = $scope.ask.isCarRequest ? 'Y' : 'N';
+      ask.responsibleName = $scope.ask.responsibleName;
       // console.log(ask);
       // console.log($scope.selectedEmployees);
       let _employees = [];
@@ -64,20 +65,19 @@ angular.module('app.users.controllers.dialogs.AskPermissionNew', [])
 
       ask.employees = _employees;
     
-      let querySearch = (query) => {
-        let _employees = [];
-        let q = $q.defer();
+      // let querySearch = (query) => {
+      //   let _employees = [];
+      //   let q = $q.defer();
 
-        $scope.employees.forEach(v => {
-          if (v.indexOf(query)) _employees.push(v)
-        })
+      //   $scope.employees.forEach(v => {
+      //     if (v.indexOf(query)) _employees.push(v)
+      //   })
         
-        let data = _employees.length ? _employees : $scope.employees;
-        q.resolve(data);
-        return q.promise;
-        //return query ? $scope.employees.filter(createFilterFor(query)) : $scope.employees;
-      }
-
+      //   let data = _employees.length ? _employees : $scope.employees;
+      //   q.resolve(data);
+      //   return q.promise;
+      //   //return query ? $scope.employees.filter(createFilterFor(query)) : $scope.employees;
+      // }
 
       AskPermissionService.save(ask)
         .then(res => {

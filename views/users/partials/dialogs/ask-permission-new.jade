@@ -4,7 +4,7 @@ md-dialog(aria-label="New ask", ng-cloak, flex="90")
       div.md-toolbar-tools
         i.material-icons local_taxi
         h2.md-headline
-          | บันทึก/แก้ไข การขออนุญาตไปราชการ
+          | บันทึก/แก้ไข การขออนุญาตไปราชการและใช้รถยนต์
         span(flex)
         md-button.md-icon-button(ng-click="cancel()")
           md-icon(aria-label="Close dialog").material-icons clear
@@ -54,6 +54,15 @@ md-dialog(aria-label="New ask", ng-cloak, flex="90")
                     label ระยะทางไป-กลับ (กม.)
                     md-icon.material-icons home
                     input(type="number", ng-model="ask.distance", ng-required="false")
+                div(flex="20")
+                  md-input-container.md-block.md-icon-float
+                    md-checkbox(ng-model="ask.isCarRequest") ขออนุญาตใช้รถยนต์
+                div(flex="50", ng-show="ask.isCarRequest")
+                  md-input-container.md-block.md-icon-float
+                    label ผู้รับผิดชอบ
+                    md-icon.material-icons av_timer
+                    input(ng-model="ask.responsibleName", ng-required="false")
+          </md-checkbox>
           md-tab(label="รายชื่อผู้ร่วมเดินทาง")
             md-content(style="height: 240px")
               div(layout="row")
