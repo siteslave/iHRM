@@ -181,34 +181,33 @@ html
         br
         | 3).................................................. ตำแหน่ง ...................... &nbsp;&nbsp; 4).................................................. ตำแหน่ง ......................
 
-    br
-    | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; มีความประสงค์จะขออนุญาตไปราชการและใช้รถยนต์ไปที่ &nbsp;
-    strong
-      u #{ask.targetName}
-    | &nbsp; ราชการที่จะไปคือ &nbsp;
-    strong
-      u #{ask.cause} 
-    | &nbsp; ในวันที่ &nbsp;
-    strong #{ask.startDate}
-    | &nbsp; เวลา 
-    strong #{ask.startTime}
-    | &nbsp; น. ถึงวันที่ &nbsp; 
-    strong #{ask.endDate}
-    | &nbsp; เวลา 
-    strong #{ask.endTime}
-    | &nbsp; น. รวมเวลาไปราชการครั้งนี้ &nbsp;
-    strong #{ask.totalDay}
-    | &nbsp; วัน ในระยะทางไปกลับ &nbsp;
-    strong #{ask.distance}
-    | &nbsp; กิโลเมตร
-    | &nbsp; มีคนนั่ง 
-    strong #{employees.length}
-    | &nbsp; คน โดยมี &nbsp;
-    if ask.responsibleName
-      strong #{ask.responsibleName}
-    else 
-      span ...............................................................
-    | &nbsp; เป็นผู้รับผิดชอบในการขอใช้รถยนต์
+    p: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; มีความประสงค์จะขออนุญาตไปราชการและใช้รถยนต์ไปที่ &nbsp;
+      strong
+        u #{ask.targetName}
+      | &nbsp; ราชการที่จะไปคือ &nbsp;
+      strong
+        u #{ask.cause} 
+      | &nbsp; ในวันที่ &nbsp;
+      strong #{ask.startDate}
+      | &nbsp; เวลา 
+      strong #{ask.startTime}
+      | &nbsp; น. ถึงวันที่ &nbsp; 
+      strong #{ask.endDate}
+      | &nbsp; เวลา 
+      strong #{ask.endTime}
+      | &nbsp; น. รวมเวลาไปราชการครั้งนี้ &nbsp;
+      strong #{ask.totalDay}
+      | &nbsp; วัน ในระยะทางไปกลับ &nbsp;
+      strong #{ask.distance}
+      | &nbsp; กิโลเมตร
+      | &nbsp; มีคนนั่ง 
+      strong #{employees.length}
+      | &nbsp; คน โดยมี &nbsp;
+      if ask.responsibleName
+        strong #{ask.responsibleName}
+      else 
+        span ...............................................................
+      | &nbsp; เป็นผู้รับผิดชอบในการขอใช้รถยนต์
     p &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; จึงเรียนมาเพื่อโปรดอนุญาต
     table(width="100%")
       tr
