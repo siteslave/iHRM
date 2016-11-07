@@ -130,10 +130,6 @@ router.put('/', (req, res, next) => {
       })
       .then(() => res.send({ ok: true }))
       .catch((err) => res.send({ ok: false, msg: err }));
-
-  //   AskPermission.save(db, ask)
-  //     .then(() => res.send({ ok: true }))
-  //     .catch(err => res.send({ ok: false, msg: err }));
   } else {
     res.send({ ok: false, msg: 'ข้อมูลไม่สมบูรณ์' });
   }
@@ -228,8 +224,7 @@ router.get('/print/:id', (req, res, next) => {
             format: 'A4',
             // orientation: "landscape",
             footer: {
-              height: "15mm",
-              contents: '<span style="color: #444;"><small>โรงพยาบาลกันทรวิชัย เอกสารนี้ถูกพิมพ์เมื่อ: ' + new Date() + '</small></span>'
+              height: "10mm"
             }
           };
 

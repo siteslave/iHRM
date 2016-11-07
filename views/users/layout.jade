@@ -80,16 +80,18 @@ body(ng-app="app")
                     md-icon(md-menu-align-target)
                       i.material-icons update
                     | สำรวจความต้องการวิชาการ
+
+                md-menu-item
+                  md-button(ui-sref="ask-permission")
+                    md-icon(md-menu-align-target)
+                      i.material-icons local_library
+                    | ขออนุญาตไปราชการ/ขอรถยนต์
+
                 md-menu-item
                   md-button(ui-sref="car-request")
                     md-icon(md-menu-align-target)
                       i.material-icons local_taxi
                     | ขออนุญาตใช้รถยนต์
-                md-menu-item
-                  md-button(ui-sref="ask-permission")
-                    md-icon(md-menu-align-target)
-                      i.material-icons local_library
-                    | ขออนุญาตไปราชการ
                 md-menu-item
                   md-button(ui-sref="meetings", ng-disabled="true")
                     md-icon(md-menu-align-target)

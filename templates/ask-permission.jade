@@ -143,7 +143,7 @@ html
       }
   body
     div(style="text-align: center;")
-      h2(style="line-height: 2px") ใบขออนุญาตไปราชการ โรงพยาบาลกันทรวิชัย
+      h2(style="line-height: 2px") ใบขออนุญาตไปราชการและใช้รถยนต์ โรงพยาบาลกันทรวิชัย
 
     table(width="100%")
       tr
@@ -152,7 +152,7 @@ html
           strong วันที่ #{ask.currentDate}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
     p: | เรื่อง &nbsp;&nbsp;
-      strong ขออนุญาตไปราชการ
+      strong ขออนุญาตไปราชการและใช้รถยนต์
       br
       | เรียน &nbsp;&nbsp;
       strong ผู้อำนวยการโรงพยาบาลกันทรวิชัย
@@ -161,7 +161,7 @@ html
       strong #{ask.fullname}
       | &nbsp; ตำแหน่ง&nbsp;
       strong #{ask.positionName}
-      | &nbsp;พร้อมด้วยผู้มีรายชื่อ ต่อไปนี้
+      | &nbsp;พร้อมด้วยผู้มีรายชื่อ ดังต่อไปนี้
     if employees.length
       - var i = 1;
       each e in employees
@@ -173,14 +173,14 @@ html
       div(style="margin-left: 50px;")
         1)......................... ตำแหน่ง ...................... &nbsp;&nbsp; 2)......................... ตำแหน่ง ......................
         3)......................... ตำแหน่ง ...................... &nbsp;&nbsp; 4)......................... ตำแหน่ง ......................
-    br
-    p: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; มีความประสงค์จะขออนุญาตไปราชการที่ &nbsp;
+
+    p: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; มีความประสงค์จะขออนุญาตไปราชการและใช้รถยนต์ไปที่ &nbsp;
       strong
         u #{ask.targetName}
       | &nbsp; ราชการที่จะไปคือ &nbsp;
       strong
         u #{ask.cause} 
-      | &nbsp; จึงขออนุญาตไปราชการตั้งแต่วันที่ &nbsp;
+      | &nbsp; ในวันที่ &nbsp;
       strong #{ask.startDate}
       | &nbsp; เวลา 
       strong #{ask.startTime}
@@ -195,8 +195,11 @@ html
       | &nbsp; กิโลเมตร
       | &nbsp; มีคนนั่ง 
       strong #{employees.length}
-      | &nbsp; คน โดย &nbsp;
-      strong #{ask.responsibleName}
+      | &nbsp; คน โดยมี &nbsp;
+      if ask.responsibleName
+        strong #{ask.responsibleName}
+      else 
+        span ...............................................................
       | &nbsp; เป็นผู้รับผิดชอบในการขอใช้รถยนต์
     p &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; จึงเรียนมาเพื่อโปรดอนุญาต
     table(width="100%")
@@ -251,7 +254,7 @@ html
           | ตำแหน่ง ..............................................
 
         td(style="width: 80%; text-align: top; padding-left: 20px;")
-          |เห็นควรใช้รถยนต์...................................โดยมี (เป็นพนักงานขับรถ)
+          |เห็นควรใช้รถยนต์...................................โดยมี (พนักงานขับรถ)
           div(style="font-size: 15px;")
             each d in drivers
               | [&nbsp;&nbsp;&nbsp;] #{d.fullname} 
@@ -262,7 +265,7 @@ html
          div(style="padding: 10px 0 0 0")
           span(style="font-size: 18px;") ความเห็นของผู้อำนวยการโรงพยาบาล
           br
-          | (&nbsp;&nbsp;&nbsp;) อนุญาต &nbsp;&nbsp;&nbsp;&nbsp;(&nbsp;&nbsp;&nbsp;) ไม่อนุญาต....................................................................................................................................................
+          | (&nbsp;&nbsp;&nbsp;) อนุญาต &nbsp;&nbsp;&nbsp;&nbsp;(&nbsp;&nbsp;&nbsp;) ไม่อนุญาต เนื่องจาก.........................................................................................................................
       tr
         td(width="50%") &nbsp;
         td(width="50%", style="text-align: left; font-size: 18px;")
