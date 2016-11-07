@@ -22,6 +22,12 @@ html
         width: 250px;
         border: 0px solid;
       }
+      .div-employees2 {
+        font-size: 15px;
+        display: block;
+        float: left;
+        border: 0px solid;
+      }
       /*table*/
       table {
         border-spacing: 0;
@@ -157,11 +163,11 @@ html
       | เรียน &nbsp;&nbsp;
       strong ผู้อำนวยการโรงพยาบาลกันทรวิชัย
 
-    p: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ข้าพเจ้า &nbsp;
-      strong #{ask.fullname}
-      | &nbsp; ตำแหน่ง&nbsp;
-      strong #{ask.positionName}
-      | &nbsp;พร้อมด้วยผู้มีรายชื่อ ดังต่อไปนี้
+    | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ข้าพเจ้า &nbsp;
+    strong #{ask.fullname}
+    | &nbsp; ตำแหน่ง&nbsp;
+    strong #{ask.positionName}
+    | &nbsp;พร้อมด้วยผู้มีรายชื่อ ดังต่อไปนี้
     if employees.length
       - var i = 1;
       each e in employees
@@ -170,9 +176,10 @@ html
           br
         - i++
     else 
-      div(style="margin-left: 50px;")
-        1)......................... ตำแหน่ง ...................... &nbsp;&nbsp; 2)......................... ตำแหน่ง ......................
-        3)......................... ตำแหน่ง ...................... &nbsp;&nbsp; 4)......................... ตำแหน่ง ......................
+      div(style="margin-left: 50px; font-size: 14px;")
+        | 1).................................................. ตำแหน่ง ...................... &nbsp;&nbsp; 2).................................................. ตำแหน่ง ......................
+        br
+        | 3).................................................. ตำแหน่ง ...................... &nbsp;&nbsp; 4).................................................. ตำแหน่ง ......................
 
     p: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; มีความประสงค์จะขออนุญาตไปราชการและใช้รถยนต์ไปที่ &nbsp;
       strong
@@ -245,7 +252,7 @@ html
           div(style="padding-top: 10px;")
             | ความเห็นของผู้ควบคุมรถยนต์....................................................................................................................................................
       tr
-        td
+        td(style="text-align: top;")
           br
           | (ลงชื่อ).........................................................
           br
@@ -253,12 +260,18 @@ html
           br
           | ตำแหน่ง ..............................................
 
-        td(style="width: 80%; text-align: top; padding-left: 20px;")
+        td(style="width: 85%; text-align: top; padding-left: 10px;")
           |เห็นควรใช้รถยนต์...................................โดยมี (พนักงานขับรถ)
-          div(style="font-size: 14px;")
+          div.div-employees2
+            - var x = 1;
             each d in drivers
-              | [&nbsp;&nbsp;&nbsp;] #{d.fullname} 
-              br
+              if x%2 != 0
+                | [&nbsp;&nbsp;&nbsp;] #{d.fullname}&nbsp;&nbsp;&nbsp;
+              else
+                | [&nbsp;&nbsp;&nbsp;] #{d.fullname}
+              if x%2 == 0
+                br
+              - x++
     table(width="100%")
       tr
         td(colspan="2", style="border-top: 1px solid;")

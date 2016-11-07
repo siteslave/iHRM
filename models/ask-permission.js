@@ -40,7 +40,7 @@ module.exports = {
   },
   
   getDriversList(db) {
-    let sql = `select concat(t.name,d.first_name, " ", d.last_name) as fullname
+    let sql = `select concat(d.first_name, " ", d.last_name) as fullname
       from drivers as d
       left join l_titles as t on t.id=d.title_id
       where d.is_active='Y'`;
