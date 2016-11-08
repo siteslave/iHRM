@@ -98,8 +98,10 @@ angular.module('app.users.controllers.dialogs.AskPermissionUpdate', [])
       _ask.startTime = moment($scope.ask.startTime, 'HH.mm').format('HH:mm:ss');
       _ask.endTime = moment($scope.ask.endTime, 'HH.mm').format('HH:mm:ss');
       _ask.targetName = $scope.ask.targetName;
+      _ask.responsibleName = $scope.ask.responsibleName;
       _ask.distance = $scope.ask.distance;
       _ask.cause = $scope.ask.cause;
+      _ask.isCarRequest = $scope.ask.isCarRequest ? 'Y' : 'N';
 
       console.log(_ask);
       

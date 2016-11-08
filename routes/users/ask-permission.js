@@ -17,6 +17,7 @@ let numeral = require('numeral');
 let Utils = require('../../helpers/utils');
 
 let AskPermission = require('../../models/ask-permission');
+let CareRequest = require('../../models/car-request');
 let Employee = require('../../models/employee');
 
 router.post('/list', (req, res, next) => {
@@ -66,14 +67,31 @@ router.post('/', (req, res, next) => {
   ask.cause = req.body.cause;
   ask.distance = req.body.distance;
   ask.is_car_request = req.body.isCarRequest;
-  ask.responsible_name = req.body.isCarRequest == 'Y' ? req.body.responsibleName : '';
+  ask.responsible_name = req.body.responsibleName;
 
   ask.created_at = moment().format('YYYY-MM-DD HH:mm:ss');
+
+  // Car request
+  let cars = {};
+  cars.employee_id = req.session.userId;
+  cars.request_date = moment().format('YYYY-MM-DD');
+  cars.start_date = req.body.startDate;
+  cars.start_time = req.body.startTime;
+  cars.end_date = req.body.endDate;
+  cars.end_time = req.body.endTime;
+  cars.target_name = req.body.targetName;
+  cars.cause = req.body.cause;
+  cars.traveler_num = employees.length;
+  cars.responsible_name = req.body.responsibleName;
+  cars.created_at = moment().format('YYYY-MM-DD HH:mm:ss');
+  console.log(cars);
 
   if (ask.start_date && ask.end_date && ask.target_name && ask.cause) {
     AskPermission.save(db, ask)
       .then((data) => {
-        let askId = data[0];
+        askId = data[0];
+        cars.ask_permission_id = askId;
+
         let _employees = [];
         employees.forEach(v => {
           let obj = {};
@@ -83,7 +101,17 @@ router.post('/', (req, res, next) => {
         });
         return AskPermission.saveEmployee(db, _employees);
       })
-      .then(() => res.send({ok: true}))
+      .then(() => {
+        if (req.body.isCarRequest == 'Y') {
+          CareRequest.save(db, cars)
+            .then(() => {
+              res.send({ ok: true });
+            })
+            .catch(err => res.send({ ok: false, msg: err }));
+        } else {
+          res.send({ ok: true });
+        }
+      })
       .catch(err => res.send({ ok: false, msg: err }));
   } else {
     res.send({ ok: false, msg: 'ข้อมูลไม่สมบูรณ์' });
@@ -105,7 +133,7 @@ router.put('/', (req, res, next) => {
   ask.cause = req.body.cause;
   ask.distance = req.body.distance;
   ask.is_car_request = req.body.isCarRequest;
-  ask.responsible_name = req.body.isCarRequest == 'Y' ? req.body.responsibleName : '';
+  ask.responsible_name = req.body.responsibleName;
   
   ask.updated_at = moment().format('YYYY-MM-DD HH:mm:ss');
 
@@ -128,7 +156,75 @@ router.put('/', (req, res, next) => {
 
         return AskPermission.saveEmployee(db, _employees);
       })
-      .then(() => res.send({ ok: true }))
+      .then(() => {
+        // if don't car request
+        if (req.body.isCarRequest == 'N') {
+          // remove car request
+          CareRequest.removeWithPermission(db, askId)
+            .then(() => {
+              res.send({ ok: true });
+            })
+            .catch(err => {
+              res.send({ ok: false });
+            });
+        } else {
+
+          // check if exist 
+          CareRequest.isExistWithPermission(db, askId)
+            .then(rows => {
+              if (rows[0].total) {
+                // exist 
+                // update
+                let cars = {};
+                // cars.employee_id = req.session.userId;
+                // cars.request_date = moment().format('YYYY-MM-DD');
+                cars.start_date = req.body.startDate;
+                cars.start_time = req.body.startTime;
+                cars.end_date = req.body.endDate;
+                cars.end_time = req.body.endTime;
+                cars.target_name = req.body.targetName;
+                cars.cause = req.body.cause;
+                cars.traveler_num = employees.length;
+                cars.responsible_name = req.body.responsibleName;
+                cars.updated_at = moment().format('YYYY-MM-DD HH:mm:ss');
+                console.log(cars);
+                CareRequest.updateWithPermission(db, askId, cars)
+                  .then(() => {
+                    res.send({ ok: true });
+                  })
+                  .catch(err => {
+                    console.log(err);
+                    res.send({ ok: false, msg: err });
+                  });
+              } else {
+                // don't exist
+                // insert new
+                let cars = {};
+                cars.employee_id = req.session.userId;
+                cars.request_date = moment().format('YYYY-MM-DD');
+                cars.start_date = req.body.startDate;
+                cars.start_time = req.body.startTime;
+                cars.end_date = req.body.endDate;
+                cars.end_time = req.body.endTime;
+                cars.target_name = req.body.targetName;
+                cars.cause = req.body.cause;
+                cars.traveler_num = employees.length;
+                cars.responsible_name = req.body.responsibleName;
+                cars.created_at = moment().format('YYYY-MM-DD HH:mm:ss');
+                cars.ask_permission_id = askId;
+
+                CareRequest.save(db, cars)
+                  .then(() => {
+                    res.send({ ok: true });
+                  })
+                  .catch(err => {
+                    console.log(err);
+                    res.send({ ok: false, msg: err });
+                  });
+              }
+            });
+        }
+      })
       .catch((err) => res.send({ ok: false, msg: err }));
   } else {
     res.send({ ok: false, msg: 'ข้อมูลไม่สมบูรณ์' });
@@ -144,7 +240,12 @@ router.delete('/:id', (req, res, next) => {
       .then(() => {
         return AskPermission.removeEmployee(db, askId);
       })
-      .then(() => res.send({ ok: true }))
+      .then(() => { 
+        return CareRequest.removeWithPermission(db, askId);
+      })
+      .then(() => {
+        res.send({ ok: true });
+      }) 
       .catch(err => res.send({ ok: false, msg: err }));
   } else {
     res.send({ ok: false, msg: 'Id not found!' });

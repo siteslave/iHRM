@@ -81,9 +81,27 @@ module.exports = {
       .update(request);
   },
 
+  updateWithPermission(db, askPermissionId, request) {
+    return db('car_request')
+      .where('ask_permission_id', askPermissionId)
+      .update(request);
+  },
+
   remove(db, requestId) {
     return db('car_request')
       .where('id', requestId)
       .del();
+  },
+
+  removeWithPermission(db, askPermissionId) {
+    return db('car_request')
+      .where('ask_permission_id', askPermissionId)
+      .del();
+  },
+
+  isExistWithPermission(db, askPermissionId) {
+    return db('car_request')
+      .count('* as total')
+      .where('ask_permission_id', askPermissionId);
   }
 }
