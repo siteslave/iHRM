@@ -6,6 +6,8 @@ angular.module('app.users.controllers.dialogs.AskPermissionUpdate', [])
     $scope.selectedEmployees = [];
     $scope.employees = [];
 
+    console.log($rootScope.currentAsk);
+    
     $scope.ask = {};
     $scope.ask.id = $rootScope.currentAsk.id;
     $scope.ask.startDate = new Date(moment($rootScope.currentAsk.startDate2).format());
@@ -15,7 +17,8 @@ angular.module('app.users.controllers.dialogs.AskPermissionUpdate', [])
     $scope.ask.cause = $rootScope.currentAsk.cause;
     $scope.ask.targetName = $rootScope.currentAsk.targetName;
     $scope.ask.distance = $rootScope.currentAsk.distance
-
+    $scope.ask.isCarRequest = $rootScope.currentAsk.isCarRequest == 'Y' ? true : false;
+    $scope.ask.responsibleName = $rootScope.currentAsk.responsibleName;
     // Get employees list
 
     AskPermissionService.getEmployeeSelectedList($scope.ask.id)

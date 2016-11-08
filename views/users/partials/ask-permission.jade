@@ -19,10 +19,11 @@ div(layout-padding)
             th(md-column) ขออนุญาตไปที่
             th(md-column) เพื่อ
             th(md-column) อนุมัติ
+            th(md-column) ขอใช้รถ
             th(md-column)
         tbody(md-body)
           tr(md-row, ng-if="!asks.length")
-            td(md-cell, colspan="6") ไม่พบรายการ
+            td(md-cell, colspan="7") ไม่พบรายการ
           tr(md-row, ng-repeat="ask in asks", ng-if="asks.length")
             td(md-cell) {{ $index + 1 }}
             td(md-cell) {{ ask.startDate }}
@@ -31,6 +32,9 @@ div(layout-padding)
             td(md-cell) 
               md-icon.material-icons(ng-if="ask.approveStatus == 'N'") clear
               md-icon.material-icons(ng-if="ask.approveStatus == 'Y'") done
+            td(md-cell) 
+              md-icon.material-icons(ng-if="ask.isCarRequest == 'N'") clear
+              md-icon.material-icons(ng-if="ask.isCarRequest == 'Y'") done
             td(md-cell)
 
               md-menu

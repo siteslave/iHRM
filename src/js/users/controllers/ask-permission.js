@@ -68,6 +68,8 @@ angular.module('app.users.controllers.AskPermission', [
               obj.cause = v.cause;
               obj.targetName = v.target_name;
               obj.distance = v.distance;
+              obj.isCarRequest = v.is_car_request;
+              obj.responsibleName = v.responsible_name;
               // console.log(obj);
               obj.approveStatus = v.approve_status;
               $scope.asks.push(obj);

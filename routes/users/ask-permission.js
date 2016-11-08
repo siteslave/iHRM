@@ -193,6 +193,8 @@ router.get('/print/:id', (req, res, next) => {
         // console.log(_data);
         let ask = {};
 
+        let _isCarRequest = _data.is_car_request;
+
         ask.currentDate = `${moment().format('D')} ${Utils.getMonthName(moment().format('MM'))} ${moment().get('year') + 543}`;
         ask.fullname = _data.fullname;
         ask.positionName = _data.position_name;
@@ -207,43 +209,83 @@ router.get('/print/:id', (req, res, next) => {
         ask.endTime = moment(_data.end_time, 'HH:mm:ss').format('HH:mm');
 
         json.ask = ask;
-        console.log(json);
-        // Create pdf
-        gulp.task('html', (cb) => {
-          return gulp.src('./templates/ask-permission.jade')
-            .pipe(data(function () {
-              return json;
-            }))
-            .pipe(jade())
-            .pipe(gulp.dest(destPath));
-        });
 
-        gulp.task('pdf', ['html'], function () {
-          var html = fs.readFileSync(destPath + '/ask-permission.html', 'utf8')
-          var options = {
-            format: 'A4',
-            // orientation: "landscape",
-            footer: {
-              height: "10mm"
-            }
-          };
-
-          var pdfName = `./templates/pdf/ask-permission-${moment().format('x')}.pdf`;
-
-          pdf.create(html, options).toFile(pdfName, function (err, resp) {
-            if (err) {
-              res.send({ ok: false, msg: err });
-            } else {
-              res.download(pdfName, function () {
-                rimraf.sync(destPath);
-                fse.removeSync(pdfName);
-              });
-            }
+        //console.log(json);
+        if (_isCarRequest == 'Y') {
+          // Create pdf
+          gulp.task('html', (cb) => {
+            return gulp.src('./templates/ask-permission.jade')
+              .pipe(data(function () {
+                return json;
+              }))
+              .pipe(jade())
+              .pipe(gulp.dest(destPath));
           });
-        });
+
+          gulp.task('pdf', ['html'], function () {
+            var html = fs.readFileSync(destPath + '/ask-permission.html', 'utf8')
+            var options = {
+              format: 'A4',
+              // orientation: "landscape",
+              footer: {
+                height: "10mm"
+              }
+            };
+
+            var pdfName = `./templates/pdf/ask-permission-${moment().format('x')}.pdf`;
+
+            pdf.create(html, options).toFile(pdfName, function (err, resp) {
+              if (err) {
+                res.send({ ok: false, msg: err });
+              } else {
+                res.download(pdfName, function () {
+                  rimraf.sync(destPath);
+                  fse.removeSync(pdfName);
+                });
+              }
+            });
+          });
+          
+        } else {
+        // Create pdf
+          gulp.task('html', (cb) => {
+            return gulp.src('./templates/ask-permission-only.jade')
+              .pipe(data(function () {
+                return json;
+              }))
+              .pipe(jade())
+              .pipe(gulp.dest(destPath));
+          });
+
+          gulp.task('pdf', ['html'], function () {
+            var html = fs.readFileSync(destPath + '/ask-permission-only.html', 'utf8')
+            var options = {
+              format: 'A4',
+              // orientation: "landscape",
+              footer: {
+                height: "10mm"
+              }
+            };
+
+            var pdfName = `./templates/pdf/ask-permission-only-${moment().format('x')}.pdf`;
+
+            pdf.create(html, options).toFile(pdfName, function (err, resp) {
+              if (err) {
+                res.send({ ok: false, msg: err });
+              } else {
+                res.download(pdfName, function () {
+                  rimraf.sync(destPath);
+                  fse.removeSync(pdfName);
+                });
+              }
+            });
+          });
+          
+        }// end _isCarRequest
+
         // Convert html to pdf
         gulp.start('pdf');
-
+        
       })
       .catch(err => res.send({ ok: false, msg: err }));
 
