@@ -23,10 +23,10 @@ angular.module('app', [
   .config(($mdThemingProvider, $stateProvider, $urlRouterProvider, $mdDateLocaleProvider) => {
 
   $mdThemingProvider.theme('default')
-    .primaryPalette('blue-grey')
+    .primaryPalette('indigo')
     // If you specify less than all of the keys, it will inherit from the
     // default shades
-    .accentPalette('orange');
+    .accentPalette('pink');
 
     let shortMonths = ['ม.ค', 'ก.พ', 'มี.ค', 'เม.ย', 'พ.ค', 'มิ.ย', 'ก.ค', 'ส.ค', 'ก.ย', 'ต.ค', 'พ.ย', 'ธ.ค'];
 
