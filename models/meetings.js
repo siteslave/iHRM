@@ -101,12 +101,14 @@ module.exports = {
   },
 
   getAssignTotal(db, meetingIds, departmentId) {
+    console.log(meetingIds);
     return db('meetings as m')
       .count('* as total')
       .innerJoin('meeting_assign as ms', 'ms.meeting_id', 'm.id')
       .leftJoin('meeting_register as mr', 'mr.meeting_id', 'm.id')
       .where('ms.department_id', departmentId)
       .whereNotIn('m.id', meetingIds);
+    
       // .groupBy('m.id');
   },
 
