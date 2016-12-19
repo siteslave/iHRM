@@ -13,7 +13,9 @@ angular.module('app', [
   'app.users.controllers.dialog.MeetingDetail',
   'app.users.controllers.Education',
   'app.users.controllers.CarRequest',
-  'app.users.controllers.AskPermission'
+  'app.users.controllers.AskPermission',
+  'app.users.services.Job',
+  'app.users.controllers.Job'
 ])
   .config(($mdThemingProvider, $stateProvider, $urlRouterProvider, $mdDateLocaleProvider) => {
 
@@ -77,6 +79,11 @@ angular.module('app', [
         url: '/info',
         templateUrl: '/partials/users/info',
         controller: 'InfoCtrl'
+      })
+      .state('jobs', {
+        url: '/jobs',
+        templateUrl: '/partials/users/jobs',
+        controller: 'JobCtrl'
       });
 
   });

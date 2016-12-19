@@ -18,16 +18,19 @@ head
   script(src="/libs/angular-ui-router/release/angular-ui-router.min.js")
   script(src="/libs/angular-material-data-table/dist/md-data-table.min.js")
   script(src="/libs/moment/min/moment-with-locales.min.js")
+  script(src="/libs/lodash/dist/lodash.min.js")
 
   script(src="/javascripts/configure.js")
   script(src="/javascripts/staff/app.js")
   script(src="/javascripts/staff/controllers/sidenav.js")
+  script(src="/javascripts/staff/controllers/job.js")
   script(src="/javascripts/staff/controllers/toolbar.js")
   script(src="/javascripts/staff/controllers/employee.js")
   script(src="/javascripts/staff/controllers/meeting.js")
   script(src="/javascripts/staff/controllers/info.js")
   script(src="/javascripts/staff/services/employee.js")
   script(src="/javascripts/staff/services/meeting.js")
+  script(src="/javascripts/staff/services/job.js")
   script(src="/javascripts/staff/services/info.js")
 
 
@@ -57,11 +60,11 @@ body(ng-app="app")
                     md-icon(md-menu-align-target)
                       i.material-icons group
                     | เจ้าหน้าที่ในหน่วยงาน
-                //- md-menu-item
-                //-   md-button(ui-sref="meetings")
-                //-     md-icon(md-menu-align-target)
-                //-       i.material-icons print
-                //-     | ประวัติลงเวลา
+                md-menu-item
+                  md-button(ui-sref="job")
+                    md-icon(md-menu-align-target)
+                      i.material-icons event
+                    | กำหนดตารางปฏิบัติงาน
             md-divider
             md-subheader Settings
               md-menu-content

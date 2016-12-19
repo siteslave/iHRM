@@ -12,7 +12,7 @@ md-card
       div(flex)
         md-input-container.md-block
           md-icon.material-icons search
-          input(ng-model="searchQuery", placeholder="พิมพ์ชื่อเจ้าหน้าที่ แล้วกด ENTER...", ng-keypress="search($event)")
+          input(ng-model="searchQuery", placeholder="พิมพ์ชื่อ/รหัสเจ้าหน้าที่")
 
     md-table-container
       table(md-table)
@@ -28,7 +28,7 @@ md-card
           tr(md-row, ng-if="!employees.length")
             td(md-cell, colspan="5") ไม่พบรายการ
 
-          tr(md-row, ng-repeat="employee in employees", ng-if="employees.length")
+          tr(md-row, ng-repeat="employee in employees | filter: searchQuery", ng-if="employees.length")
             td(md-cell) {{ $index + 1 }}
             //- td(md-cell) {{ m.book_date }}
             td(md-cell) {{ employee.title_name}} {{ employee.first_name }} {{ employee.last_name }}
@@ -50,8 +50,8 @@ md-card
                       md-icon.material-icons create
                       | &nbsp; ประวัติการลงเวลา
 
-      md-table-pagination(md-limit="query.limit", md-page="query.page", md-total="{{ total }}",
-        md-on-paginate="onPaginate",
-        md-options="[5, 20, 30, 50]",
-        md-label="{page: 'หน้า', rowsPerPage: 'เรคอร์ดต่อหน้า', of: 'จาก'}"
-        md-page-select="", ng-if="showPaging")
+      //- md-table-pagination(md-limit="query.limit", md-page="query.page", md-total="{{ total }}",
+      //-   md-on-paginate="onPaginate",
+      //-   md-options="[5, 20, 30, 50]",
+      //-   md-label="{page: 'หน้า', rowsPerPage: 'เรคอร์ดต่อหน้า', of: 'จาก'}"
+      //-   md-page-select="", ng-if="showPaging")

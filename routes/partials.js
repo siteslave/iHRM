@@ -119,6 +119,10 @@ router.get('/staff/info', (req, res, next) => {
   res.render('staff/partials/info');
 });
 
+router.get('/staff/job', (req, res, next) => {
+  res.render('staff/partials/job');
+});
+
 // Users
 router.get('/users/main', (req, res, next) => {
   res.render('users/partials/main');
@@ -170,6 +174,10 @@ router.get('/users/ask-permission', (req, res, next) => {
 
 router.get('/users/ask-permission/dialogs/new', (req, res, next) => {
   res.render('users/partials/dialogs/ask-permission-new');
+});
+
+router.get('/users/jobs', (req, res, next) => {
+  res.render('users/partials/job');
 });
 
 

@@ -9,7 +9,9 @@ angular.module('app', [
   'app.staff.controllers.Toolbar',
   'app.staff.controllers.Employee',
   'app.staff.controllers.Meeting',
-  'app.staff.controller.Info'
+  'app.staff.controller.Info',
+  'app.staff.controllers.Job',
+  'app.staff.services.Job'
 ])
   .config(($mdThemingProvider, $stateProvider, $urlRouterProvider, $mdDateLocaleProvider) => {
 
@@ -54,6 +56,11 @@ angular.module('app', [
         url: '/info',
         templateUrl: '/partials/staff/info',
         controller: 'InfoCtrl'
+      })
+      .state('job', {
+        url: '/job',
+        templateUrl: '/partials/staff/job',
+        controller: 'JobCtrl'
       })
 
   });

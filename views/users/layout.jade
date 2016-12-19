@@ -8,6 +8,7 @@ head
   link(rel="stylesheet", href="/stylesheets/iconfont/material-icons.css")
   link(rel="stylesheet", href="/libs/angular-material-data-table/dist/md-data-table.min.css")
   link(rel="stylesheet", href="/stylesheets/style.css")
+  link(rel="stylesheet", href="/stylesheets/fonts.css")
 
 
   script(src="/libs/angular/angular.js")
@@ -33,6 +34,9 @@ head
   script(src="/javascripts/users/services/reports.js")
   script(src="/javascripts/users/controllers/info.js")
   script(src="/javascripts/users/services/info.js")
+
+  script(src="/javascripts/users/services/jobs.js")
+  script(src="/javascripts/users/controllers/jobs.js")
 
   script(src="/javascripts/users/controllers/education.js")
   script(src="/javascripts/users/controllers/dialogs/education-new.js")
@@ -97,6 +101,12 @@ body(ng-app="app")
                     md-icon(md-menu-align-target)
                       i.material-icons monetization_on
                     | สลิปเงินเดือน
+
+                md-menu-item
+                  md-button(ui-sref="jobs")
+                    md-icon(md-menu-align-target)
+                      i.material-icons print
+                    | ตารางปฏิบัติงาน
                 md-menu-item
                   md-button(ui-sref="meetings", ng-disabled="true")
                     md-icon(md-menu-align-target)

@@ -64,6 +64,7 @@ router.post('/user-login', (req, res, next)  => {
           req.session.logged = true;
           req.session.type = 2;
           req.session.userId = rows[0].id;
+          req.session.employeeCode = rows[0].employee_code;
           req.session.fullname = `${rows[0].title_name}${rows[0].first_name} ${rows[0].last_name}`;
           req.session.department_id = rows[0].department_id;
           req.session.department_name = rows[0].department_name;

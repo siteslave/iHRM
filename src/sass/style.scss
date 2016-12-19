@@ -2,7 +2,15 @@ $gray: #eee;
 
 html, body {
   height: 100%;
+  font-family: 'thaisanslite';
+  font-size: 1.1rem;
 }
+
+button, input, select, textarea, .md-datepicker-input {
+  font-family: 'thaisanslite';
+  font-size: 1.1rem;
+}
+
 md-content.md-default-theme {
   background-color: $gray;
 }
@@ -17,9 +25,14 @@ md-toolbar {
     border-radius: 99%; // round toolbar buttons
   }
 }
-h2 {
+h2 span {
   font-weight: 400;
+  font-size: 1.7rem;
 }
+.md-toolbar-tools {
+  font-size: 1.7rem;
+}
+
 .md-toolbar-tools-bottom {
   font-size: small;
   & :last-child {
@@ -39,7 +52,11 @@ md-sidenav {
 }
 
 table.md-table td.md-cell {
-    font-size: 14px;
+    font-size: 1.1rem;
+}
+
+table.md-table th.md-column {
+    font-size: 1.1rem;
 }
 
 .md-button.md-fab.md-fab-bottom-right {

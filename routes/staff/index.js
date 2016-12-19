@@ -35,6 +35,15 @@ router.post('/total', (req, res, next) => {
     .catch(err => res.send({ ok: false, msg: err }));
 });
 
+router.post('/list-all', (req, res, next) => {
+  let db = req.db;
+  let departmentId = req.session.departmentId;
+
+  Staff.getEmployeeListAll(db, departmentId)
+    .then(rows => res.send({ ok: true, rows: rows }))
+    .catch(err => res.send({ ok: false, msg: err }));
+});
+
 router.post('/list', (req, res, next) => {
   let db = req.db;
   let departmentId = req.session.departmentId;
@@ -214,6 +223,56 @@ router.post('/search', (req, res, next) => {
   } else {
     res.send({ ok: false, msg: 'ข้อมูลไม่สมบูรณ์'})
   }
+});
+
+router.post('/job/detail', (req, res, next) => {
+  let employeeCode = req.body.employeeCode;
+  let year = req.body.year;
+  let month = req.body.month;
+  let db = req.db;
+
+  let serviceDate = `${year}-${month}-01`;
+  let _startDate = moment(serviceDate, 'YYYY-MM-DD').startOf('month').format('YYYY-MM-DD');
+  let _endDate = moment(serviceDate, 'YYYY-MM-DD').endOf('month').format('YYYY-MM-DD');
+
+  Staff.getJobHistory(db, employeeCode, _startDate, _endDate)
+    .then(rows => {
+      res.send({ ok: true, rows: rows });
+    });
+
+});
+
+router.post('/job/save', (req, res, next) => {
+  let data = req.body.data;
+  let employeeCode = req.body.employeeCode;
+  let month = req.body.month;
+  let year = req.body.year;
+  let db = req.db;
+
+  let serviceDate = `${year}-${month}-01`;
+
+  let _startDate = moment(serviceDate, 'YYYY-MM-DD').startOf('month').format('YYYY-MM-DD');
+  let _endDate = moment(serviceDate, 'YYYY-MM-DD').endOf('month').format('YYYY-MM-DD');
+
+  // for (let x = 0; x <= _endDate - 1; x++) {
+  //   let _date = moment(serviceDate, 'YYYY-MM-DD').add(x, "days").format("YYYY-MM-DD");
+  //   serviceDates.push(_date);
+  // }
+
+  console.log(_startDate);
+  console.log(_endDate);
+
+  Staff.removeOldJob(db, employeeCode, _startDate, _endDate)
+    .then(() => {
+      return Staff.saveJob(db, data);
+    })
+    .then(() => {
+      res.send({ ok: true });
+    })
+    .catch(err => {
+      res.send({ ok: false, msg: err });
+    });
+
 });
 
 module.exports = router;
