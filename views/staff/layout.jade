@@ -47,7 +47,7 @@ body(ng-app="app")
         md-sidenav.md-sidenav-left(md-component-id="left",
          md-is-locked-open="$mdMedia('gt-sm')", md-disable-backdrop="")
 
-          md-toolbar.md-hue-2.md-whiteframe-z2
+          md-toolbar.md-whiteframe-z2
             div.md-toolbar-tools
               md-button.md-icon-button(aria-label="Settings", ng-click="toggleLeft()")
                 md-ico.material-icons group
@@ -61,11 +61,11 @@ body(ng-app="app")
                     md-icon(md-menu-align-target)
                       i.material-icons group
                     | เจ้าหน้าที่ในหน่วยงาน
-                md-menu-item
-                  md-button(ui-sref="job")
-                    md-icon(md-menu-align-target)
-                      i.material-icons event
-                    | กำหนดตารางปฏิบัติงาน
+                //- md-menu-item
+                //-   md-button(ui-sref="job")
+                //-     md-icon(md-menu-align-target)
+                //-       i.material-icons event
+                //-     | กำหนดตารางปฏิบัติงาน
             md-divider
             md-subheader Settings
               md-menu-content
