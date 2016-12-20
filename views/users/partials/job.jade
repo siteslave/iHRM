@@ -26,7 +26,7 @@ md-card
         //-       | {{year.name}}
         md-button(class="md-raised md-primary", ng-click="showServiceDate()" ng-disabled="!serviceDateCode") แสดงข้อมูล
         md-button(class="md-raised md-warn", ng-click="saveService()", ng-disabled="!selectedService.length") บันทึก
-        md-button(class="md-raised md-warn", ng-disabled="!selectedService.length", ng-click="print()") พิมพ์ข้อมูลสแกนนิ้วมือ
+        md-button(class="md-raised md-primary", ng-disabled="!selectedService.length", ng-click="print()") พิมพ์
     md-table-container
       table(md-table)
         thead(md-head)
