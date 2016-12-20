@@ -12,26 +12,52 @@ angular.module('app.users.controllers.Job', ['app.users.services.Job'])
     //   $scope.getList();
     // };
 
-    $scope.months = [];
-    $scope.years = [];
+    $scope.servicesDate = [];
+    JobService.getAllowed()
+      .then(res => {
+        let data = res.data;
+        if (data.ok) {
+          data.rows.forEach(v => {
+            let obj = {};
+            obj.year = v.ayear;
+            obj.month = v.amonth;
+            obj.shortMonth = `${v.ayear}-${v.amonth}`;
+            let shortDate = `${v.ayear}-${v.amonth}`;
+            let _monthName = moment(shortDate, 'YYYY-MM').locale('th').format('MMMM');
+            let _yearName = +v.ayear + 543;
+            obj.name = `${_monthName} ${_yearName}`;
+            $scope.servicesDate.push(obj);
+          });
+          console.log($scope.servicesDate);
+          // let _years = _.uniqBy(data.rows, 'ayear');
+          // _years.forEach(v => {
+          //   let obj = {};
+          //   obj.year = v.year;
+          //   obj.name = +v.ayear + 543;
+          //   $scope.years.push(obj);
+          // });
 
-    $scope.years.push({ year: '2016', name: '2559' });
-    $scope.years.push({ year: '2017', name: '2560' });
-    $scope.years.push({ year: '2018', name: '2561' });
-    $scope.years.push({ year: '2019', name: '2562' });
+          // let _month = _.uniqBy(data.rows, 'amonth');
+        }
+    })
 
-    $scope.months.push({ month: '01', name: 'มกราคม' });
-    $scope.months.push({ month: '02', name: 'กุมภาพันธ์' });
-    $scope.months.push({ month: '03', name: 'มีนาคม' });
-    $scope.months.push({ month: '04', name: 'เมษายน' });
-    $scope.months.push({ month: '05', name: 'พฤษภาคม' });
-    $scope.months.push({ month: '06', name: 'มิถุนายน' });
-    $scope.months.push({ month: '07', name: 'กรกฎาคม' });
-    $scope.months.push({ month: '08', name: 'สิงหาคม' });
-    $scope.months.push({ month: '09', name: 'กันยายน' });
-    $scope.months.push({ month: '10', name: 'ตุลาคม' });
-    $scope.months.push({ month: '11', name: 'พฤศจิกายน' });
-    $scope.months.push({ month: '12', name: 'ธันวาคม' });
+    // $scope.years.push({ year: '2016', name: '2559' });
+    // $scope.years.push({ year: '2017', name: '2560' });
+    // $scope.years.push({ year: '2018', name: '2561' });
+    // $scope.years.push({ year: '2019', name: '2562' });
+
+    // $scope.months.push({ month: '01', name: 'มกราคม' });
+    // $scope.months.push({ month: '02', name: 'กุมภาพันธ์' });
+    // $scope.months.push({ month: '03', name: 'มีนาคม' });
+    // $scope.months.push({ month: '04', name: 'เมษายน' });
+    // $scope.months.push({ month: '05', name: 'พฤษภาคม' });
+    // $scope.months.push({ month: '06', name: 'มิถุนายน' });
+    // $scope.months.push({ month: '07', name: 'กรกฎาคม' });
+    // $scope.months.push({ month: '08', name: 'สิงหาคม' });
+    // $scope.months.push({ month: '09', name: 'กันยายน' });
+    // $scope.months.push({ month: '10', name: 'ตุลาคม' });
+    // $scope.months.push({ month: '11', name: 'พฤศจิกายน' });
+    // $scope.months.push({ month: '12', name: 'ธันวาคม' });
 
     // $scope.getList = () => {
     //   $scope.showLoading = true;
@@ -69,10 +95,11 @@ angular.module('app.users.controllers.Job', ['app.users.services.Job'])
       // console.log($scope.monthCode);
       // console.log($scope.yearCode);
 
-      let serviceDate = `${$scope.yearCode}-${$scope.monthCode}-01`;
+      let serviceDate = `${$scope.serviceDateCode}-01`;
       let _startDate = +moment(serviceDate, 'YYYY-MM-DD').startOf('month').format('DD');
       let _endDate = +moment(serviceDate, 'YYYY-MM-DD').endOf('month').format('DD');
-    
+      
+      // console.log(serviceDate, _startDate, _endDate);
       $scope.serviceDates = [];
       $scope.originalSevices = [];
       $scope.selectedService = [];
@@ -87,7 +114,12 @@ angular.module('app.users.controllers.Job', ['app.users.services.Job'])
 
       // get job detail
 
-      JobService.getDetail($scope.yearCode, $scope.monthCode)
+      let dataDates = $scope.serviceDateCode.split('-');
+      let _year = dataDates[0];
+      let _month = dataDates[1];
+
+      console.log(_year, _month);
+      JobService.getDetail(_year, _month)
         .then(res => {
           let data = res.data;
           if (data.ok) {
@@ -130,7 +162,7 @@ angular.module('app.users.controllers.Job', ['app.users.services.Job'])
 
     $scope.saveService = () => {
       let data = [];
-      console.log($scope.selectedService);
+      // console.log($scope.selectedService);
       $scope.selectedService.forEach(v => {
         let obj = {};
         obj.date_serve = v.date_serve;
@@ -142,7 +174,12 @@ angular.module('app.users.controllers.Job', ['app.users.services.Job'])
       // console.log(data);
       // console.log(data);
       if (data.length) {
-        JobService.save($scope.yearCode, $scope.monthCode, data)
+        let serviceDate = `${$scope.serviceDateCode}-01`;
+        let dataDates = $scope.serviceDateCode.split('-');
+        let _year = dataDates[0];
+        let _month = dataDates[1];
+        
+        JobService.save(_year, _month, data)
           .then(res => {
 
             let _data = res.data;
@@ -166,7 +203,7 @@ angular.module('app.users.controllers.Job', ['app.users.services.Job'])
     };
 
     $scope.print = () => {
-      let serviceDate = `${$scope.yearCode}-${$scope.monthCode}-01`;
+      let serviceDate = `${$scope.serviceDateCode}-01`;
       let _startDate = moment(serviceDate, 'YYYY-MM-DD').startOf('month').format('YYYY-MM-DD');
       let _endDate = moment(serviceDate, 'YYYY-MM-DD').endOf('month').format('YYYY-MM-DD');
       JobService.printTime(_startDate, _endDate);

@@ -80,6 +80,10 @@ router.get('/admin/reports/meeting', (req, res, next) => {
   res.render('admin/partials/reports-meeting');
 });
 
+router.get('/admin/reports/not-meetings', (req, res, next) => {
+  res.render('admin/partials/reports-not-meeting');
+});
+
 router.get('/admin/reports/department', (req, res, next) => {
   res.render('admin/partials/reports-department');
 });

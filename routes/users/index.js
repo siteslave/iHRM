@@ -162,6 +162,17 @@ router.post('/jobs/detail', (req, res, next) => {
 
 });
 
+router.get('/jobs/allowed', (req, res, next) => {
+  let db = req.db;
+
+  Job.getJobAllowed(db)
+    .then(rows => {
+      res.send({ ok: true, rows: rows[0] });
+    }, error => {
+      res.send({ ok: false, msg: error });
+    });
+});
+
 router.post('/jobs/save', (req, res, next) => {
   let data = req.body.data;
   let employeeCode = req.session.employeeCode;

@@ -11,20 +11,20 @@ md-card
     div(layout="row", layout-fill)
       div(flex)
         md-input-container
-          label เดือน
-          md-select(ng-model="monthCode", ng-change="clearSelectedService()")
+          label เดือนปฏิบัติงาน
+          md-select(ng-model="serviceDateCode", ng-change="clearSelectedService()")
             md-option
-              em เลือกเดือน
-            md-option(ng-repeat="month in months", ng-value="month.month")
-              {{month.name}}
-        md-input-container
-          label ปี
-          md-select(ng-model="yearCode", ng-change="clearSelectedService()")
-            md-option
-              em เลือกปี
-            md-option(ng-repeat="year in years", ng-value="year.year")
-              | {{year.name}}
-        md-button(class="md-raised md-primary", ng-click="showServiceDate()" ng-disabled="!monthCode || !yearCode") แสดงข้อมูล
+              em เลือกเดือนที่ปฏิบัติงาน
+            md-option(ng-repeat="s in servicesDate", ng-value="s.shortMonth")
+              {{s.name}}
+        //- md-input-container
+        //-   label ปี
+        //-   md-select(ng-model="yearCode", ng-change="clearSelectedService()")
+        //-     md-option
+        //-       em เลือกปี
+        //-     md-option(ng-repeat="year in years", ng-value="year.year")
+        //-       | {{year.name}}
+        md-button(class="md-raised md-primary", ng-click="showServiceDate()" ng-disabled="!serviceDateCode") แสดงข้อมูล
         md-button(class="md-raised md-warn", ng-click="saveService()", ng-disabled="!selectedService.length") บันทึก
         md-button(class="md-raised md-warn", ng-disabled="!selectedService.length", ng-click="print()") พิมพ์ข้อมูลสแกนนิ้วมือ
     md-table-container
@@ -34,16 +34,16 @@ md-card
             th(md-column) วันที่
             th(md-column) 
               | เวรเช้า
-              br
-              md-checkbox(ng-disabled="true")
+              //- br
+              //- md-checkbox(ng-disabled="true")
             th(md-column) 
               | เวรบ่าย
-              br
-              md-checkbox(ng-disabled="true")
+              //- br
+              //- md-checkbox(ng-disabled="true")
             th(md-column) 
               | เวรดึก
-              br
-              md-checkbox(ng-disabled="true")
+              //- br
+              //- md-checkbox(ng-disabled="true")
         tbody(md-body)
           tr(md-row, ng-if="!serviceDates.length")
             td(md-cell, colspan="5") ไม่พบรายการ

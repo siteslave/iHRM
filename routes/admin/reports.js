@@ -34,6 +34,21 @@ router.post('/meetings/list', (req, res, next) => {
   }
 });
 
+router.post('/meetings/not-meeting-list', (req, res, next) => {
+  let db = req.db;
+  let start = req.body.start;
+  let end = req.body.end;
+  let departmentId = req.body.departmentId;
+
+  if (start && end) {
+    Reports.getEmployeeNotMeetings(db, departmentId, start, end)
+      .then(rows => res.send({ ok: true, rows: rows[0] }))
+      .catch(err => res.send({ ok: false, msg: err }));
+  } else {
+    res.send({ ok: false, msg: 'ข้อมูลไม่ครบ กรุณาตรวจสอบ' });
+  }
+});
+
 router.post('/department/list', (req, res, next) => {
   let db = req.db;
   let start = req.body.start;
@@ -125,6 +140,78 @@ router.get('/print/by-meeting/:meetingId', (req, res, next) => {
   }
 });
 
+router.get('/print/not-meetings/:departmentId/:start/:end', (req, res, next) => { 
+  let departmentId = req.params.departmentId;
+  let start = req.params.start;
+  let end = req.params.end;
+
+  let db = req.db;
+  let json = {};
+  // json.departmentName = null;
+  json.startDate = `${moment(start).format('D')} ${moment(start).locale('th').format('MMMM')} ${moment(start).get('year') + 543}`;
+  json.endDate = `${moment(end).format('D')} ${moment(end).locale('th').format('MMMM')} ${moment(end).get('year') + 543}`;
+  // json.employees = [];
+
+  if (departmentId && start && end) {
+    fse.ensureDirSync('./templates/html');
+    fse.ensureDirSync('./templates/pdf');
+
+    var destPath = './templates/html/' + moment().format('x');
+    fse.ensureDirSync(destPath);
+    // get department detail
+    Departments.getInfo(db, departmentId)
+      .then(rows => {
+        let data = rows[0];
+        json.departmentName = data.name;
+        // get employees list
+        return Reports.getEmployeeNotMeetings(db, departmentId, start, end);
+      })
+      .then(rows => {
+        json.employees = rows[0];
+        // Create pdf
+        gulp.task('html', (cb) => {
+          return gulp.src('./templates/not-meeting.jade')
+            .pipe(gulpData(function () {
+              return json;
+            }))
+            .pipe(jade())
+            .pipe(gulp.dest(destPath));
+        });
+
+        gulp.task('pdf', ['html'], function () {
+          var html = fs.readFileSync(destPath + '/not-meeting.html', 'utf8')
+          var options = {
+            format: 'A4',
+            // orientation: "landscape",
+            footer: {
+              height: "15mm",
+              contents: '<span style="color: #444;"><small>Printed: ' + new Date() + '</small></span>'
+            }
+          };
+
+          var pdfName = `./templates/pdf/not-meeting-${moment().format('x')}.pdf`;
+
+          pdf.create(html, options).toFile(pdfName, function (err, resp) {
+            if (err) {
+              res.send({ ok: false, msg: err });
+            } else {
+              res.download(pdfName, function () {
+                rimraf.sync(destPath);
+                fse.removeSync(pdfName);
+              });
+            }
+          });
+        });
+        // Convert html to pdf
+        gulp.start('pdf');
+
+      })
+      .catch(err => res.send({ ok: false, msg: err }));
+  } else {
+    res.send({ok: false, msg: 'Meeting id not found!'})
+  }
+});
+
 router.get('/print/by-department/:departmentId/:start/:end', (req, res, next) => { 
   let departmentId = req.params.departmentId;
   let start = req.params.start;
@@ -172,7 +259,7 @@ router.get('/print/by-department/:departmentId/:start/:end', (req, res, next) =>
           json.employees.push(obj);
         });
         
-        console.log(json);
+        // console.log(json);
         // Create pdf
         gulp.task('html', (cb) => {
           return gulp.src('./templates/report-by-department.jade')

@@ -8,6 +8,14 @@ module.exports = {
       .whereBetween('date_serve', [start, end]);
   },
 
+  getJobAllowed(db) {
+    let sql = `select amonth, ayear, concat(ayear, amonth) as yyyymm
+              from service_time_allow
+              where is_allow="Y"
+              order by yyyymm desc`;
+    return db.raw(sql, []);
+  },
+
   removeOldJob(db, employeeCode, start, end) {
     return db('service_type_attendances')
       .where('employee_code', employeeCode)

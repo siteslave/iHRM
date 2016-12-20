@@ -10,6 +10,11 @@ angular.module('app.users.services.Job', [])
         let _url = `/users/jobs/detail`;
         return $http.post(_url, { year: year, month: month });
       },
+      
+      getAllowed() {
+        let _url = `/users/jobs/allowed`;
+        return $http.get(_url);
+      },
 
       // listAll() {
       //   let _url = `/users/jobs/list-all`;
