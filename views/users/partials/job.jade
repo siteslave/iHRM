@@ -30,13 +30,17 @@ md-card
         //-   md-button class="md-icon-button" aria-label="More">
         //-   <md-icon md-svg-icon="img/icons/more_vert.svg"></md-icon>
         //- </md-button>
-        md-button(class="md-icon-button md-primary", ng-click="showServiceDate()" ng-disabled="!serviceDateCode")
+        md-button(class="md-raised md-primary", hide-xs, ng-click="showServiceDate()" ng-disabled="!serviceDateCode") แสดง
+        md-button(class="md-raised md-warn", hide-xs, ng-click="saveService()", ng-disabled="!selectedService.length") บันทึก
+        md-button(class="md-raised md-primary", hide-xs, ng-disabled="!selectedService.length", ng-click="print()") พิมพ์
+        
+        md-button(class="md-icon-button md-primary", hide-gt-xs, ng-click="showServiceDate()" ng-disabled="!serviceDateCode")
           md-tooltip(md-direction="top") แสดงข้อมูล
           md-icon.material.icons search
-        md-button(class="md-icon-button md-warn", ng-click="saveService()", ng-disabled="!selectedService.length") 
+        md-button(class="md-icon-button md-warn", hide-gt-xs, ng-click="saveService()", ng-disabled="!selectedService.length") 
           md-tooltip(md-direction="top") บันทึกตารางปฏิบัติงาน
           md-icon.material.icons save
-        md-button(class="md-icon-button md-primary", ng-disabled="!selectedService.length", ng-click="print()")
+        md-button(class="md-icon-button md-primary", hide-gt-xs, ng-disabled="!selectedService.length", ng-click="print()")
           md-tooltip(md-direction="top") พิมพ์ตารางปฎิบัติงาน
           md-icon.material.icons print
     md-table-container
