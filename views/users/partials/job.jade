@@ -5,7 +5,7 @@ md-toolbar.md-whiteframe-z2
       | &nbsp; กำหนดตารางปฏิบัติงาน
 
 md-progress-linear(md-mode="indeterminate", ng-show="showLoading")
-md-button.md-fab.md-fab-bottom-right(aria-label="Save", ng-disabled="!selectedService.length", ng-click="saveService()")
+md-button.md-fab.md-fab-bottom-right(hide-gt-xs, aria-label="Save", ng-disabled="!selectedService.length", ng-click="saveService()")
   md-icon.material.icons save
 md-card
   md-card-content
@@ -27,7 +27,7 @@ md-card
         //-     md-option(ng-repeat="year in years", ng-value="year.year")
         //-       | {{year.name}}
         md-button(class="md-raised md-primary", ng-click="showServiceDate()" ng-disabled="!serviceDateCode") แสดงข้อมูล
-        md-button(class="md-raised md-warn", ng-click="saveService()", ng-disabled="!selectedService.length") บันทึก
+        md-button(class="md-raised md-warn", hide-xs, ng-click="saveService()", ng-disabled="!selectedService.length") บันทึก
         md-button(class="md-raised md-primary", ng-disabled="!selectedService.length", ng-click="print()") พิมพ์
     md-table-container
       table(md-table)
