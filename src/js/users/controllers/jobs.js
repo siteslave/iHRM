@@ -28,72 +28,16 @@ angular.module('app.users.controllers.Job', ['app.users.services.Job'])
             obj.name = `${_monthName} ${_yearName}`;
             $scope.servicesDate.push(obj);
           });
-          console.log($scope.servicesDate);
-          // let _years = _.uniqBy(data.rows, 'ayear');
-          // _years.forEach(v => {
-          //   let obj = {};
-          //   obj.year = v.year;
-          //   obj.name = +v.ayear + 543;
-          //   $scope.years.push(obj);
-          // });
-
-          // let _month = _.uniqBy(data.rows, 'amonth');
         }
-    })
+      });
 
-    // $scope.years.push({ year: '2016', name: '2559' });
-    // $scope.years.push({ year: '2017', name: '2560' });
-    // $scope.years.push({ year: '2018', name: '2561' });
-    // $scope.years.push({ year: '2019', name: '2562' });
-
-    // $scope.months.push({ month: '01', name: 'มกราคม' });
-    // $scope.months.push({ month: '02', name: 'กุมภาพันธ์' });
-    // $scope.months.push({ month: '03', name: 'มีนาคม' });
-    // $scope.months.push({ month: '04', name: 'เมษายน' });
-    // $scope.months.push({ month: '05', name: 'พฤษภาคม' });
-    // $scope.months.push({ month: '06', name: 'มิถุนายน' });
-    // $scope.months.push({ month: '07', name: 'กรกฎาคม' });
-    // $scope.months.push({ month: '08', name: 'สิงหาคม' });
-    // $scope.months.push({ month: '09', name: 'กันยายน' });
-    // $scope.months.push({ month: '10', name: 'ตุลาคม' });
-    // $scope.months.push({ month: '11', name: 'พฤศจิกายน' });
-    // $scope.months.push({ month: '12', name: 'ธันวาคม' });
-
-    // $scope.getList = () => {
-    //   $scope.showLoading = true;
-    //   $scope.showPaging = true;
-    //   JobService.listAll()
-    //     .then(res => {
-    //       let data = res.data;
-    //       if (data.ok) {
-    //         $scope.showLoading = false;
-    //         $scope.employees = [];
-    //         data.rows.forEach(v => {
-    //           let obj = {};
-    //           obj.fullname = `${v.title_name}${v.first_name} ${v.last_name}`;
-    //           obj.employee_code = v.employee_code;
-    //           obj.employee_id = v.id;
-
-    //           $scope.employees.push(obj);
-    //         })
-    //       } else {
-    //         $scope.showLoading = false;
-    //         console.log(data.msg);
-    //       }
-    //     });
-    // };
 
     $scope.selectedItemChange = (employee) => {
       $scope._employee = employee;
     };
 
     $scope.showServiceDate = () => {
-      // $scope.employeeCode = $scope._employee.employee_code;
-      // console.log($scope.employeeDetail);
-      // $scope.employeeCode = $scope.employeeDetail.employee_code;
-      // console.log($scope.employeeCode);
-      // console.log($scope.monthCode);
-      // console.log($scope.yearCode);
+      $scope.showLoading = true;
 
       let serviceDate = `${$scope.serviceDateCode}-01`;
       let _startDate = +moment(serviceDate, 'YYYY-MM-DD').startOf('month').format('DD');
@@ -118,7 +62,7 @@ angular.module('app.users.controllers.Job', ['app.users.services.Job'])
       let _year = dataDates[0];
       let _month = dataDates[1];
 
-      console.log(_year, _month);
+      //console.log(_year, _month);
       JobService.getDetail(_year, _month)
         .then(res => {
           let data = res.data;
@@ -136,6 +80,8 @@ angular.module('app.users.controllers.Job', ['app.users.services.Job'])
             });
             // $scope.originalSevices = $scope.selectedService;
           }
+
+          $scope.showLoading = false;
         });
 
     };
