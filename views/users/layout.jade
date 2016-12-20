@@ -67,8 +67,8 @@ body(ng-app="app")
 
           md-toolbar.md-whiteframe-z2
             div.md-toolbar-tools
-              md-button.md-icon-button(aria-label="Settings", href="#/meetings")
-                md-ico.material-icons group
+              md-button.md-icon-button(aria-label="Settings", ng-click="toggleSidenav('left')")
+                md-ico.material-icons menu
               h2
                 span Smart HRM
           md-content
