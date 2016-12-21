@@ -69,21 +69,40 @@ angular.module('app.Reports.Meeting.Controller', [])
     $scope.startDate = new Date(moment().startOf('month').format());
     $scope.endDate = new Date(moment().endOf('month').format());
     $scope.showLoading = false;
+    $scope.positions = [];
 
     $scope.employees = [];
     $scope.departments = [];
+    $scope.selectedPositions = [];
 
+    // ReportsMeetingService.getPositionList()
+    //   .then(res => {
+    //     let data = res.data;
+    //     if (data.ok) {
+    //       // console.log(data.rows);
+    //       $scope.positions = data.rows;
+    //     }
+    //   });
+    
     ReportsMeetingService.getDepartmentList()
       .then(res => {
         let data = res.data;
         if (data.ok) {
-          console.log(data.rows);
+          // console.log(data.rows);
           $scope.departments = data.rows;
         }
       });
-    
+
     $scope.clearData = () => {
       $scope.employees = [];
+      let departmentId = $scope.departmentId;
+      ReportsMeetingService.getPositionList(departmentId)
+        .then(res => {
+          let data = res.data;
+          if (data.ok) {
+            $scope.positions = data.rows;
+          }
+        });
     }
     // get list 
     $scope.getList = () => {
@@ -95,7 +114,7 @@ angular.module('app.Reports.Meeting.Controller', [])
         let start = moment($scope.startDate).format('YYYY-MM-DD');
         let end = moment($scope.endDate).format('YYYY-MM-DD');
 
-        ReportsMeetingService.getNotMeetingList($scope.departmentId, start, end)
+        ReportsMeetingService.getNotMeetingList($scope.departmentId, start, end, $scope.selectedPositions)
           .then(res => {
             let data = res.data;
             if (data.ok) {
@@ -127,9 +146,10 @@ angular.module('app.Reports.Meeting.Controller', [])
       let start = moment($scope.startDate).format('YYYY-MM-DD');
       let end = moment($scope.endDate).format('YYYY-MM-DD');
       let departmentId = $scope.departmentId;
-
+      let positions = $scope.selectedPositions.toString();
+      // console.log(positions);
       if (departmentId && start && end) {
-        window.open(`/admin/reports/print/not-meetings/${departmentId}/${start}/${end}`);
+        window.open(`/admin/reports/print/not-meetings/${departmentId}/${start}/${end}/${positions}`);
       }
     };
 

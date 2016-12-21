@@ -48,18 +48,31 @@ module.exports = {
     return db.raw(sql, [departmentId, start, end])
   },
 
-  getEmployeeNotMeetings(db, departmentId, start, end) {
-    let sql = `
-      select e.employee_code, t.name as title_name, e.first_name, e.last_name, s.name as sub_department_name
-      from employees as e
-      left join l_sub_departments as s on s.id=e.sub_department_id
-      left join l_titles as t on t.id=e.title_id
-      where e.id not in (select distinct employee_id from meeting_register where approve_status='Y' and register_date between ? and ?)
-      and e.sub_department_id in (select id from l_sub_departments where department_id=?)
-      order by e.sub_department_id, e.first_name
-    `;
+  getEmployeeNotMeetings(db, departmentId, start, end, positions) {
+    // let _positions = `[${positions.toString()}]`;
+    // let sql = `
+    //   select e.employee_code, t.name as title_name, e.first_name, e.last_name, s.name as sub_department_name
+    //   from employees as e
+    //   left join l_sub_departments as s on s.id=e.sub_department_id
+    //   left join l_titles as t on t.id=e.title_id
+    //   where e.id not in (select distinct employee_id from meeting_register where approve_status='Y' and register_date between ? and ?)
+    //   and e.sub_department_id in (select id from l_sub_departments where department_id=?)
+    //   and e.position_id in ?
+    //   order by e.sub_department_id, e.first_name
+    // `;
 
-    return db.raw(sql, [start, end, departmentId])
+    return db('employees as e')
+      .select('e.employee_code', 't.name as title_name', 'e.first_name', 'e.last_name',
+      's.name as sub_department_name', 'p.name as position_name')
+      .leftJoin('l_sub_departments as s', 's.id', 'e.sub_department_id')
+      .leftJoin('l_titles as t', 't.id', 'e.title_id')
+      .leftJoin('l_positions as p', 'p.id', 'e.position_id')
+      .whereRaw(`e.id not in (select distinct employee_id from meeting_register where approve_status="Y" and register_date between '${start}' and '${end}')`)
+      .whereRaw(`e.sub_department_id in (select id from l_sub_departments where department_id=${departmentId})`)
+      .whereIn('e.position_id', positions)
+      .orderByRaw('e.sub_department_id, e.first_name');
+    // console.log(sql);
+    //return db.raw(sql, [start, end, departmentId,])
   },
 
   // รายงานสรุปแยกตามรายชื่อเจ้าหน้าที่

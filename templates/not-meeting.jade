@@ -156,6 +156,7 @@ html
             th(style="width: 10%;") ลำดับ
             th(style="width: 10%;") รหัส
             th ชื่อ - สกุล
+            th(style="width: 30%;") ตำแหน่ง
             th(style="width: 30%;") หน่วยงานย่อย
         tbody
 
@@ -166,4 +167,5 @@ html
               td(style="width: 10%") #{y}
               td(style="width: 10%") #{e.employee_code}
               td #{e.title_name}#{e.first_name} #{e.last_name}
+              td(style="width: 30%") #{e.position_name}
               td(style="width: 30%") #{e.sub_department_name}

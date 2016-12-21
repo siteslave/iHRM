@@ -19,6 +19,7 @@ let Utils = require('../../helpers/utils');
 let Meetings = require('../../models/meetings');
 let Reports = require('../../models/reports');
 let Departments = require('../../models/department');
+let Employees = require('../../models/employee');
 
 router.post('/meetings/list', (req, res, next) => {
   let db = req.db;
@@ -39,10 +40,12 @@ router.post('/meetings/not-meeting-list', (req, res, next) => {
   let start = req.body.start;
   let end = req.body.end;
   let departmentId = req.body.departmentId;
+  let positions = req.body.positions;
 
+  // console.log(req.body);  
   if (start && end) {
-    Reports.getEmployeeNotMeetings(db, departmentId, start, end)
-      .then(rows => res.send({ ok: true, rows: rows[0] }))
+    Reports.getEmployeeNotMeetings(db, departmentId, start, end, positions)
+      .then(rows => res.send({ ok: true, rows: rows }))
       .catch(err => res.send({ ok: false, msg: err }));
   } else {
     res.send({ ok: false, msg: 'ข้อมูลไม่ครบ กรุณาตรวจสอบ' });
@@ -64,6 +67,18 @@ router.post('/department/list', (req, res, next) => {
   }
 });
 
+router.post('/employee-position/list', (req, res, next) => {
+  let db = req.db;
+  let departmentId = req.body.departmentId;
+
+  if (departmentId) {
+    Employees.getEmployeePositionList(db, departmentId)
+      .then(rows => res.send({ ok: true, rows: rows[0] }))
+      .catch(err => res.send({ ok: false, msg: err }));
+  } else {
+    res.send({ ok: false, msg: 'ข้อมูลไม่ครบ กรุณาตรวจสอบ' });
+  }
+});
 
 // print
 
@@ -140,10 +155,15 @@ router.get('/print/by-meeting/:meetingId', (req, res, next) => {
   }
 });
 
-router.get('/print/not-meetings/:departmentId/:start/:end', (req, res, next) => { 
+router.get('/print/not-meetings/:departmentId/:start/:end/:positions', (req, res, next) => { 
   let departmentId = req.params.departmentId;
   let start = req.params.start;
   let end = req.params.end;
+  // let positions = JSON.parse(req.parmas.positions);
+  let positions = req.params.positions
+  let _p = positions.split(',');
+  let _positions = _p;
+  // console.log(req.params);
 
   let db = req.db;
   let json = {};
@@ -164,10 +184,10 @@ router.get('/print/not-meetings/:departmentId/:start/:end', (req, res, next) => 
         let data = rows[0];
         json.departmentName = data.name;
         // get employees list
-        return Reports.getEmployeeNotMeetings(db, departmentId, start, end);
+        return Reports.getEmployeeNotMeetings(db, departmentId, start, end, _positions);
       })
       .then(rows => {
-        json.employees = rows[0];
+        json.employees = rows;
         // Create pdf
         gulp.task('html', (cb) => {
           return gulp.src('./templates/not-meeting.jade')

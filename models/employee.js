@@ -101,6 +101,16 @@ module.exports = {
 
   },
 
+  getEmployeePositionList(db, departmentId) {
+    let sql = `
+    select distinct e.position_id as id, p.name
+    from employees as e
+    inner join l_positions as p on p.id=e.position_id
+    where e.sub_department_id in (select id from l_sub_departments where department_id=?)
+    `;
+    return db.raw(sql, [departmentId]);
+  },
+
   getMaxCode(db) {
     return db('employees').max('employee_code as empcode');
   }
