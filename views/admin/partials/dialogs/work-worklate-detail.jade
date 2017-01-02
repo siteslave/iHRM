@@ -1,0 +1,31 @@
+md-dialog(aria-label='ข้อมูลการลงเวลา (มาสาย)', flex='50')
+  form(ng-cloak='')
+    md-toolbar
+      .md-toolbar-tools
+        h2 ข้อมูลการลงเวลา (มาสาย/ออกก่อน/ไม่สแกนออก)
+        span(flex='')
+        md-button.md-icon-button(ng-click='cancel()')
+          md-icon(aria-label='Close dialog')
+            i.material-icons close
+    md-dialog-content
+      .md-dialog-content
+        md-table-container(style='background-color: white;')
+          table(md-table='md-table')
+            thead(md-head='md-head')
+              tr(md-row='md-row')
+                th(md-column='md-column') #
+                th(md-column='md-column') วันที่
+                th(md-column='md-column') เข้า
+                th(md-column='md-column') ออก
+            tbody(md-body='md-body')
+              tr(md-row='md-row', ng-if='!details.length')
+                td(md-cell='md-cell', colspan='4') ไม่พบรายการ
+              tr(md-row='md-row', ng-repeat='e in details', ng-if='details.length')
+                td(md-cell='md-cell') {{ $index + 1 }}
+                td(md-cell='md-cell') {{ e.checkin_date }}
+                td(md-cell='md-cell') {{ e.in_time }}
+                td(md-cell='md-cell') {{ e.out_time }}
+    md-dialog-actions(layout='row')
+      span(flex='')
+      md-button(ng-click='cancel()')
+        | ปิดหน้าต่าง

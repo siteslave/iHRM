@@ -1,0 +1,69 @@
+md-toolbar
+  .md-toolbar-tools
+    i.material-icons date_range
+    | &nbsp;
+    h3 การลงเวลาปฏิบัติงาน
+    span(flex='flex')
+md-progress-linear(md-mode='indeterminate', ng-show='showLoading')
+md-content(layout-padding='')
+  div(ng-cloak='')
+    md-content
+      div(layout-gt-xs='row', style='background-color: white;')
+        md-input-container
+          label จากวันที่
+          md-datepicker(ng-model='startDate')
+        md-input-container
+          label ถึงวันที่
+          md-datepicker(ng-model='endDate')
+        md-input-container
+          md-button.md-raised.md-primary(ng-disabled='showLoading', ng-click='doProcess($event)') ประมวลผล
+        md-input-container
+          md-button.md-raised.md-primary(ng-disabled='!attendances.length', ng-click='exportData()') ส่งออก
+      md-input-container.md-block(flex-gt-xs='')
+        label รหัสพนักงาน/ชื่อพนักงาน
+        input(ng-model='queryEmployee')
+      md-table-container(style='background-color: white;')
+        table(md-table='md-table')
+          thead(md-head='md-head')
+            tr(md-row='md-row')
+              th(md-column='md-column') #
+              // <th md-column="md-column">รหัส</th>
+              th(md-column='md-column') ชื่อ-สกุล
+              th(md-column='md-column') หน่วยงาน
+              th(md-column='md-column') ทั้งหมด
+              th(md-column='md-column') สาย
+              th(md-column='md-column') ออกก่อน
+              th(md-column='md-column') ไม่ลงออก
+              th(md-column='md-column')
+          tbody(md-body='md-body')
+            tr(md-row='md-row', ng-if='!attendances.length')
+              td(md-cell='md-cell', colspan='8') ไม่พบรายการ
+            tr(md-row='md-row', ng-repeat='e in attendances | filter: queryEmployee', ng-if='attendances.length')
+              td(md-cell='md-cell') {{ $index + 1 }}
+              td(md-cell='md-cell') {{ e.fullname }}
+              td(md-cell='md-cell') {{ e.department_name }}
+              td(md-cell='md-cell') {{ e.total_work | number }}
+              td(md-cell='md-cell') {{ e.total_late | number }}
+              td(md-cell='md-cell') {{ e.total_exit_before | number }}
+              td(md-cell='md-cell') {{ e.total_not_exit | number }}
+              td(md-cell='md-cell')
+                md-menu
+                  md-button.md-icon-button(aria-label='More', ng-click='openMenu($mdOpenMenu, $event)')
+                    md-icon.material-icons dialpad
+                  md-menu-content(width='4')
+                    md-menu-item
+                      md-button(ng-click='printSummary($event, e)')
+                        md-icon.material-icons print
+                        |   พิมพ์สรุปการสแกนลายนิ้วมือ
+                    md-menu-item
+                      md-button(ng-disabled='!e.total_late', ng-click='showWorklateDetail($event, e)')
+                        md-icon.material-icons search
+                        |   วันที่มาสาย
+                    md-menu-item
+                      md-button(ng-disabled='!e.total_exit_before', ng-click='showExitDetail($event, e)')
+                        md-icon.material-icons search
+                        |   วันที่ออกก่อน
+                    md-menu-item
+                      md-button(ng-disabled='!e.total_not_exit', ng-click='showNotExitDetail($event, e)')
+                        md-icon.material-icons search
+                        |   วันที่ไม่สแกนออก

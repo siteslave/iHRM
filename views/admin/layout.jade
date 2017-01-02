@@ -89,6 +89,10 @@ head
   script(src="/javascripts/admin/ask-permission/dialog-employees.js")
   script(src="/javascripts/admin/ask-permission/service.js")
 
+  script(src="/javascripts/admin/work/index.js")
+  script(src="/javascripts/admin/work/controller.js")
+  script(src="/javascripts/admin/work/service.js")
+
   block scripts
 
 body(ng-app="app")
@@ -125,11 +129,11 @@ body(ng-app="app")
                     i.material-icons local_taxi
                   | ขออนุญาตใช้รถยนต์
               md-menu-item
-                md-button(ng-click="go('meetings')", ng-disabled="true")
+                md-button(ng-click="go('work')")
                   md-icon(md-menu-align-target)
-                    i.material-icons perm_contact_calendar
-                  | ลาพักผ่อน/กิจ/คลอด
-              md-divider
+                    i.material-icons date_range
+                  | การลงเวลาปฏิบัติงาน
+              //- md-divider
               md-menu-item
                 md-button(ui-sref="employee")
                   md-icon(md-menu-align-target)

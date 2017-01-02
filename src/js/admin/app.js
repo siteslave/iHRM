@@ -18,7 +18,8 @@ angular.module('app', [
   'app.Driver',
   'app.Department',
   'app.CareRequest',
-  'app.AskPermission'
+  'app.AskPermission',
+  'app.Work'
 ])
   .config(($mdThemingProvider, $stateProvider, $urlRouterProvider, $mdDateLocaleProvider) => {
 
@@ -141,6 +142,11 @@ angular.module('app', [
         url: '/ask-permission',
         templateUrl: '/partials/admin/ask-permission',
         controller: 'AskPermissionCtrl'
+      })
+      .state('work', {
+        url: '/work',
+        templateUrl: '/partials/admin/work',
+        controller: 'WorkCtrl'
       })
       .state('reports', {
         url: '/reports',

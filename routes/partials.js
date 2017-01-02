@@ -88,6 +88,14 @@ router.get('/admin/reports/department', (req, res, next) => {
   res.render('admin/partials/reports-department');
 });
 
+router.get('/admin/work', (req, res, next) => {
+  res.render('admin/partials/work');
+});
+
+router.get('/admin/work/dialog/worklate-detail', (req, res, next) => {
+  res.render('admin/partials/dialogs/work-worklate-detail');
+});
+
 
 // Driver
 router.get('/admin/drivers', (req, res, next) => {
