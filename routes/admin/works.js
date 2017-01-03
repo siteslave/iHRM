@@ -98,8 +98,9 @@ router.get('/print/:employeeCode/:startDate/:endDate', (req, res, next) => {
   // let end = moment(endDate).format('YYYY-MM-DD');
   let json = {};
 
-  json.start_date = `${moment(startDate).format('DD/MM')}/${moment(startDate).get('year') + 543}`;
-  json.end_date = `${moment(endDate).format('DD/MM')}/${moment(endDate).get('year') + 543}`;
+  json.start_date = `${moment(startDate).format('D')} ${moment(startDate).locale('th').format('MMMM')} ${moment(startDate).get('year') + 543}`;
+  json.end_date = `${moment(endDate).format('D')} ${moment(endDate).locale('th').format('MMMM')} ${moment(endDate).get('year') + 543}`;
+
   json.items = [];
 
   // get employee detail
