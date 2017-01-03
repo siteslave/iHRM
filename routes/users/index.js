@@ -96,8 +96,9 @@ router.get('/jobs/print/:startDate/:endDate', function (req, res, next) {
           }
         }
 
+        let employee_name = `${json.employee.first_name} ${json.employee.last_name}`;
         // let pdfName = path.join(destPath, employee.fullname + '-' + moment().format('x') + '.pdf');
-        var pdfName = `./templates/pdf/user-time-${moment().format('x')}.pdf`;
+        var pdfName = `./templates/pdf/attendances-${employee_name}-${moment().format('x')}.pdf`;
 
         pdf.create(html, options).toFile(pdfName, (err, resp) => {
           if (err) {
