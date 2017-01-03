@@ -48,35 +48,35 @@ module.exports = {
       select t.date_serve,
       (
         select in_morning from t_attendances where employee_code=t.employee_code and date_serve=t.date_serve
-        and service_type='1'
+        and service_type='1' limit 1
       ) as in01,
       (
         select in_afternoon from t_attendances where employee_code=t.employee_code and date_serve=t.date_serve
-        and service_type='2'
+        and service_type='2' limit 1
       ) as in02,
       (
         select in_evening from t_attendances where employee_code=t.employee_code and date_serve=t.date_serve
-        and service_type='3'
+        and service_type='3' limit 1
       ) as in03,
       (
         select in_evening2 from t_attendances where employee_code=t.employee_code and date_serve=t.date_serve
-        and service_type='3'
+        and service_type='3' limit 1
       ) as in03_2,
       (
         select out_morning from t_attendances where employee_code=t.employee_code and date_serve=t.date_serve
-        and service_type='1'
+        and service_type='1' limit 1
       ) as out01,
       (
         select out_afternoon from t_attendances where employee_code=t.employee_code and date_serve=t.date_serve
-        and service_type='2'
+        and service_type='2' limit 1
       ) as out02,
       (
         select out_afternoon2 from t_attendances where employee_code=t.employee_code and date_serve=t.date_serve
-        and service_type='2'
+        and service_type='2' limit 1
       ) as out02_2,
       (
         select out_evening from t_attendances where employee_code=t.employee_code and date_serve=t.date_serve
-        and service_type='3'
+        and service_type='3' limit 1
       ) as out03
       from t_attendances as t
 
