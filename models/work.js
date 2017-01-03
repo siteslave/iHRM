@@ -1,3 +1,4 @@
+'use strict';
 // work module
 
 module.exports = {
