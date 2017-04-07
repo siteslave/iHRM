@@ -4,6 +4,7 @@ public/javascripts
 public/stylesheets/style.css
 templates/html
 templates/pdf
+.vscode/
 .DS_Store
 .idea
 .env
