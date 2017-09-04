@@ -45,6 +45,7 @@ angular.module('app.Employee.dialog.New', [])
     // Save employee
     $scope.save = () => {
       //console.log($scope.employee);
+      $scope.employee.isActive = $scope.employee.isActive ? 'Y' : 'N';
       if ($scope.employee.firstName && $scope.employee.lastName &&
         $scope.employee.mainDepId && $scope.employee.subDepId &&
         $scope.employee.position && $scope.employee.title) {

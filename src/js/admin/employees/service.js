@@ -55,7 +55,8 @@ angular.module('app.Employee.Service', [])
           title: employee.title,
           cid: employee.cid,
           username: employee.username,
-          password: employee.password
+          password: employee.password,
+          isActive: employee.isActive
         });
       },
 
@@ -69,7 +70,8 @@ angular.module('app.Employee.Service', [])
           department: employee.subDepId,
           title: employee.title,
           cid: employee.cid,
-          id: employee.id
+          id: employee.id,
+          isActive: employee.isActive
         });
       },
 

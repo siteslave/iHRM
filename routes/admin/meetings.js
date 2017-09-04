@@ -4,6 +4,12 @@ let express = require('express');
 let router = express.Router();
 let moment = require('moment');
 
+const co = require('co-express');
+
+const MomentRange = require('moment-range');
+
+const momentRange = MomentRange.extendMoment(moment)
+
 let Meetings = require('../../models/meetings');
 
 router.post('/save', (req, res, next) => {
@@ -151,7 +157,7 @@ router.post('/assign/department', (req, res, next) => {
 
   Meetings.getAssign(req.db, id)
     .then(rows => {
-      res.send({ok: true, rows: rows})
+      res.send({ ok: true, rows: rows })
     })
     .catch(err => res.send({ ok: false, msg: err }));
 
@@ -166,7 +172,7 @@ router.delete('/delete/:id', (req, res, next) => {
       .then(() => res.send({ ok: true }))
       .catch(err => res.send({ ok: false, msg: err }));
   } else {
-    res.send({ok: false, msg: 'ID not found!'})
+    res.send({ ok: false, msg: 'ID not found!' })
   }
 })
 
@@ -206,25 +212,98 @@ router.post('/registered/employee', (req, res, next) => {
   }
 });
 
-router.put('/registered/approve', (req, res, next) => {
+router.put('/registered/approve', co(async (req, res, next) => {
   let db = req.db;
   let employees = req.body.employees;
   let meetingId = req.body.meetingId;
 
-  if (meetingId) {
-    // clear approve status
-    Meetings.clearApproveRegister(db, meetingId)
-      .then(() => {
-        return Meetings.approveRegister(req.db, meetingId, employees);
-      })
-      .then(() => {
-        res.send({ ok: true });
-      })
-      .catch(err => res.send({ ok: false, msg: err, code: 501 }));
-  } else {
-    res.send({ ok: false, msg: 'ข้อมูลไม่สมบูรณ์', code: 501 });
+  try {
+    // get meeting info
+    let meetingInfo = await Meetings.getMeetingInfo(db, meetingId);
+    const startDate = meetingInfo[0].start_date;
+    const endDate = meetingInfo[0].end_date;
+
+    const start = moment(startDate);
+    const end = moment(endDate);
+    const range = momentRange.range(start, end);
+
+    const days = Array.from(range.by('days'));
+
+    if (meetingId) {
+      // clear approve status
+      await Meetings.clearApproveRegister(db, meetingId);
+      await Meetings.clearApproveDates(db, meetingId);
+      await Meetings.approveRegister(req.db, meetingId, employees);
+
+      // dates
+      let dates = [];
+      employees.forEach(v => {
+        days.map(d => {
+          let obj = {};
+          obj.meeting_id = meetingId;
+          obj.employee_id = v
+          obj.meeting_date = d.format('YYYY-MM-DD');
+          dates.push(obj);
+        });
+      });
+
+      await Meetings.saveApproveDates(db, dates);
+
+      res.send({ ok: true });
+      // 
+    } else {
+      res.send({ ok: false, msg: 'ข้อมูลไม่สมบูรณ์', code: 501 });
+    }
+  } catch (error) {
+    res.send({ ok: false, msg: error.message });
   }
 
-});
+}));
+
+router.put('/process-approved', co(async (req, res, next) => {
+  let db = req.db;
+
+  try {
+    // get meeting info
+    let meetingInfo = await Meetings.getMeetingInfo(db, meetingId);
+    const startDate = meetingInfo[0].start_date;
+    const endDate = meetingInfo[0].end_date;
+
+    const start = moment(startDate);
+    const end = moment(endDate);
+    const range = momentRange.range(start, end);
+
+    const days = Array.from(range.by('days'));
+
+    if (meetingId) {
+      // clear approve status
+      await Meetings.clearApproveRegister(db, meetingId);
+      await Meetings.clearApproveDates(db, meetingId);
+      await Meetings.approveRegister(req.db, meetingId, employees);
+
+      // dates
+      let dates = [];
+      employees.forEach(v => {
+        days.map(d => {
+          let obj = {};
+          obj.meeting_id = meetingId;
+          obj.employee_id = v
+          obj.meeting_date = d.format('YYYY-MM-DD');
+          dates.push(obj);
+        });
+      });
+
+      await Meetings.saveApproveDates(db, dates);
+
+      res.send({ ok: true });
+      // 
+    } else {
+      res.send({ ok: false, msg: 'ข้อมูลไม่สมบูรณ์', code: 501 });
+    }
+  } catch (error) {
+    res.send({ ok: false, msg: error.message });
+  }
+
+}));
 
 module.exports = router;

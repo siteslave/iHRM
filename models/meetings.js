@@ -315,6 +315,17 @@ module.exports = {
       .update('approve_status', 'N');
   }, 
 
+  clearApproveDates(db, meetingId) {
+    return db('meeting_approve_dates')
+      .where('meeting_id', meetingId)
+      .del();
+  }, 
+
+  saveApproveDates(db, data) {
+    return db('meeting_approve_dates')
+      .insert(data);
+  }, 
+
   getMeetingInfo(db, meetingId) {
     return db('meetings as m')
       .select('m.*', 'tm.name as type_meetings_name')

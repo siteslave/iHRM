@@ -29,6 +29,7 @@ md-card
             th(md-column) ชื่อ-สกุล
             th(md-column) ตำแหน่ง
             th(md-column) สังกัด
+            th(md-column) อยู่
             th(md-column)
         tbody(md-body)
           tr(md-row, ng-if="!employees.length")
@@ -39,6 +40,9 @@ md-card
             td(md-cell) {{ e.title_name }}{{ e.first_name }} {{ e.last_name }}
             td(md-cell) {{ e.position_name }}
             td(md-cell) {{ e.sub_name }}
+            td(md-cell)
+              md-icon.material-icons(ng-if="e.is_active === 'Y'", style="color:#4CAF50;") done
+              md-icon.material-icons(ng-if="e.is_active === 'N'", style="color:#f44336;") clear
             td(md-cell)
 
               md-menu

@@ -13,7 +13,8 @@ module.exports = {
       .select(
         'e.employee_code', 'e.first_name', 'e.last_name', 'e.id', 'e.cid', 'e.title_id', 'e.position_id', 'e.sub_department_id',
         'e.username', 'sd.department_id as main_id', 'sd.id as sub_id',
-        'sd.name as sub_name', 't.name as title_name', 'p.name as position_name'
+      'sd.name as sub_name', 't.name as title_name', 'p.name as position_name',
+        'e.is_active'
       )
       .leftJoin('l_titles as t', 't.id', 'e.title_id')
       .leftJoin('l_positions as p', 'p.id', 'e.position_id')
@@ -28,7 +29,8 @@ module.exports = {
       .select(
       'e.employee_code', 'e.first_name', 'e.last_name', 'e.cid', 'e.id', 'e.title_id', 'e.position_id', 'e.sub_department_id',
       'e.username', 'sd.department_id as main_id', 'sd.id as sub_id',
-      'sd.name as sub_name', 't.name as title_name', 'p.name as position_name'
+      'sd.name as sub_name', 't.name as title_name', 'p.name as position_name',
+      'e.is_active'
       )
       .leftJoin('l_titles as t', 't.id', 'e.title_id')
       .leftJoin('l_positions as p', 'p.id', 'e.position_id')
@@ -43,7 +45,8 @@ module.exports = {
       .select(
       'e.employee_code', 'e.first_name', 'e.last_name', 'e.id', 'e.cid',  'e.title_id', 'e.position_id', 'e.sub_department_id',
       'e.username', 'sd.department_id as main_id', 'sd.id as sub_id',
-      'sd.name as sub_name', 't.name as title_name', 'p.name as position_name'
+      'sd.name as sub_name', 't.name as title_name', 'p.name as position_name',
+      'e.is_active'
       )
       .leftJoin('l_titles as t', 't.id', 'e.title_id')
       .leftJoin('l_positions as p', 'p.id', 'e.position_id')
@@ -64,7 +67,8 @@ module.exports = {
         title_id: employee.title_id,
         position_id: employee.position_id,
         cid: employee.cid,
-        sub_department_id: employee.sub_department_id
+        sub_department_id: employee.sub_department_id,
+        is_active: employee.is_active
       })
       .where('id', employee.id);
   },
@@ -92,7 +96,7 @@ module.exports = {
 
     return db('employees as e')
       .select('e.employee_code', 'e.first_name', 'e.last_name', 'e.cid', 'e.id', 'e.username', 't.name as title_name',
-        'p.name as position_name', 's.name as sub_name', 'd.name as main_name')
+        'p.name as position_name', 's.name as sub_name', 'd.name as main_name', 'e.is_active')
       .leftJoin('l_titles as t', 't.id', 'e.title_id')
       .leftJoin('l_positions as p', 'p.id', 'e.position_id')
       .leftJoin('l_sub_departments as s', 's.id', 'e.sub_department_id')

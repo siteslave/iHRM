@@ -53,6 +53,7 @@ router.post('/save', (req, res, next) => {
   employee.sub_department_id = req.body.department;
   employee.title_id = req.body.title;
   employee.position_id = req.body.position;
+  employee.is_active = req.body.isActive;
   
   if (employee.first_name && employee.last_name && employee.position_id && employee.sub_department_id) {
     // console.log(employee);
@@ -86,6 +87,7 @@ router.put('/save', (req, res, next) => {
   employee.position_id = req.body.position;
   employee.cid = req.body.cid;
   employee.id = req.body.id;
+  employee.is_active = req.body.isActive;
 
   if (employee.first_name && employee.cid && employee.last_name && employee.id) {
     // console.log(employee);

@@ -14,6 +14,8 @@ let jsonData = require('gulp-data');
 let gulp = require('gulp');
 let jade = require('gulp-jade');
 
+let warp = require('co-express');
+
 let Work = require('../../models/work');
 let Job = require('../../models/job');
 
@@ -42,6 +44,22 @@ router.post('/worklate-detail', (req, res, next) => {
     Work.getWorkLateDetail(db, employee_code, start, end)
       .then(rows => {
         res.send({ ok: true, rows: rows[0] });
+      });
+  } else {
+    res.send({ ok: false, msg: 'ข้อมูลไม่สมบูรณ์' });
+  }
+});
+
+router.post('/meeting-total', (req, res, next) => {
+  let db = req.db;
+  let start = req.body.start;
+  let end = req.body.end;
+  let employee_code = req.body.employee_code;
+
+  if (employee_code && start && end) {
+    Work.getMeetingTotal(db, employee_code, start, end)
+      .then(rows => {
+        res.send({ ok: true, rows: rows[0].total });
       });
   } else {
     res.send({ ok: false, msg: 'ข้อมูลไม่สมบูรณ์' });
@@ -81,7 +99,7 @@ router.post('/not-exit-detail', (req, res, next) => {
 });
 
 
-router.get('/print/:employeeCode/:startDate/:endDate', (req, res, next) => {
+router.get('/print/:employeeCode/:startDate/:endDate', warp(async(req, res, next) => {
   let startDate = req.params.startDate;
   let endDate = req.params.endDate;
   let employeeCode = req.params.employeeCode;
@@ -104,79 +122,79 @@ router.get('/print/:employeeCode/:startDate/:endDate', (req, res, next) => {
   json.items = [];
 
   // get employee detail
-  Job.getEmployeeDetail(db, employeeCode)
-    .then(rows => {
-      json.employee = rows[0];
-      // console.log(json);
-      return Job.getDetailForPrint(db, employeeCode, startDate, endDate);
-    })
-    .then((rows) => {
-      let _data = rows[0];
-      json.results = [];
 
-      _data.forEach(v => {
-        let obj = {};
-        obj.date_serve = `${moment(v.date_serve).format('DD/MM')}/${moment(v.date_serve).get('year') + 543}`;
-        obj.in01 = v.in01 ? moment(v.in01, 'HH:mm:ss').format('HH:mm') : '';
-        obj.in02 = v.in02 ? moment(v.in02, 'HH:mm:ss').format('HH:mm') : '';
-        let _in03 = v.in03 || v.in03_2;
-        obj.in03 = _in03 ? moment(_in03, 'HH:mm:ss').format("HH:mm") : '';
-        obj.out01 = v.out01 ? moment(v.out01, 'HH:mm:ss').format('HH:mm') : '';
-        let _out02 = v.out02 || v.out02_2;
-        obj.out02 = _out02 ? moment(_out02, 'HH:mm:ss').format('HH:mm') : '';
-        obj.out03 = v.out03 ? moment(v.out03, 'HH:mm:ss').format('HH:mm') : '';
-        obj.late = moment(v.in01, 'HH:mm:ss').isAfter(moment('08:45:59', 'HH:mm:ss')) ? 'สาย' : '';
-        json.results.push(obj);
-      });
+  try {
+    let rowsEmployee = await Job.getEmployeeDetail(db, employeeCode);
+    json.employee = rowsEmployee[0];
 
-      // console.log(json);
+    let rowsDetail = await Job.getDetailForPrint(db, employeeCode, startDate, endDate);
 
-      gulp.task('html', (cb) => {
-        return gulp.src('./templates/user-time.jade')
-          .pipe(jsonData(() => {
-            return json;
-          }))
-          .pipe(jade())
-          .pipe(gulp.dest(destPath));
-      });
+    let _data = rowsDetail[0];
+    json.results = [];
 
-      gulp.task('pdf', ['html'], () => {
-        let html = fs.readFileSync(destPath + '/user-time.html', 'utf8')
-        let options = {
-          format: 'A4',
-          // height: "8in",
-          // width: "6in",
-          orientation: "portrait",
-          footer: {
-            height: "15mm",
-            contents: '<span style="color: #444;"><small>Printed: ' + new Date() + '</small></span>'
-          }
-        }
-        let employee_name = `${json.employee.first_name} ${json.employee.last_name}`;
-        // let pdfName = path.join(destPath, employee.fullname + '-' + moment().format('x') + '.pdf');
-        var pdfName = `./templates/pdf/attendances-${employee_name}-${moment().format('x')}.pdf`;
-
-        pdf.create(html, options).toFile(pdfName, (err, resp) => {
-          if (err) {
-            res.send({ ok: false, msg: err });
-          } else {
-            res.download(pdfName, function () {
-              rimraf.sync(destPath);
-              fse.removeSync(pdfName);
-            });
-          }
-        });
-
-      });
-
-      gulp.start('pdf');
-
-    })
-    .catch(err => {
-      res.send({ ok: false, msg: err });
+    _data.forEach(v => {
+      let obj = {};
+      obj.date_serve = `${moment(v.date_serve).format('DD/MM')}/${moment(v.date_serve).get('year') + 543}`;
+      obj.in01 = v.in01 ? moment(v.in01, 'HH:mm:ss').format('HH:mm') : '';
+      obj.in02 = v.in02 ? moment(v.in02, 'HH:mm:ss').format('HH:mm') : '';
+      let _in03 = v.in03 || v.in03_2;
+      obj.in03 = _in03 ? moment(_in03, 'HH:mm:ss').format("HH:mm") : '';
+      obj.out01 = v.out01 ? moment(v.out01, 'HH:mm:ss').format('HH:mm') : '';
+      let _out02 = v.out02 || v.out02_2;
+      obj.out02 = _out02 ? moment(_out02, 'HH:mm:ss').format('HH:mm') : '';
+      obj.out03 = v.out03 ? moment(v.out03, 'HH:mm:ss').format('HH:mm') : '';
+      obj.late = moment(v.in01, 'HH:mm:ss').isAfter(moment('08:45:59', 'HH:mm:ss')) ? 'สาย' : '';
+      json.results.push(obj);
     });
 
-});
+    let rowsMeeting = await Work.getMeetingTotal(db, employeeCode, startDate, endDate);
+    json.totalMeeting = rowsMeeting[0].total;
+
+    gulp.task('html', (cb) => {
+      return gulp.src('./templates/user-time.jade')
+        .pipe(jsonData(() => {
+          return json;
+        }))
+        .pipe(jade())
+        .pipe(gulp.dest(destPath));
+    });
+
+    gulp.task('pdf', ['html'], () => {
+      let html = fs.readFileSync(destPath + '/user-time.html', 'utf8')
+      let options = {
+        format: 'A4',
+        // height: "8in",
+        // width: "6in",
+        orientation: "portrait",
+        footer: {
+          height: "15mm",
+          contents: '<span style="color: #444;"><small>Printed: ' + new Date() + '</small></span>'
+        }
+      }
+      let employee_name = `${json.employee.first_name} ${json.employee.last_name}`;
+      // let pdfName = path.join(destPath, employee.fullname + '-' + moment().format('x') + '.pdf');
+      var pdfName = `./templates/pdf/attendances-${employee_name}-${moment().format('x')}.pdf`;
+
+      pdf.create(html, options).toFile(pdfName, (err, resp) => {
+        if (err) {
+          res.send({ ok: false, msg: err });
+        } else {
+          res.download(pdfName, function () {
+            rimraf.sync(destPath);
+            fse.removeSync(pdfName);
+          });
+        }
+      });
+
+    });
+
+    gulp.start('pdf');
+
+  } catch (error) {
+    res.send({ ok: false, msg: error.message });
+  }
+
+}));
 
 router.get('/print-summary/:startDate/:endDate', (req, res, next) => {
   let startDate = req.params.startDate;

@@ -17,6 +17,7 @@ angular.module('app.Employee.dialog.Update', [])
     $scope.employee.subDepId = _employee.sub_id;
     $scope.employee.cid = _employee.cid;
     $scope.employee.id = _employee.id;
+    $scope.employee.isActive = _employee.is_active == 'Y' ? true : false;
     
     $scope.getSubDepartment = () => {
       let mainId = $scope.employee.mainDepId;
@@ -66,6 +67,7 @@ angular.module('app.Employee.dialog.Update', [])
 
     $scope.save = () => {
       console.log($scope.employee);
+      $scope.employee.isActive = $scope.employee.isActive ? 'Y' : 'N';
       if ($scope.employee.firstName && $scope.employee.lastName &&
         $scope.employee.mainDepId && $scope.employee.subDepId &&
         $scope.employee.position && $scope.employee.title) {

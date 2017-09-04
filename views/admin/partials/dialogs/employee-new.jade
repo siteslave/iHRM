@@ -59,7 +59,10 @@ md-dialog(aria-label="New Employee", ng-cloak, flex="80")
               md-select(ng-model="employee.subDepId", ng-required="false")
                 md-option(ng-repeat="dep in subDepartments", value="{{dep.sub_id}}")
                   | {{dep.sub_name}}
-
+        div(layout="row")
+          div(flex)
+             md-checkbox(ng-model="employee.isActive" aria-label="ยังปฏิบัติงานอยู่")
+              | ยังปฏิบัติงานอยู่
     md-dialog-actions(layout="row")
       span(flex)
       md-button(ng-click="save()", ng-disabled="frmNew.$invalid").md-raised.md-primary

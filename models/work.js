@@ -59,6 +59,7 @@ module.exports = {
 
       from employees as e
       left join l_sub_departments as ls on ls.id=e.sub_department_id
+      where e.is_active='Y'
       order by fullname
     `;
     // console.log(sql);
@@ -121,6 +122,7 @@ module.exports = {
 
       from employees as e
       left join l_sub_departments as ls on ls.id=e.sub_department_id
+      where e.is_active='Y'
       order by e.employee_code
     `;
     // console.log(sql);
@@ -167,6 +169,18 @@ module.exports = {
     `;
 
     return db.raw(sql, [start, end, employee_code]);
+  },
+
+  getMeetingTotal(db, employee_code, start, end) {
+    let sql = `
+    select count(distinct mr.register_date) as total
+    from meeting_register as mr
+    where mr.employee_id=?
+    and mr.register_date between ? and ?
+    and mr.approve_status='Y'
+    `;
+
+    return db.raw(sql, [employee_code, start, end]);
   },
 
   getDetailForPrint(db, employee_code, start, end) {
